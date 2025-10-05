@@ -1,0 +1,29 @@
+product_id: supplement_melatonin
+name: Melatonin Tablets 3 mg (Immediate-Release)
+region: US
+
+specs:
+  - Each tablet contains 3 mg melatonin (mg).
+  - Serving size: 1 tablet (3 mg per serving).
+  - Tablets per bottle: 120 (count).
+  - Excipients: microcrystalline cellulose 100 mg/tablet; magnesium stearate 5 mg/tablet (mg).
+  - Allergen status: free from gluten, soy, and dairy (supplier CoA on file).
+
+authorized_claims:
+  - Supports healthy sleep patterns when used as directed.
+  - Non-habit forming.
+  - Manufactured in a facility that follows current Good Manufacturing Practices (cGMP).
+  - Suitable for vegans and vegetarians.
+  - Third-party tested for identity and heavy metals (lead < 0.5 ppm).
+
+prohibited_or_unsupported_claims:
+  - Treats, cures, or prevents insomnia or jet lag.
+  - Guarantees sleep onset within a specific number of minutes.
+  - Safe for children under 12 without medical advice.
+
+disclaimers:
+  - These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
+  - Keep out of reach of children. Consult a healthcare professional if pregnant, nursing, taking medications, or have a medical condition. Do not exceed the recommended serving.
+
+units_notes:
+  - Mass in mg; count as tablet units; concentration for contaminants in ppm.

@@ -16,12 +16,20 @@ This is an LLM Research Application for conducting systematic experiments with m
   - `get_model_config()`: Helper for runtime parameter overrides with provider-specific parameter mapping
 
 ### Main Application Flow
-- **`.venv/main.py`**: Interactive CLI application orchestrating:
+- **`main.py`**: Interactive CLI application orchestrating:
   1. API key initialization from `.env` (via `python-dotenv`)
   2. Session setup (session_id, account_id)
   3. Multi-provider LLM query dispatcher (`query_llm()` routes to `query_openai()`, `query_google()`, or `query_anthropic()`)
   4. Interactive conversation loop with temperature overrides
   5. CSV logging with detailed metadata (`results.csv`)
+
+### Batch Processing System
+- **`orchestrator.py`**: Automated job scheduler for running experimental batches
+- **`runner/`**: Batch processing modules with robust retry logic and error handling
+  - `runner/engines/`: Provider-specific clients (OpenAI, Google, Anthropic, Mistral)
+  - `runner/run_job.py`: Batch execution with progress tracking
+  - `runner/generate_matrix.py`: Experimental matrix generation
+- **`core/storage.py`**: SQLite database for storing experiment results with ACID guarantees
 
 ### Provider Integration
 Each provider has a dedicated query function handling API-specific schemas:
@@ -50,16 +58,23 @@ pip install -r requirements.txt
 # Activate venv
 source .venv/bin/activate
 
-# Run main script
-python .venv/main.py
+# Run interactive CLI
+python main.py
+
+# Run test script
+python test_run.py
+
+# Run batch processing
+python orchestrator.py
 ```
 
 ### Environment Configuration
-Create `.venv/.env` with API keys:
+Create `.env` file in project root with API keys:
 ```
 OPENAI_API_KEY=your_key_here
 GOOGLE_API_KEY=your_key_here
 ANTHROPIC_API_KEY=your_key_here
+MISTRAL_API_KEY=your_key_here
 ```
 
 ## Coding Conventions
@@ -72,11 +87,13 @@ ANTHROPIC_API_KEY=your_key_here
 
 ## Important Notes
 
-- **main.py location**: Currently located in `.venv/main.py` (unconventional but functional)
+- **Dual System Architecture**: The project has two separate systems:
+  - **Interactive CLI** (`main.py`): For manual experimentation with CSV logging
+  - **Batch System** (`orchestrator.py` + `runner/`): For automated batch processing with SQLite storage
 - **API key validation**: App filters available model configurations based on loaded API keys
-- **Provider field**: Every model configuration MUST include `"provider"` field ("openai", "google", or "anthropic")
+- **Provider field**: Every model configuration MUST include `"provider"` field ("openai", "google", "anthropic", or "mistral")
 - **Parameter overrides**: Use `get_model_config(model_key, **overrides)` for runtime temperature/token limit changes
-- **Results file**: Auto-created on first run with predefined CSV schema
+- **Storage**: Interactive CLI uses CSV; batch system uses SQLite (`core/storage.py`)
 - **Security**: Never commit `.env`, credentials, or raw datasets
 
 ## Testing

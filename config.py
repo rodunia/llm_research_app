@@ -8,8 +8,8 @@
 # Future: 5 products → 2,025 runs (5 × 5 × 3 × 3 × 3 × 3)
 
 PRODUCTS = (
-    "smartphone",
-    "cryptocurrency",
+    "smartphone_mid",
+    "cryptocurrency_corecoin",
     "supplement_melatonin",
     # Future products (create YAMLs when ready):
     # "supplement_herbal",
@@ -59,10 +59,10 @@ USER_ACCOUNTS = [
 # Each key in the main dictionary is a user-friendly name for a model configuration.
 # IMPORTANT: Each configuration MUST have a "provider" key ("openai", "google", or "anthropic").
 MODEL_CONFIGURATIONS = {
-    "gpt-4.1-precise": {
+    "gpt-4o-precise": {
         "provider": "openai",
-        "model_name": "gpt-4.1",
-        "model_version": "gpt-4.1",  # Example version string; update as needed
+        "model_name": "gpt-4o",
+        "model_version": "gpt-4o",
         "temperature": 0.2,
         "max_completion_tokens": 1024,
         "top_p": 1.0,
@@ -71,16 +71,27 @@ MODEL_CONFIGURATIONS = {
         "seed": 12345,  # For reproducibility where supported
 
     },
-    "gpt-5-balanced": {
+    "gpt-4o-mini-balanced": {
         "provider": "openai",
-        "model_name": "gpt-5",
-        "model_version": "gpt-5-latest",
+        "model_name": "gpt-4o-mini",
+        "model_version": "gpt-4o-mini",
         "temperature": 0.7,
         "max_completion_tokens": 2048,
         "top_p": 1.0,
         "frequency_penalty": 0.0,
         "presence_penalty": 0.0,
         "seed": None,  # Non-deterministic
+    },
+    "gpt-3.5-turbo-balanced": {
+        "provider": "openai",
+        "model_name": "gpt-3.5-turbo",
+        "model_version": "gpt-3.5-turbo",
+        "temperature": 0.7,
+        "max_completion_tokens": 2048,
+        "top_p": 1.0,
+        "frequency_penalty": 0.0,
+        "presence_penalty": 0.0,
+        "seed": None,
     },
     "gemini-2.5-pro-balanced": {
         "provider": "google",
@@ -174,9 +185,14 @@ def get_model_config(model_key: str, **overrides) -> dict:
         temp = overrides["temperature"]
         if not isinstance(temp, (int, float)):
             raise TypeError("temperature must be a number")
-        # Common provider ranges; adjust if your provider differs
-        if not (0.0 <= float(temp) <= 2.0):
-            raise ValueError("temperature must be between 0.0 and 2.0")
+        # Provider-specific temperature ranges
+        if provider == "mistral":
+            if not (0.0 <= float(temp) <= 1.0):
+                raise ValueError("temperature for Mistral must be between 0.0 and 1.0")
+        else:
+            # OpenAI, Google, Anthropic support 0.0-2.0
+            if not (0.0 <= float(temp) <= 2.0):
+                raise ValueError("temperature must be between 0.0 and 2.0")
 
     # Map legacy names for provider-specific schemas
     mapped_overrides = dict(overrides)

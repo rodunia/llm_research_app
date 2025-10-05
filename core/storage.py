@@ -4,7 +4,7 @@ import sqlite3
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Dict, Any, Optional, List
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class ExperimentDB:
@@ -75,6 +75,9 @@ class ExperimentDB:
                     success BOOLEAN NOT NULL DEFAULT 1,
                     error_type TEXT,
                     error_message TEXT,
+                    product_id TEXT,
+                    template TEXT,
+                    trap_flag TEXT,
                     created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                 )
             """)
@@ -105,7 +108,8 @@ class ExperimentDB:
                     top_p, frequency_penalty, presence_penalty, seed,
                     output_text, finish_reason, prompt_tokens,
                     completion_tokens, total_tokens, tags, researcher_notes,
-                    success, error_type, error_message
+                    success, error_type, error_message,
+                    product_id, template, trap_flag
                 ) VALUES (
                     :session_id, :account_id, :run_timestamp, :repetition_id,
                     :prompt_id, :prompt_text, :system_prompt, :conversation_id,
@@ -113,7 +117,8 @@ class ExperimentDB:
                     :top_p, :frequency_penalty, :presence_penalty, :seed,
                     :output_text, :finish_reason, :prompt_tokens,
                     :completion_tokens, :total_tokens, :tags, :researcher_notes,
-                    :success, :error_type, :error_message
+                    :success, :error_type, :error_message,
+                    :product_id, :template, :trap_flag
                 )
             """, data)
             return cursor.lastrowid
@@ -163,3 +168,53 @@ class ExperimentDB:
                 writer = csv.DictWriter(f, fieldnames=rows[0].keys())
                 writer.writeheader()
                 writer.writerows([dict(row) for row in rows])
+
+
+def save_results(session_id: str, account_id: str, results: List[Dict[str, Any]]) -> None:
+    """Save experiment results to database (wrapper for backward compatibility).
+
+    Args:
+        session_id: Session identifier
+        account_id: Account/researcher identifier
+        results: List of result dictionaries from LLM calls
+
+    Note:
+        This is a convenience wrapper around ExperimentDB.save_result()
+        for backward compatibility with test scripts.
+    """
+    db = ExperimentDB()
+
+    for result in results:
+        # Enrich result with session/account info if not present
+        data = {
+            "session_id": session_id,
+            "account_id": account_id,
+            "run_timestamp": datetime.now(timezone.utc).isoformat(),
+            "repetition_id": 0,
+            "prompt_id": "test",
+            "prompt_text": result.get("prompt_text", ""),
+            "system_prompt": result.get("system_prompt"),
+            "conversation_id": f"{session_id}_0",
+            "model_name": result.get("model_name", "unknown"),
+            "model_version": result.get("model_version", "unknown"),
+            "temperature": result.get("temperature", 0.7),
+            "max_tokens": result.get("max_tokens"),
+            "top_p": result.get("top_p"),
+            "frequency_penalty": result.get("frequency_penalty"),
+            "presence_penalty": result.get("presence_penalty"),
+            "seed": result.get("seed"),
+            "output_text": result.get("output_text", ""),
+            "finish_reason": result.get("finish_reason", ""),
+            "prompt_tokens": result.get("prompt_tokens", 0),
+            "completion_tokens": result.get("completion_tokens", 0),
+            "total_tokens": result.get("total_tokens", 0),
+            "tags": result.get("tags"),
+            "researcher_notes": result.get("researcher_notes"),
+            "success": result.get("finish_reason") not in ["error", "failed"],
+            "error_type": result.get("error_type"),
+            "error_message": result.get("error_message"),
+            "product_id": result.get("product_id"),
+            "template": result.get("template"),
+            "trap_flag": result.get("trap_flag"),
+        }
+        db.save_result(data)

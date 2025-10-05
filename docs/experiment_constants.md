@@ -1,19 +1,25 @@
 # Experiment Constants
 
-This document defines all constant values used across the experimental framework. These factors combine to produce the base matrix of 2,025 experimental runs (5 × 5 × 3 × 3 × 3 × 3 = 2,025).
+This document defines all constant values used across the experimental framework.
+
+**Current Matrix Size:** 3 products × 5 materials × 3 times × 3 temperatures × 3 repetitions × 3 engines = **1,215 runs**
+
+**Future Matrix Size (when all products ready):** 5 × 5 × 3 × 3 × 3 × 3 = **2,025 runs**
 
 ## Purpose
 
 Single source of truth for all experimental factors. These constants ensure reproducibility and consistency across all experimental runs. **Do not modify these values during an active experiment cycle.**
 
-## Product Constants (5)
+## Product Constants
 
-Product slugs under test:
+**Active Products (3):**
+* `smartphone`
+* `cryptocurrency`
+* `supplement_melatonin`
+
+**Future Products (2) - YAML files to be created:**
 * `supplement_herbal`
 * `audio_bt_headphones`
-* `auto_mid`
-* `insurance_basic`
-* `dating_platform`
 
 ## Material Type Templates (5)
 
@@ -66,7 +72,9 @@ Note: `trap_flag` can be toggled in bias runs but is **not** part of the 2,025 b
 
 ## Matrix Calculation
 
-5 products × 5 materials × 3 times × 3 temperatures × 3 repetitions × 3 engines = **2,025 runs**
+**Current:** 3 products × 5 materials × 3 times × 3 temperatures × 3 repetitions × 3 engines = **1,215 runs**
+
+**Future (5 products):** 5 × 5 × 3 × 3 × 3 × 3 = **2,025 runs**
 
 ## Change Control
 

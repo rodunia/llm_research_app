@@ -4,14 +4,16 @@
 
 # --- 1. EXPERIMENT CONSTANTS ---
 # Frozen matrix constants (see docs/experiment_constants.md)
-# 5 × 5 × 3 × 3 × 3 × 3 = 2,025 base experimental runs
+# Current: 3 products → 1,215 runs (3 × 5 × 3 × 3 × 3 × 3)
+# Future: 5 products → 2,025 runs (5 × 5 × 3 × 3 × 3 × 3)
 
 PRODUCTS = (
-    "supplement_herbal",
-    "audio_bt_headphones",
-    "auto_mid",
-    "insurance_basic",
-    "dating_platform",
+    "smartphone",
+    "cryptocurrency",
+    "supplement_melatonin",
+    # Future products (create YAMLs when ready):
+    # "supplement_herbal",
+    # "audio_bt_headphones",
 )
 
 MATERIALS = (

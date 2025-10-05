@@ -13,12 +13,11 @@ def verify_constants():
     errors = []
 
     # Expected values from docs/experiment_constants.md
+    # Current: 3 products (future: 5)
     expected_products = (
-        "supplement_herbal",
-        "audio_bt_headphones",
-        "auto_mid",
-        "insurance_basic",
-        "dating_platform",
+        "smartphone",
+        "cryptocurrency",
+        "supplement_melatonin",
     )
 
     expected_materials = (
@@ -71,9 +70,10 @@ def verify_constants():
         * len(ENGINES)
     )
 
-    if matrix_size != 2025:
+    expected_matrix_size = 1215  # 3 products × 5 × 3 × 3 × 3 × 3
+    if matrix_size != expected_matrix_size:
         errors.append(
-            f"Matrix size mismatch: {matrix_size} != 2025 "
+            f"Matrix size mismatch: {matrix_size} != {expected_matrix_size} "
             f"({len(PRODUCTS)} × {len(MATERIALS)} × {len(TIMES)} × "
             f"{len(TEMPS)} × {len(REPS)} × {len(ENGINES)})"
         )

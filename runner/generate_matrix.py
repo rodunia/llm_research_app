@@ -132,7 +132,7 @@ def main(
     Default: Generate 2,025 placeholder outputs and append rows to results.csv
     --dry-run: Print first 5 run_ids without file writes
     """
-    # Verify constants
+    # Calculate expected matrix size
     expected_total = (
         len(PRODUCTS)
         * len(MATERIALS)
@@ -142,14 +142,11 @@ def main(
         * len(ENGINES)
     )
 
-    if expected_total != 2025:
-        typer.echo(
-            f"Error: Expected 2,025 runs but got {expected_total} "
-            f"({len(PRODUCTS)} × {len(MATERIALS)} × {len(TIMES)} × "
-            f"{len(TEMPS)} × {len(REPS)} × {len(ENGINES)})",
-            err=True,
-        )
-        raise typer.Exit(1)
+    typer.echo(
+        f"Matrix size: {expected_total} runs "
+        f"({len(PRODUCTS)} × {len(MATERIALS)} × {len(TIMES)} × "
+        f"{len(TEMPS)} × {len(REPS)} × {len(ENGINES)})"
+    )
 
     # Generate matrix
     generate_full_matrix(dry_run=dry_run)

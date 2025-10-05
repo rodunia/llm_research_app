@@ -46,10 +46,10 @@ Products under test:
 
 Template filenames for content generation:
 * \`digital_ad.j2\`
-* \`socialmedia_post.j2\`
+* \`organic_social_posts.j2\`
 * \`faq.j2\`
-* \`spec_sheet.j2\`
-* \`blog_post.j2\`
+* \`spec_document_facts_only.j2\`
+* \`blog_post_promo.j2\`
 
 ## Time of Day Constants
 

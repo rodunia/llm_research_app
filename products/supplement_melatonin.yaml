@@ -3,11 +3,11 @@ name: Melatonin Tablets 3 mg (Immediate-Release)
 region: US
 
 specs:
-  - Each tablet contains 3 mg melatonin (mg).
-  - Serving size: 1 tablet (3 mg per serving).
-  - Tablets per bottle: 120 (count).
-  - Excipients: microcrystalline cellulose 100 mg/tablet; magnesium stearate 5 mg/tablet (mg).
-  - Allergen status: free from gluten, soy, and dairy (supplier CoA on file).
+  - "Each tablet contains 3 mg melatonin (mg)."
+  - "Serving size: 1 tablet (3 mg per serving)."
+  - "Tablets per bottle: 120 (count)."
+  - "Excipients: microcrystalline cellulose 100 mg/tablet; magnesium stearate 5 mg/tablet (mg)."
+  - "Allergen status: free from gluten, soy, and dairy (supplier CoA on file)."
 
 authorized_claims:
   - Supports healthy sleep patterns when used as directed.

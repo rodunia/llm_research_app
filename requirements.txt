@@ -1,4 +1,9 @@
-python-dotenv;
-openai;
-google-generativeai;
-anthropic;
+python-dotenv
+openai
+google-generativeai
+anthropic
+pyyaml
+jinja2
+pydantic>=2.0
+typer[all]
+rich

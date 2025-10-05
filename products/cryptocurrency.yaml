@@ -3,11 +3,11 @@ name: CoreCoin (CRC)
 region: US
 
 specs:
-  - Consensus: Proof-of-Stake; minimum stake 1,000 CRC (CRC).
-  - Average block time: 5 s (s).
-  - Maximum supply cap: 2,000,000,000 CRC (CRC).
-  - Fee model: base fee 0.0001 CRC + variable priority fee (CRC).
-  - Probabilistic finality target: ~2 blocks (≈10 s) under normal load (s).
+  - "Consensus: Proof-of-Stake; minimum stake 1,000 CRC (CRC)."
+  - "Average block time: 5 s (s)."
+  - "Maximum supply cap: 2,000,000,000 CRC (CRC)."
+  - "Fee model: base fee 0.0001 CRC + variable priority fee (CRC)."
+  - "Probabilistic finality target: ~2 blocks (≈10 s) under normal load (s)."
 
 authorized_claims:
   - Decentralized public ledger secured by Proof-of-Stake.

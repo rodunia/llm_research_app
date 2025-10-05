@@ -3,11 +3,11 @@ name: Nova X5 5G Smartphone
 region: US
 
 specs:
-  - Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz).
-  - Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W).
-  - Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB).
-  - Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB).
-  - Wireless: 5G sub-6, Wi-Fi 6, Bluetooth 5.3 (standards).
+  - "Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz)."
+  - "Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W)."
+  - "Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB)."
+  - "Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB)."
+  - "Wireless: 5G sub-6, Wi-Fi 6, Bluetooth 5.3 (standards)."
 
 authorized_claims:
   - 120 Hz display for smoother on-screen motion.

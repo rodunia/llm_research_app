@@ -7,7 +7,7 @@ specs:
   - "Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W)."
   - "Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB)."
   - "Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB)."
-  - "Wireless: 5G sub-6, Wi-Fi 6, Bluetooth 5.3 (standards)."
+  - "Wireless: 5G sub-6 GHz, Wi-Fi 6, Bluetooth 5.3 (GHz)."
 
 authorized_claims:
   - 120 Hz display for smoother on-screen motion.
@@ -28,5 +28,3 @@ disclaimers:
   - Actual battery life varies by usage, settings, and network conditions.
   - Avoid liquid exposure; no water-resistance certification is claimed.
 
-units_notes:
-  - Display size in inches; resolution in pixels; refresh in Hz; battery in mAh; charging power in W; storage in GB/TB; CPU in GHz.

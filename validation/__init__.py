@@ -1,1 +1,1 @@
-# validation package
+"""Validation package for product YAMLs."""

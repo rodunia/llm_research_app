@@ -6,11 +6,11 @@ from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from typing import Dict, Any
 
 
-def load_product_yaml(product_path: Path) -> Dict[str, Any]:
+def load_product_yaml(path: Path) -> dict:
     """Load and parse a product YAML file.
 
     Args:
-        product_path: Path to the product YAML file
+        path: Path to the product YAML file
 
     Returns:
         Dictionary containing product data
@@ -19,11 +19,29 @@ def load_product_yaml(product_path: Path) -> Dict[str, Any]:
         FileNotFoundError: If product file doesn't exist
         yaml.YAMLError: If YAML is malformed
     """
-    if not product_path.exists():
-        raise FileNotFoundError(f"Product file not found: {product_path}")
+    if not path.exists():
+        raise FileNotFoundError(f"Product file not found: {path}")
 
-    with open(product_path, "r", encoding="utf-8") as f:
+    with open(path, "r", encoding="utf-8") as f:
         return yaml.safe_load(f)
+
+
+def jinja_env() -> Environment:
+    """Create a Jinja2 environment with strict undefined handling.
+
+    Returns:
+        Configured Jinja2 Environment with FileSystemLoader("prompts")
+    """
+    templates_dir = Path("prompts")
+    if not templates_dir.exists():
+        raise FileNotFoundError(f"Templates directory not found: {templates_dir}")
+
+    return Environment(
+        loader=FileSystemLoader(str(templates_dir)),
+        undefined=StrictUndefined,
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
 
 
 def create_jinja_env(templates_dir: Path) -> Environment:
@@ -47,30 +65,44 @@ def create_jinja_env(templates_dir: Path) -> Environment:
 
 
 def render_prompt(
-    product_data: Dict[str, Any],
-    template_name: str,
-    jinja_env: Environment,
-    trap_flag: bool = False,
+    product_yaml: dict, template_name: str, trap_flag: bool
 ) -> str:
     """Render a prompt template with product data.
 
     Args:
-        product_data: Dictionary containing product information
+        product_yaml: Dictionary containing product information
         template_name: Name of the Jinja2 template file
-        jinja_env: Configured Jinja2 Environment
         trap_flag: Whether to enable the people-pleasing trap
 
     Returns:
         Rendered prompt as a string
 
     Raises:
+        KeyError: If required keys are missing from product_yaml
         jinja2.TemplateNotFound: If template doesn't exist
-        jinja2.UndefinedError: If required variables are missing
+        jinja2.UndefinedError: If required variables are missing in template
     """
-    template = jinja_env.get_template(template_name)
+    # Validate required keys
+    required_keys = ["name", "region", "specs", "authorized_claims", "disclaimers"]
+    missing_keys = [key for key in required_keys if key not in product_yaml]
 
-    # Merge product data with trap_flag
-    context = dict(product_data)
-    context["trap_flag"] = trap_flag
+    if missing_keys:
+        raise KeyError(
+            f"Product YAML missing required keys: {', '.join(missing_keys)}"
+        )
+
+    # Create environment and get template
+    env = jinja_env()
+    template = env.get_template(template_name)
+
+    # Build context with required keys + trap_flag
+    context = {
+        "name": product_yaml["name"],
+        "region": product_yaml["region"],
+        "specs": product_yaml["specs"],
+        "authorized_claims": product_yaml["authorized_claims"],
+        "disclaimers": product_yaml["disclaimers"],
+        "trap_flag": trap_flag,
+    }
 
     return template.render(**context)

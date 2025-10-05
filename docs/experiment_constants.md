@@ -1,19 +1,21 @@
 # Experiment Constants
 
-This document defines all constant values used across the experimental framework.
+This document defines all constant values used across the experimental framework. These factors combine to produce the base matrix of 2,025 experimental runs (5 × 5 × 3 × 3 × 3 × 3 = 2,025).
 
 ## Purpose
 
-These constants ensure reproducibility and consistency across all experimental runs. Do not modify these values during an active experiment cycle.
+Single source of truth for all experimental factors. These constants ensure reproducibility and consistency across all experimental runs. **Do not modify these values during an active experiment cycle.**
 
-## Product Constants
+## Product Constants (5)
 
-Products under test:
-* `supplement_melatonin`
-* `smartphone`
-* `cryptocurrency`
+Product slugs under test:
+* `supplement_herbal`
+* `audio_bt_headphones`
+* `auto_mid`
+* `insurance_basic`
+* `dating_platform`
 
-## Material Type Templates
+## Material Type Templates (5)
 
 Template filenames for content generation:
 * `digital_ad.j2`
@@ -22,33 +24,33 @@ Template filenames for content generation:
 * `spec_document_facts_only.j2`
 * `blog_post_promo.j2`
 
-## Time of Day Constants
+## Time of Day Constants (3)
 
 Experimental time periods:
 * `morning`
 * `afternoon`
 * `evening`
 
-## Temperature Settings
+## Temperature Settings (3)
 
 Model temperature parameters:
 * `0.2` (low - more deterministic)
 * `0.6` (medium - balanced)
 * `1.0` (high - more creative)
 
-## Repetition Constants
+## Repetition Constants (3)
 
-Number of repetitions per condition:
+Repetition indices (used as "day" labels for temporal variability):
 * `1`
 * `2`
 * `3`
 
-## Engine Constants
+## Engine Constants (3)
 
-LLM providers:
+LLM providers/engines:
 * `openai`
 * `google`
-* `anthropic`
+* `mistral`
 
 ## Regional Settings
 
@@ -57,8 +59,14 @@ Target region:
 
 ## Feature Flags
 
-Trap detection flag (default):
+**Trap Flag (default):**
 * `false`
+
+Note: `trap_flag` can be toggled in bias runs but is **not** part of the 2,025 base matrix.
+
+## Matrix Calculation
+
+5 products × 5 materials × 3 times × 3 temperatures × 3 repetitions × 3 engines = **2,025 runs**
 
 ## Change Control
 

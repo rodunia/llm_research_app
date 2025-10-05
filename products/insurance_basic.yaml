@@ -1,0 +1,25 @@
+product_id: insurance_basic
+name: SafeGuard Basic Health Insurance
+region: US
+
+specs:
+  - "Monthly premium: starting at 250 USD (USD)."
+  - "Annual deductible: 2000 USD (USD)."
+  - "Out-of-pocket maximum: 7000 USD per year (USD)."
+  - "Primary care copay: 25 USD (USD)."
+
+authorized_claims:
+  - Covers preventive care at 100% with no deductible.
+  - Access to nationwide network of healthcare providers.
+  - Prescription drug coverage included.
+  - Complies with ACA essential health benefits.
+
+prohibited_or_unsupported_claims:
+  - Covers all medical procedures without exception.
+  - Guaranteed acceptance regardless of pre-existing conditions without enrollment periods.
+  - Lowest rates guaranteed.
+
+disclaimers:
+  - Premium rates vary based on age, location, and coverage options selected.
+  - Coverage subject to policy terms, conditions, exclusions, and limitations.
+  - Enrollment periods and eligibility requirements apply.

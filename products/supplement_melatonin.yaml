@@ -7,7 +7,7 @@ specs:
   - "Serving size: 1 tablet (3 mg per serving)."
   - "Tablets per bottle: 120 (count)."
   - "Excipients: microcrystalline cellulose 100 mg/tablet; magnesium stearate 5 mg/tablet (mg)."
-  - "Allergen status: free from gluten, soy, and dairy (supplier CoA on file)."
+  - "Allergen status: 0 mg gluten, 0 mg soy, 0 mg dairy per serving (mg)."
 
 authorized_claims:
   - Supports healthy sleep patterns when used as directed.
@@ -25,5 +25,3 @@ disclaimers:
   - These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.
   - Keep out of reach of children. Consult a healthcare professional if pregnant, nursing, taking medications, or have a medical condition. Do not exceed the recommended serving.
 
-units_notes:
-  - Mass in mg; count as tablet units; concentration for contaminants in ppm.

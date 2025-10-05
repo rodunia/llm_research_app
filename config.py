@@ -2,7 +2,49 @@
 # This file serves as the central configuration dashboard for the research app.
 # All experimental parameters, prompts, models, and users are defined here.
 
-# --- 1. USER ACCOUNTS ---
+# --- 1. EXPERIMENT CONSTANTS ---
+# Frozen matrix constants (see docs/experiment_constants.md)
+# 5 × 5 × 3 × 3 × 3 × 3 = 2,025 base experimental runs
+
+PRODUCTS = (
+    "supplement_herbal",
+    "audio_bt_headphones",
+    "auto_mid",
+    "insurance_basic",
+    "dating_platform",
+)
+
+MATERIALS = (
+    "digital_ad.j2",
+    "organic_social_posts.j2",
+    "faq.j2",
+    "spec_document_facts_only.j2",
+    "blog_post_promo.j2",
+)
+
+TIMES = (
+    "morning",
+    "afternoon",
+    "evening",
+)
+
+TEMPS = (
+    0.2,  # low - more deterministic
+    0.6,  # medium - balanced
+    1.0,  # high - more creative
+)
+
+REPS = (1, 2, 3)  # Repetition indices (used as "day" labels)
+
+ENGINES = (
+    "openai",
+    "google",
+    "mistral",
+)
+
+REGION = "US"
+
+# --- 2. USER ACCOUNTS ---
 # A list of researcher accounts to be used in the experiments.
 USER_ACCOUNTS = [
     "account_1",
@@ -10,7 +52,7 @@ USER_ACCOUNTS = [
     "account_3",
 ]
 
-# --- 2. MODEL AND GENERATION PARAMETERS ---
+# --- 3. MODEL AND GENERATION PARAMETERS ---
 # Define the models and the different parameter sets for generation.
 # Each key in the main dictionary is a user-friendly name for a model configuration.
 # IMPORTANT: Each configuration MUST have a "provider" key ("openai", "google", or "anthropic").
@@ -84,7 +126,7 @@ MODEL_CONFIGURATIONS = {
     },
 }
 
-# --- 3. STANDARDIZED PROMPTS ---
+# --- 4. STANDARDIZED PROMPTS ---
 # A list of dictionaries, where each dictionary represents a standardized prompt.
 # This makes it easy to select prompts by their ID in the application.
 STANDARDIZED_PROMPTS = [
@@ -101,7 +143,7 @@ STANDARDIZED_PROMPTS = [
     # Add more standardized prompts here as needed
 ]
 
-# --- 4. RUNTIME CONFIG HELPERS ---
+# --- 5. RUNTIME CONFIG HELPERS ---
 # Utilities to select a base model config and override parameters per run.
 from copy import deepcopy
 

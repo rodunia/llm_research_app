@@ -1,0 +1,25 @@
+product_id: auto_mid
+name: AutoDrive 2025 Sedan
+region: US
+
+specs:
+  - "Engine: 2.0 L turbocharged 4-cylinder, 250 hp (L, hp)."
+  - "Fuel economy: 28 mpg city, 35 mpg highway (mpg)."
+  - "Transmission: 8-speed automatic (count)."
+  - "Cargo capacity: 450 L (L)."
+
+authorized_claims:
+  - EPA-estimated fuel economy ratings.
+  - Advanced driver assistance features available.
+  - Meets all federal safety standards.
+  - 5-year/60,000-mile basic warranty.
+
+prohibited_or_unsupported_claims:
+  - Fully autonomous or self-driving capability.
+  - Guaranteed fuel economy in all driving conditions.
+  - Zero maintenance required.
+
+disclaimers:
+  - Actual fuel economy varies with driving conditions, habits, and vehicle condition.
+  - Advanced features require optional packages and may have limitations.
+  - See owner's manual for complete warranty terms and conditions.

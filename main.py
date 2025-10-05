@@ -17,6 +17,7 @@ import config
 def initialize_app():
     """
     Loads environment variables and prepares the application to run.
+    Returns API key availability status.
     """
     print("Initializing application...")
     load_dotenv()
@@ -26,14 +27,11 @@ def initialize_app():
     anthropic_api_key = os.getenv("ANTHROPIC_API_KEY")
 
     any_key = False
-    if openai_api_key:
-        openai.api_key = openai_api_key
-        any_key = True
+    # Note: We no longer set global API keys here - they're passed to clients directly
     if google_api_key:
-        genai.configure(api_key=google_api_key)
+        genai.configure(api_key=google_api_key)  # Google still uses global config
         any_key = True
-    if anthropic_api_key:
-        # Anthropic client is instantiated when used to avoid hard dependency at import time
+    if openai_api_key or anthropic_api_key:
         any_key = True
 
     if not any_key:
@@ -114,29 +112,73 @@ def query_openai(model_config, prompt_config):
     Sends a request to the OpenAI API and returns the parsed response.
     """
     try:
+        # Create client with API key from environment (not global)
+        client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
         messages = [
             {"role": "system", "content": prompt_config.get("system_prompt", "")},
             {"role": "user", "content": prompt_config["prompt_text"]}
         ]
-        response = openai.chat.completions.create(
+
+        # Get max_tokens from config (supports both max_tokens and max_completion_tokens)
+        max_tokens = model_config.get("max_completion_tokens") or model_config.get("max_tokens", 2048)
+
+        response = client.chat.completions.create(
             model=model_config["model_name"],
             messages=messages,
             temperature=model_config["temperature"],
+            max_tokens=max_tokens,
             top_p=model_config["top_p"],
             frequency_penalty=model_config["frequency_penalty"],
             presence_penalty=model_config["presence_penalty"],
             seed=model_config.get("seed")
         )
         return {
+            "success": True,
             "output_text": response.choices[0].message.content,
             "finish_reason": response.choices[0].finish_reason,
             "prompt_tokens": response.usage.prompt_tokens,
             "completion_tokens": response.usage.completion_tokens,
             "total_tokens": response.usage.total_tokens,
+            "error_type": None,
+            "error_message": None,
+        }
+    except openai.RateLimitError as e:
+        print(f"Rate limit error with OpenAI API: {e}")
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "rate_limit",
+            "error_message": str(e),
+        }
+    except openai.APIError as e:
+        print(f"API error with OpenAI: {e}")
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "api_error",
+            "error_message": str(e),
         }
     except Exception as e:
-        print(f"An error occurred with the OpenAI API: {e}")
-        return {"output_text": f"ERROR: {e}", "finish_reason": "error", "total_tokens": 0}
+        print(f"Unexpected error with OpenAI API: {e}")
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "unknown",
+            "error_message": str(e),
+        }
 
 
 def query_google(model_config, prompt_config):
@@ -147,7 +189,7 @@ def query_google(model_config, prompt_config):
         model = genai.GenerativeModel(model_config['model_name'])
         generation_config = genai.types.GenerationConfig(
             temperature=model_config["temperature"],
-            max_output_tokens=model_config["max_tokens"],
+            max_output_tokens=model_config.get("max_tokens", 2048),
             top_p=model_config["top_p"]
         )
         full_prompt = f"{prompt_config.get('system_prompt', '')}\n\n{prompt_config['prompt_text']}"
@@ -159,15 +201,27 @@ def query_google(model_config, prompt_config):
         completion_tokens = model.count_tokens(response.text).total_tokens
 
         return {
+            "success": True,
             "output_text": response.text,
             "finish_reason": str(response.candidates[0].finish_reason) if response.candidates else "unknown",
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
-            "total_tokens": prompt_tokens + completion_tokens
+            "total_tokens": prompt_tokens + completion_tokens,
+            "error_type": None,
+            "error_message": None,
         }
     except Exception as e:
         print(f"An error occurred with the Google API: {e}")
-        return {"output_text": f"ERROR: {e}", "finish_reason": "error", "total_tokens": 0}
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "api_error",
+            "error_message": str(e),
+        }
 
 
 def query_anthropic(model_config, prompt_config):
@@ -183,7 +237,7 @@ def query_anthropic(model_config, prompt_config):
         response = client.messages.create(
             model=model_config["model_name"],
             temperature=model_config["temperature"],
-            max_tokens=model_config["max_tokens"],
+            max_tokens=model_config.get("max_tokens", 2048),
             top_p=model_config.get("top_p", 1.0),
             system=system_prompt if system_prompt else None,
             messages=[{"role": "user", "content": user_content}],
@@ -206,15 +260,27 @@ def query_anthropic(model_config, prompt_config):
         finish = getattr(response, "stop_reason", None) or getattr(response, "stop_sequence", None) or "unknown"
 
         return {
+            "success": True,
             "output_text": output_text,
             "finish_reason": str(finish),
             "prompt_tokens": prompt_tokens,
             "completion_tokens": completion_tokens,
             "total_tokens": (prompt_tokens or 0) + (completion_tokens or 0),
+            "error_type": None,
+            "error_message": None,
         }
     except Exception as e:
         print(f"An error occurred with the Anthropic API: {e}")
-        return {"output_text": f"ERROR: {e}", "finish_reason": "error", "total_tokens": 0}
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "api_error",
+            "error_message": str(e),
+        }
 
 
 def query_llm(model_config, prompt_config):
@@ -230,30 +296,40 @@ def query_llm(model_config, prompt_config):
         return query_anthropic(model_config, prompt_config)
     else:
         print(f"Unknown provider: {provider}. Please check config.py.")
-        return {"output_text": f"ERROR: Unknown provider '{provider}'", "finish_reason": "error", "total_tokens": 0}
+        return {
+            "success": False,
+            "output_text": None,
+            "finish_reason": "error",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "error_type": "config_error",
+            "error_message": f"Unknown provider '{provider}'",
+        }
 
 # --- 4. DATA COLLECTION AND SAVING ---
 
-def save_to_csv(data_dict, filename):
+def save_to_db(data_dict, db):
     """
-    Appends a new row of data to the specified CSV file.
+    Saves experiment result to SQLite database with proper error handling.
+
+    Args:
+        data_dict: Dictionary containing experiment result data
+        db: ExperimentDB instance
+
+    Returns:
+        int: Row ID of saved record, or None on failure
     """
-    with open(filename, mode='a', newline='', encoding='utf-8') as f:
-        # Use the headers from setup_results_file to ensure order
-        headers = [
-            "session_id", "account_id", "run_timestamp", "repetition_id",
-            "prompt_id", "prompt_text", "system_prompt", "conversation_id",
-            "model_name", "model_version", "temperature", "max_tokens",
-            "top_p", "frequency_penalty", "presence_penalty", "seed",
-            "output_text", "finish_reason", "prompt_tokens",
-            "completion_tokens", "total_tokens", "tags", "researcher_notes"
-        ]
-        writer = csv.DictWriter(f, fieldnames=headers)
-        writer.writerow(data_dict)
-    print("--- Data saved successfully ---")
+    try:
+        row_id = db.save_result(data_dict)
+        print(f"--- Data saved successfully (ID: {row_id}) ---")
+        return row_id
+    except Exception as e:
+        print(f"ERROR: Failed to save data: {e}")
+        return None
 
 
-def run_new_conversation(session_state, results_filename):
+def run_new_conversation(session_state, db):
     """
     Handles the workflow for a new conversation by selecting a full model configuration.
     """
@@ -308,14 +384,22 @@ def run_new_conversation(session_state, results_filename):
     print("\nQuerying the LLM...")
     llm_output = query_llm(model_config, prompt_config)
 
-    print("--- RESPONSE ---")
-    print(llm_output["output_text"])
-    print("--- METRICS ---")
-    print(f"Finish Reason: {llm_output['finish_reason']}, Token Usage: {llm_output['total_tokens']}")
+    # Check if API call was successful
+    if llm_output.get("success"):
+        print("--- RESPONSE ---")
+        print(llm_output["output_text"])
+        print("--- METRICS ---")
+        print(f"Finish Reason: {llm_output['finish_reason']}, Token Usage: {llm_output['total_tokens']}")
+    else:
+        print("--- ERROR ---")
+        print(f"API call failed: {llm_output.get('error_type')} - {llm_output.get('error_message')}")
 
     print("\n--- ANNOTATION ---")
     tags = input("Enter comma-separated tags (e.g., pass,induced-error): ")
     researcher_notes = input("Enter researcher notes (optional): ")
+
+    # Get max_tokens safely (support both formats)
+    max_tokens_val = model_config.get("max_tokens") or model_config.get("max_completion_tokens")
 
     data_to_save = {
         "session_id": session_state["session_id"],
@@ -329,16 +413,23 @@ def run_new_conversation(session_state, results_filename):
         "model_name": model_config["model_name"],
         "model_version": model_config["model_version"],
         "temperature": model_config["temperature"],
-        "max_tokens": model_config["max_tokens"],
+        "max_tokens": max_tokens_val,
         "top_p": model_config["top_p"],
         "frequency_penalty": model_config["frequency_penalty"],
         "presence_penalty": model_config["presence_penalty"],
         "seed": model_config.get("seed"),
-        **llm_output, # Unpack the entire llm_output dictionary here
+        "output_text": llm_output.get("output_text"),
+        "finish_reason": llm_output["finish_reason"],
+        "prompt_tokens": llm_output.get("prompt_tokens", 0),
+        "completion_tokens": llm_output.get("completion_tokens", 0),
+        "total_tokens": llm_output.get("total_tokens", 0),
+        "success": llm_output.get("success", False),
+        "error_type": llm_output.get("error_type"),
+        "error_message": llm_output.get("error_message"),
         "tags": tags,
         "researcher_notes": researcher_notes,
     }
-    save_to_csv(data_to_save, results_filename)
+    save_to_db(data_to_save, db)
 
 
 # --- 5. MAIN APPLICATION LOGIC ---
@@ -347,9 +438,14 @@ def main():
     """
     The main function that orchestrates the application workflow.
     """
+    from core.storage import ExperimentDB
+
     print("Welcome to the LLM Research App!")
     initialize_app()
-    results_filename = setup_results_file()
+
+    # Initialize database
+    db = ExperimentDB()
+    print("Database initialized at data/results.db")
 
     session_id, account_id = get_session_info()
     session_state = {
@@ -362,10 +458,16 @@ def main():
     while True:
         print("\nWhat's next?")
         print("[n] New Conversation")
+        print("[e] Export to CSV")
         print("[q] Quit Session")
         choice = input("Enter your choice: ").lower()
         if choice == 'n':
-            run_new_conversation(session_state, results_filename)
+            run_new_conversation(session_state, db)
+        elif choice == 'e':
+            from pathlib import Path
+            export_path = Path("data/results_export.csv")
+            db.export_to_csv(export_path, session_id=session_state["session_id"])
+            print(f"Exported session results to {export_path}")
         elif choice == 'q':
             print("Quitting session. Goodbye!")
             break

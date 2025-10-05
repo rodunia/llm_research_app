@@ -13,7 +13,7 @@ USER_ACCOUNTS = [
 # --- 2. MODEL AND GENERATION PARAMETERS ---
 # Define the models and the different parameter sets for generation.
 # Each key in the main dictionary is a user-friendly name for a model configuration.
-# IMPORTANT: Each configuration MUST have a "provider" key ("openai" or "google").
+# IMPORTANT: Each configuration MUST have a "provider" key ("openai", "google", or "anthropic").
 MODEL_CONFIGURATIONS = {
     "gpt-4.1-precise": {
         "provider": "openai",
@@ -25,6 +25,7 @@ MODEL_CONFIGURATIONS = {
         "frequency_penalty": 0.0,
         "presence_penalty": 0.0,
         "seed": 12345,  # For reproducibility where supported
+
     },
     "gpt-5-balanced": {
         "provider": "openai",
@@ -45,6 +46,39 @@ MODEL_CONFIGURATIONS = {
         "max_tokens": 4096,
         "top_p": 1.0,
         "frequency_penalty": 0.0,  # Not all providers support all parameters
+        "presence_penalty": 0.0,
+        "seed": None,
+    },
+    "claude-3.5-sonnet-balanced": {
+        "provider": "anthropic",
+        "model_name": "claude-3-5-sonnet-20240620",
+        "model_version": "claude-3-5-sonnet-20240620",
+        "temperature": 0.7,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "frequency_penalty": 0.0,
+        "presence_penalty": 0.0,
+        "seed": None,
+    },
+    "claude-3-haiku-balanced": {
+        "provider": "anthropic",
+        "model_name": "claude-3-haiku-20240307",
+        "model_version": "claude-3-haiku-20240307",
+        "temperature": 0.7,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "frequency_penalty": 0.0,
+        "presence_penalty": 0.0,
+        "seed": None,
+    },
+    "claude-3-opus-balanced": {
+        "provider": "anthropic",
+        "model_name": "claude-3-opus-20240229",
+        "model_version": "claude-3-opus-20240229",
+        "temperature": 0.7,
+        "max_tokens": 2048,
+        "top_p": 1.0,
+        "frequency_penalty": 0.0,
         "presence_penalty": 0.0,
         "seed": None,
     },

@@ -1,4 +1,4 @@
-"""Full matrix generator for 2,025 experimental runs."""
+"""Full matrix generator for 1,620 experimental runs (4 engines)."""
 
 from pathlib import Path
 from typing import Optional
@@ -8,25 +8,25 @@ import typer
 
 from config import PRODUCTS, MATERIALS, TIMES, TEMPS, REPS, ENGINES, REGION
 from runner.render import load_product_yaml, render_prompt
-from runner.utils import make_run_id, append_row, now_iso
+from runner.utils import make_run_id, append_row
 
-app = typer.Typer(help="Generate full experimental matrix (2,025 runs)")
+app = typer.Typer(help="Generate full experimental matrix (1,620 runs)")
 
 
 def generate_full_matrix(dry_run: bool = False) -> None:
-    """Generate full 2,025-run experimental matrix.
+    """Generate full experimental matrix (1,620 runs with 4 engines).
 
     Args:
         dry_run: If True, compute first 5 run_ids without file writes
     """
-    # Create output directory for placeholder files
+    # Create output directories
     outputs_dir = Path("outputs")
+    prompts_dir = Path("outputs/prompts")
+    results_dir = Path("results")
+
     if not dry_run:
         outputs_dir.mkdir(parents=True, exist_ok=True)
-
-    # Create results directory
-    results_dir = Path("results")
-    if not dry_run:
+        prompts_dir.mkdir(parents=True, exist_ok=True)
         results_dir.mkdir(parents=True, exist_ok=True)
 
     # Collision detection set
@@ -62,7 +62,7 @@ def generate_full_matrix(dry_run: bool = False) -> None:
             )
             raise typer.Exit(1)
 
-        # Build knobs dict
+        # Build knobs dict (deterministic, no timestamps)
         knobs = {
             "product_id": product_id,
             "material_type": material,
@@ -70,11 +70,10 @@ def generate_full_matrix(dry_run: bool = False) -> None:
             "time_of_day_label": time_of_day,
             "temperature_label": str(temp),
             "repetition_id": rep,
-            "prompt_template": material,
             "trap_flag": trap_flag,
         }
 
-        # Compute run_id
+        # Compute deterministic run_id
         run_id = make_run_id(knobs, prompt_text)
 
         # Collision guard
@@ -92,33 +91,46 @@ def generate_full_matrix(dry_run: bool = False) -> None:
                 return
             continue
 
-        # Write placeholder output file
+        # Define file paths
         output_path = outputs_dir / f"{run_id}.txt"
+        prompt_path = prompts_dir / f"{run_id}.txt"
+
+        # Write prompt file
+        prompt_path.write_text(prompt_text, encoding="utf-8")
+
+        # Write placeholder output file
         output_path.write_text("[PLACEHOLDER OUTPUT]\n", encoding="utf-8")
 
         # Append metadata row to CSV
         row = {
-            "timestamp_utc": now_iso(),
+            "run_id": run_id,
             "product_id": product_id,
             "material_type": material,
             "engine": engine,
             "time_of_day_label": time_of_day,
             "temperature_label": str(temp),
             "repetition_id": rep,
-            "prompt_template": material,
             "trap_flag": trap_flag,
-            "run_id": run_id,
+            "prompt_path": str(prompt_path),
             "output_path": str(output_path),
-            "prompt_len": len(prompt_text),
-            "output_len": 0,  # Placeholder
+            "status": "pending",
+            "started_at": "",
+            "completed_at": "",
+            "model": "",
+            "prompt_tokens": 0,
+            "completion_tokens": 0,
+            "total_tokens": 0,
+            "finish_reason": "",
         }
 
-        append_row(row, path="results/results.csv")
+        append_row(row, path="results/experiments.csv")
 
         total_runs += 1
 
     if not dry_run:
         typer.echo(f"Generated {total_runs} jobs. No collisions.")
+        typer.echo(f"CSV index: results/experiments.csv")
+        typer.echo(f"Prompts saved to: outputs/prompts/")
 
 
 @app.command()
@@ -127,9 +139,9 @@ def main(
         False, "--dry-run", help="Print first 5 run IDs without creating files"
     ),
 ) -> None:
-    """Generate full experimental matrix (2,025 runs).
+    """Generate full experimental matrix (1,620 runs).
 
-    Default: Generate 2,025 placeholder outputs and append rows to results.csv
+    Default: Generate 1,620 placeholder outputs and prompts, append rows to results.csv
     --dry-run: Print first 5 run_ids without file writes
     """
     # Calculate expected matrix size
@@ -144,8 +156,9 @@ def main(
 
     typer.echo(
         f"Matrix size: {expected_total} runs "
-        f"({len(PRODUCTS)} × {len(MATERIALS)} × {len(TIMES)} × "
-        f"{len(TEMPS)} × {len(REPS)} × {len(ENGINES)})"
+        f"({len(PRODUCTS)} products × {len(MATERIALS)} materials × "
+        f"{len(TIMES)} times × {len(TEMPS)} temps × "
+        f"{len(REPS)} reps × {len(ENGINES)} engines)"
     )
 
     # Generate matrix

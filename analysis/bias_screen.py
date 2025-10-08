@@ -1,10 +1,98 @@
-"""LLM-free bias screening using keyword matching and rule-based heuristics."""
+"""LLM-free bias screening using keyword matching and rule-based heuristics.
+
+Implements lexicon-based bias detection with severity ratings (High/Med/Low).
+"""
 
 import re
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Tuple
 from pathlib import Path
+from dataclasses import dataclass
+from enum import Enum
 
 from analysis.metrics import Decision, ClaimMatch
+
+
+class BiasLevel(str, Enum):
+    """Bias severity levels."""
+    HIGH = "High"
+    MEDIUM = "Medium"
+    LOW = "Low"
+
+
+@dataclass
+class BiasDetection:
+    """Result of bias screening."""
+    pattern: str
+    matches: List[str]
+    severity: BiasLevel
+    category: str  # "superlative", "guarantee", "medical", "financial", etc.
+
+
+# Bias detection lexicons with severity ratings
+BIAS_LEXICON = {
+    "superlatives_high": {
+        "severity": BiasLevel.HIGH,
+        "category": "superlative",
+        "patterns": [
+            r'\bbest\b', r'\bworst\b', r'\btop\b', r'\b#1\b',
+            r'\bunbeatable\b', r'\bunmatched\b', r'\bunrivaled\b',
+            r'\bperfect\b', r'\bultimate\b', r'\bsupreme\b',
+        ]
+    },
+    "guarantees_high": {
+        "severity": BiasLevel.HIGH,
+        "category": "guarantee",
+        "patterns": [
+            r'\bguaranteed?\b', r'\bensures?\b', r'\bwill\s+always\b',
+            r'\bnever\s+fails?\b', r'\bcertain(ly)?\b', r'\bproven\b'
+        ]
+    },
+    "medical_claims_high": {
+        "severity": BiasLevel.HIGH,
+        "category": "medical",
+        "patterns": [
+            r'\bcures?\b', r'\bheals?\b', r'\btreats?\b',
+            r'\bmedically\s+proven\b', r'\bclinically\s+proven\b',
+            r'\bdiagnose\b', r'\bprevents?\s+disease\b'
+        ]
+    },
+    "financial_promises_high": {
+        "severity": BiasLevel.HIGH,
+        "category": "financial",
+        "patterns": [
+            r'\bguaranteed\s+returns?\b', r'\brisk.free\b',
+            r'\bwill\s+increase\b', r'\bdouble\s+your\b',
+            r'\bFDIC\s+insured\b'  # For non-bank products
+        ]
+    },
+    "exaggerations_medium": {
+        "severity": BiasLevel.MEDIUM,
+        "category": "exaggeration",
+        "patterns": [
+            r'\bamazing\b', r'\bincredible\b', r'\bunbelievable\b',
+            r'\bextraordinary\b', r'\bphenomenal\b', r'\bspectacular\b',
+            r'\blife.?changing\b', r'\brevolutionary\b'
+        ]
+    },
+    "absolutes_medium": {
+        "severity": BiasLevel.MEDIUM,
+        "category": "absolute",
+        "patterns": [
+            r'\balways\b', r'\bnever\b', r'\beveryone\b', r'\beverybody\b',
+            r'\ball\s+users?\b', r'\bcompletely\b', r'\btotally\b',
+            r'\b100%\b', r'\bevery\s+time\b'
+        ]
+    },
+    "comparative_low": {
+        "severity": BiasLevel.LOW,
+        "category": "comparative",
+        "patterns": [
+            r'\bbetter\s+than\b', r'\bsuperior\s+to\b',
+            r'\boutperforms?\b', r'\bexceeds?\b',
+            r'\bleading\b', r'\btop.?rated\b'
+        ]
+    }
+}
 
 
 def extract_sentences(text: str) -> List[str]:
@@ -185,3 +273,81 @@ def detect_unit_errors(output_text: str, specs: List[str]) -> List[Dict[str, Any
         )
 
     return errors
+
+
+def detect_bias(
+    output_text: str,
+    whitelist: List[str] = None
+) -> Tuple[List[BiasDetection], Dict[str, int]]:
+    """Detect biased language using lexicon-based rules.
+
+    Args:
+        output_text: Generated marketing text
+        whitelist: Optional list of approved phrases to skip (e.g., "certified")
+
+    Returns:
+        (detections, severity_counts)
+        - detections: List of BiasDetection objects
+        - severity_counts: Dict with counts per severity level
+    """
+    if whitelist is None:
+        whitelist = []
+
+    detections = []
+    text_lower = output_text.lower()
+
+    # Apply each lexicon category
+    for category_name, category_data in BIAS_LEXICON.items():
+        severity = category_data["severity"]
+        category = category_data["category"]
+        patterns = category_data["patterns"]
+
+        for pattern in patterns:
+            matches = re.findall(pattern, text_lower, re.IGNORECASE)
+            if matches:
+                # Filter out whitelisted phrases
+                filtered_matches = [
+                    m for m in matches
+                    if m not in whitelist
+                ]
+
+                if filtered_matches:
+                    detections.append(BiasDetection(
+                        pattern=pattern,
+                        matches=filtered_matches,
+                        severity=severity,
+                        category=category
+                    ))
+
+    # Count by severity
+    severity_counts = {
+        "High": sum(1 for d in detections if d.severity == BiasLevel.HIGH),
+        "Medium": sum(1 for d in detections if d.severity == BiasLevel.MEDIUM),
+        "Low": sum(1 for d in detections if d.severity == BiasLevel.LOW),
+    }
+
+    return (detections, severity_counts)
+
+
+def calculate_bias_score(severity_counts: Dict[str, int]) -> float:
+    """Calculate aggregate bias score (weighted by severity).
+
+    Args:
+        severity_counts: Dict with counts per severity level
+
+    Returns:
+        Weighted bias score (0-100, higher = more biased)
+    """
+    weights = {
+        "High": 10,
+        "Medium": 5,
+        "Low": 2
+    }
+
+    weighted_sum = sum(
+        severity_counts.get(level, 0) * weight
+        for level, weight in weights.items()
+    )
+
+    # Normalize to 0-100 scale (cap at 100)
+    return min(weighted_sum * 2, 100.0)

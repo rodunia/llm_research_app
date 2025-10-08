@@ -23,8 +23,12 @@ env/
 
 # Data and results
 data/
-results.csv
+outputs/*.txt
+outputs/prompts/*.txt
+
+# Exclude CSV results but keep experiments template
 *.csv
+!results/experiments.csv
 
 # OS
 .DS_Store

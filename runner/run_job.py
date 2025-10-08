@@ -1,27 +1,29 @@
 """Job runner for executing LLM experiments from results index."""
 
 import csv
-import json
 from pathlib import Path
 from typing import Dict, Any, Optional
-import uuid
+import time
 
 import typer
+from rich.console import Console
+from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn, TimeElapsedColumn
 
-from runner.render import load_product_yaml, render_prompt
 from runner.engines.openai_client import call_openai
 from runner.engines.google_client import call_google
 from runner.engines.mistral_client import call_mistral
+from runner.engines.anthropic_client import call_anthropic
 from runner.utils import now_iso
 
 app = typer.Typer(help="Run LLM experiments and persist outputs")
+console = Console()
 
 
 def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
     """Route to appropriate engine client.
 
     Args:
-        engine: Engine name (openai, google, mistral)
+        engine: Engine name (openai, google, mistral, anthropic)
         prompt: Prompt text
         temperature: Sampling temperature
 
@@ -37,62 +39,44 @@ def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
         return call_google(prompt=prompt, temperature=temperature)
     elif engine == "mistral":
         return call_mistral(prompt=prompt, temperature=temperature)
+    elif engine == "anthropic":
+        return call_anthropic(prompt=prompt, temperature=temperature)
     else:
         raise ValueError(f"Unknown engine: {engine}")
 
 
 def run_single_job(
     run_id: str,
-    product_id: str,
-    material_type: str,
+    prompt_path: str,
     engine: str,
     temperature: float,
-    trap_flag: bool,
-    time_of_day_label: str,
-    repetition_id: int,
-    session_id: Optional[str] = None,
-    account_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Execute a single experimental run.
 
     Args:
         run_id: Unique run identifier
-        product_id: Product slug
-        material_type: Template filename
+        prompt_path: Path to pre-rendered prompt file
         engine: LLM engine name
         temperature: Sampling temperature
-        trap_flag: Whether trap is enabled
-        time_of_day_label: Time period
-        repetition_id: Repetition number
-        session_id: Optional session identifier
-        account_id: Optional account identifier
 
     Returns:
-        Dict with execution metadata
+        Dict with execution metadata (only fields to update in CSV)
 
     Raises:
-        FileNotFoundError: If product YAML not found
+        FileNotFoundError: If prompt file not found
         Exception: If engine call fails
     """
-    # Load product YAML
-    product_path = Path("products") / f"{product_id}.yaml"
-    product_yaml = load_product_yaml(product_path)
+    # Read pre-rendered prompt from file
+    prompt_file = Path(prompt_path)
+    if not prompt_file.exists():
+        raise FileNotFoundError(f"Prompt file not found: {prompt_path}")
 
-    # Render prompt
-    prompt_text = render_prompt(
-        product_yaml=product_yaml,
-        template_name=material_type,
-        trap_flag=trap_flag,
-    )
+    prompt_text = prompt_file.read_text(encoding="utf-8")
 
     # Call engine
+    started_at = now_iso()
     response = call_engine(engine=engine, prompt=prompt_text, temperature=temperature)
-
-    # Persist prompt
-    prompts_dir = Path("outputs/prompts")
-    prompts_dir.mkdir(parents=True, exist_ok=True)
-    prompt_path = prompts_dir / f"{run_id}.txt"
-    prompt_path.write_text(prompt_text, encoding="utf-8")
+    completed_at = now_iso()
 
     # Persist output
     outputs_dir = Path("outputs")
@@ -100,28 +84,16 @@ def run_single_job(
     output_path = outputs_dir / f"{run_id}.txt"
     output_path.write_text(response["output_text"], encoding="utf-8")
 
-    # Build result row
+    # Return only fields that need updating in CSV
     result = {
-        "timestamp_utc": now_iso(),
-        "session_id": session_id or "",
-        "account_id": account_id or "",
-        "engine": engine,
+        "status": "completed",
+        "started_at": started_at,
+        "completed_at": completed_at,
         "model": response.get("model", ""),
-        "temperature": temperature,
-        "time_of_day_label": time_of_day_label,
-        "repetition_id": repetition_id,
-        "product_id": product_id,
-        "material_type": material_type,
-        "trap_flag": trap_flag,
-        "run_id": run_id,
-        "prompt_len": len(prompt_text),
-        "output_len": len(response["output_text"]),
         "prompt_tokens": response.get("prompt_tokens", 0),
         "completion_tokens": response.get("completion_tokens", 0),
         "total_tokens": response.get("total_tokens", 0),
         "finish_reason": response.get("finish_reason", ""),
-        "prompt_path": str(prompt_path),
-        "output_path": str(output_path),
     }
 
     return result
@@ -129,49 +101,24 @@ def run_single_job(
 
 @app.command()
 def run(
-    run_id: str = typer.Option(..., help="Run ID from results.csv"),
-    product_id: str = typer.Option(..., help="Product slug"),
-    material_type: str = typer.Option(..., help="Material template filename"),
-    engine: str = typer.Option(..., help="Engine name (openai/google/mistral)"),
+    run_id: str = typer.Option(..., help="Run ID from experiments.csv"),
+    prompt_path: str = typer.Option(..., help="Path to prompt file"),
+    engine: str = typer.Option(..., help="Engine name (openai/google/mistral/anthropic)"),
     temperature: float = typer.Option(..., help="Sampling temperature"),
-    trap_flag: bool = typer.Option(False, help="Enable trap flag"),
-    time_of_day_label: str = typer.Option("morning", help="Time of day label"),
-    repetition_id: int = typer.Option(1, help="Repetition ID"),
-    session_id: Optional[str] = typer.Option(None, help="Session ID"),
-    account_id: Optional[str] = typer.Option(None, help="Account ID"),
-    results_csv: str = typer.Option(
-        "results/results.csv", help="Path to results CSV"
-    ),
 ) -> None:
-    """Run a single experiment job."""
+    """Run a single experiment job (primarily for testing)."""
     try:
         result = run_single_job(
             run_id=run_id,
-            product_id=product_id,
-            material_type=material_type,
+            prompt_path=prompt_path,
             engine=engine,
             temperature=temperature,
-            trap_flag=trap_flag,
-            time_of_day_label=time_of_day_label,
-            repetition_id=repetition_id,
-            session_id=session_id,
-            account_id=account_id,
         )
 
-        # Append to results CSV
-        results_path = Path(results_csv)
-        file_exists = results_path.exists()
-
-        with open(results_path, "a", newline="", encoding="utf-8") as f:
-            fieldnames = list(result.keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-
-            if not file_exists:
-                writer.writeheader()
-
-            writer.writerow(result)
-
         typer.echo(f"✓ Completed run_id={run_id}")
+        typer.echo(f"  Model: {result['model']}")
+        typer.echo(f"  Tokens: {result['total_tokens']}")
+        typer.echo(f"  Finish reason: {result['finish_reason']}")
 
     except Exception as e:
         typer.echo(f"✗ Failed run_id={run_id}: {e}", err=True)
@@ -181,19 +128,30 @@ def run(
 @app.command()
 def batch(
     from_index: str = typer.Option(
-        "results/results.csv", help="Path to results CSV index"
+        "results/experiments.csv", help="Path to experiments CSV index"
+    ),
+    time_of_day: Optional[str] = typer.Option(
+        None, "--time-of-day", "-t", help="Filter by time of day (morning/afternoon/evening)"
     ),
     engine: Optional[str] = typer.Option(
-        None, help="Filter to specific engine (optional)"
+        None, "--engine", "-e", help="Filter by engine (openai/google/mistral/anthropic)"
     ),
-    session_id: Optional[str] = typer.Option(None, help="Session ID for all runs"),
-    account_id: Optional[str] = typer.Option(None, help="Account ID for all runs"),
-    dry_run: bool = typer.Option(False, help="Print pending runs without executing"),
+    repetition: Optional[int] = typer.Option(
+        None, "--repetition", "-r", help="Filter by repetition ID (1/2/3)"
+    ),
+    resume: bool = typer.Option(
+        False, "--resume", help="Resume incomplete runs (status != 'completed')"
+    ),
+    dry_run: bool = typer.Option(
+        False, "--dry-run", help="Print pending runs without executing"
+    ),
 ) -> None:
-    """Execute all jobs lacking output from results index.
+    """Execute pending jobs from experiments CSV with optional filters.
 
-    Reads results.csv, identifies rows where output_len=0 or output_path is missing,
-    and executes those jobs.
+    Reads experiments.csv, identifies pending jobs (status != 'completed'),
+    and executes them with progress tracking. Updates CSV in-place.
+
+    Filters can be combined (e.g., --time-of-day morning --engine openai).
     """
     index_path = Path(from_index)
 
@@ -206,63 +164,115 @@ def batch(
         reader = csv.DictReader(f)
         rows = list(reader)
 
-    # Filter pending jobs (output_len == 0 or missing)
+    # Filter pending jobs
     pending = []
     for row in rows:
-        # Filter by engine if specified
+        # Check status
+        status = row.get("status", "pending")
+        if not resume and status == "completed":
+            continue
+
+        # Apply filters
+        if time_of_day and row.get("time_of_day_label") != time_of_day:
+            continue
+
         if engine and row.get("engine") != engine:
             continue
 
-        # Check if output exists
-        output_len = int(row.get("output_len", 0))
-        output_path = row.get("output_path", "")
+        if repetition is not None and int(row.get("repetition_id", 0)) != repetition:
+            continue
 
-        if output_len == 0 or not Path(output_path).exists():
+        # Check if output exists
+        output_path = row.get("output_path", "")
+        if status != "completed" or not Path(output_path).exists():
             pending.append(row)
 
-    typer.echo(f"Found {len(pending)} pending jobs (of {len(rows)} total)")
+    # Build filter description
+    filters_desc = []
+    if time_of_day:
+        filters_desc.append(f"time={time_of_day}")
+    if engine:
+        filters_desc.append(f"engine={engine}")
+    if repetition:
+        filters_desc.append(f"rep={repetition}")
+    filter_str = f" ({', '.join(filters_desc)})" if filters_desc else ""
+
+    typer.echo(f"Found {len(pending)} pending jobs (of {len(rows)} total){filter_str}")
 
     if dry_run:
-        typer.echo("\nFirst 5 pending jobs:")
-        for row in pending[:5]:
+        typer.echo("\nFirst 10 pending jobs:")
+        for row in pending[:10]:
             typer.echo(
-                f"  run_id={row['run_id']} "
-                f"product={row['product_id']} "
-                f"engine={row['engine']}"
+                f"  {row['run_id'][:12]} | {row['engine']:10} | "
+                f"{row['product_id']:20} | {row['material_type']:30} | "
+                f"temp={row['temperature_label']} time={row['time_of_day_label']} rep={row['repetition_id']}"
             )
         return
 
-    # Execute pending jobs
+    if not pending:
+        typer.echo("No pending jobs to execute.")
+        return
+
+    # Execute pending jobs with progress bar
     completed = 0
     failed = 0
+    start_time = time.time()
 
-    for i, row in enumerate(pending, 1):
-        typer.echo(f"\n[{i}/{len(pending)}] Processing run_id={row['run_id']}")
+    with Progress(
+        TextColumn("[progress.description]{task.description}"),
+        BarColumn(),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        TextColumn("•"),
+        TextColumn("{task.completed}/{task.total}"),
+        TextColumn("•"),
+        TimeElapsedColumn(),
+        TextColumn("•"),
+        TimeRemainingColumn(),
+        console=console
+    ) as progress:
 
-        try:
-            result = run_single_job(
-                run_id=row["run_id"],
-                product_id=row["product_id"],
-                material_type=row.get("material_type", row.get("prompt_template")),
-                engine=row["engine"],
-                temperature=float(row.get("temperature_label", row.get("temperature"))),
-                trap_flag=row.get("trap_flag", "False").lower() == "true",
-                time_of_day_label=row.get("time_of_day_label", "morning"),
-                repetition_id=int(row.get("repetition_id", 1)),
-                session_id=session_id,
-                account_id=account_id,
+        task = progress.add_task(
+            "[cyan]Executing LLM runs...",
+            total=len(pending)
+        )
+
+        for i, row in enumerate(pending, 1):
+            run_id_short = row['run_id'][:12]
+            engine_name = row['engine']
+            product = row['product_id']
+
+            # Update progress description with current job
+            progress.update(
+                task,
+                description=f"[cyan]Run {i}/{len(pending)} | {engine_name} | {product} | {run_id_short}"
             )
 
-            # Update the row in-memory
-            row.update(result)
-            completed += 1
+            try:
+                result = run_single_job(
+                    run_id=row["run_id"],
+                    prompt_path=row["prompt_path"],
+                    engine=row["engine"],
+                    temperature=float(row["temperature_label"]),
+                )
 
-        except Exception as e:
-            typer.echo(f"✗ Failed: {e}", err=True)
-            failed += 1
+                # Update the row in-memory
+                row.update(result)
+                completed += 1
+
+            except Exception as e:
+                console.print(f"[red]✗ Failed {run_id_short}: {e}[/red]")
+                row["status"] = "failed"
+                failed += 1
+
+            # Update progress
+            progress.advance(task)
+
+    # Calculate statistics
+    elapsed_time = time.time() - start_time
+    avg_time_per_run = elapsed_time / len(pending) if pending else 0
 
     # Write updated results back to CSV
-    typer.echo(f"\n Writing updated results to {index_path}")
+    console.print(f"\n[cyan]Writing updated results to {index_path}[/cyan]")
     with open(index_path, "w", newline="", encoding="utf-8") as f:
         if rows:
             fieldnames = list(rows[0].keys())
@@ -270,8 +280,13 @@ def batch(
             writer.writeheader()
             writer.writerows(rows)
 
-    typer.echo(f"\n✓ Completed: {completed}")
-    typer.echo(f"✗ Failed: {failed}")
+    # Display summary
+    console.print("\n[bold]Execution Summary[/bold]")
+    console.print(f"[green]✓ Completed: {completed}[/green]")
+    if failed > 0:
+        console.print(f"[red]✗ Failed: {failed}[/red]")
+    console.print(f"[cyan]⏱ Total time: {elapsed_time:.1f}s ({avg_time_per_run:.1f}s per run)[/cyan]")
+    console.print(f"[cyan]📊 Success rate: {(completed / len(pending) * 100):.1f}%[/cyan]" if pending else "")
 
 
 if __name__ == "__main__":

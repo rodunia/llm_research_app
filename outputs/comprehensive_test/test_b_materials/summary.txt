@@ -1,0 +1,37 @@
+All Materials Test Summary
+========================
+
+Product: Nova X5 5G Smartphone
+Engine: openai
+Materials tested: 5
+
+
+digital_ad.j2:
+  Prompt: 1268 chars
+  Output: 438 chars
+  Tokens: 445
+  Model: gpt-4o-mini-2024-07-18
+
+organic_social_posts.j2:
+  Prompt: 1308 chars
+  Output: 595 chars
+  Tokens: 492
+  Model: gpt-4o-mini-2024-07-18
+
+faq.j2:
+  Prompt: 1226 chars
+  Output: 1282 chars
+  Tokens: 667
+  Model: gpt-4o-mini-2024-07-18
+
+spec_document_facts_only.j2:
+  Prompt: 1040 chars
+  Output: 433 chars
+  Tokens: 422
+  Model: gpt-4o-mini-2024-07-18
+
+blog_post_promo.j2:
+  Prompt: 1303 chars
+  Output: 3080 chars
+  Tokens: 973
+  Model: gpt-4o-mini-2024-07-18

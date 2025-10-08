@@ -26,32 +26,17 @@ def load_product_yaml(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
-def jinja_env() -> Environment:
-    """Create a Jinja2 environment with strict undefined handling.
-
-    Returns:
-        Configured Jinja2 Environment with FileSystemLoader("prompts")
-    """
-    templates_dir = Path("prompts")
-    if not templates_dir.exists():
-        raise FileNotFoundError(f"Templates directory not found: {templates_dir}")
-
-    return Environment(
-        loader=FileSystemLoader(str(templates_dir)),
-        undefined=StrictUndefined,
-        trim_blocks=True,
-        lstrip_blocks=True,
-    )
-
-
-def create_jinja_env(templates_dir: Path) -> Environment:
+def jinja_env(templates_dir: Path = Path("prompts")) -> Environment:
     """Create a Jinja2 environment with strict undefined handling.
 
     Args:
-        templates_dir: Directory containing Jinja2 templates
+        templates_dir: Directory containing Jinja2 templates (default: "prompts")
 
     Returns:
         Configured Jinja2 Environment
+
+    Raises:
+        FileNotFoundError: If templates directory doesn't exist
     """
     if not templates_dir.exists():
         raise FileNotFoundError(f"Templates directory not found: {templates_dir}")

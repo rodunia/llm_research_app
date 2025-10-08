@@ -1,0 +1,29 @@
+Create a one-page Specification Document for Nova X5 5G Smartphone (US).
+
+IMPORTANT: This document must be **facts only**. Use ONLY the Specs list.
+Do NOT include any claims, benefits, marketing language, or implications.
+
+Content structure:
+# Nova X5 5G Smartphone — Specification Document
+
+## Key Specifications
+- List each spec as a bullet.
+- Preserve all numeric values and units exactly as given.
+- Do not add ranges, estimates, or conversions.
+
+## Notes
+- Region: US
+- Source: internal product specification (provided text)
+
+Prohibited in this document:
+- Authorized or promotional claims
+- Prohibited/unsupported claims
+- Benefits, guarantees, or advisory content
+- Comparative or superlative language
+
+Specs:
+Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz).
+Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W).
+Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB).
+Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB).
+Wireless: 5G sub-6 GHz, Wi-Fi 6, Bluetooth 5.3 (GHz).

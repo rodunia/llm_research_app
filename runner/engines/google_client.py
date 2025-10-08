@@ -7,11 +7,13 @@ from typing import Dict, Any, Optional
 import google.generativeai as genai
 from google.api_core import exceptions
 
+from config import ENGINE_MODELS
+
 
 def call_google(
     prompt: str,
     temperature: float,
-    model: str = "gemini-1.5-flash",
+    model: Optional[str] = None,
     max_tokens: int = 2048,
     timeout: int = 60,
     max_retries: int = 3,
@@ -21,7 +23,7 @@ def call_google(
     Args:
         prompt: User prompt text
         temperature: Sampling temperature (0.0-2.0)
-        model: Model identifier (default: gemini-1.5-flash)
+        model: Model identifier (default: from ENGINE_MODELS config)
         max_tokens: Maximum output tokens
         timeout: Request timeout in seconds
         max_retries: Maximum retry attempts
@@ -38,7 +40,19 @@ def call_google(
     Raises:
         Exception: If all retries fail
     """
-    genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
+    # Use config default if model not specified
+    if model is None:
+        model = ENGINE_MODELS["google"]
+
+    # Validate API key
+    api_key = os.getenv("GOOGLE_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "GOOGLE_API_KEY environment variable not set. "
+            "Add it to your .env file or set it in your environment."
+        )
+
+    genai.configure(api_key=api_key)
 
     generation_config = {
         "temperature": temperature,

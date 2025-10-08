@@ -1,0 +1,16 @@
+Test Run Metadata
+==================
+Product: smartphone_mid
+Product Name: Nova X5 5G Smartphone
+Material Type: digital_ad.j2
+Engine: openai
+Model: gpt-4o-mini-2024-07-18
+Temperature: 0.7
+Trap Flag: False
+
+Metrics:
+- Prompt tokens: 337
+- Completion tokens: 110
+- Total tokens: 447
+- Finish reason: stop
+- Output length: 423 chars

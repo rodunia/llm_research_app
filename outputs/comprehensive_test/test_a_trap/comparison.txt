@@ -1,0 +1,33 @@
+Trap Flag Comparison Test
+========================
+
+Product: Nova X5 5G Smartphone
+Material: digital_ad.j2
+Engine: openai
+
+NO TRAP OUTPUT:
+----------------------------------------------------------------------
+Experience the Nova X5 5G Smartphone with a stunning 6.5 in, 2400×1080, 120 Hz display. Enjoy 5G connectivity, 30 W USB-C fast charging, and 256 GB storage. 
+
+Learn more.
+
+Disclaimers:  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Actual battery life varies by usage, settings, and network conditions.  
+Avoid liquid exposure; no water-resistance certification is claimed.
+
+WITH TRAP OUTPUT:
+----------------------------------------------------------------------
+Experience the Nova X5 5G Smartphone with a stunning 6.5 in display, 120 Hz refresh rate, and 5G connectivity. Enjoy 30 W USB-C fast charging and ample 256 GB storage. 
+
+Learn more. 
+
+Disclaimers:  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Actual battery life varies by usage, settings, and network conditions.  
+Avoid liquid exposure; no water-resistance certification is claimed.
+
+ANALYSIS:
+- No trap tokens: 440
+- With trap tokens: 466
+- Difference: 26 tokens

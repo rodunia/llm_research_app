@@ -4,43 +4,51 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is an LLM Research Application for conducting systematic experiments with multiple LLM providers (OpenAI, Google Gemini, Anthropic Claude). The app provides an interactive CLI for running standardized prompts across different models with controlled parameters, logging all results to CSV for analysis.
+This is an LLM Research Application for conducting systematic experiments with multiple LLM providers (OpenAI, Google Gemini, Anthropic Claude, Mistral AI). The app provides automated batch processing for running product marketing material generation across different LLMs with controlled parameters, logging all results to CSV for analysis.
 
 ## Architecture
 
 ### Configuration-Driven Design
 - **`config.py`**: Central configuration hub defining:
-  - `USER_ACCOUNTS`: Researcher account identifiers
-  - `MODEL_CONFIGURATIONS`: Provider-specific model presets with generation parameters
-  - `STANDARDIZED_PROMPTS`: Reusable prompt templates with IDs
-  - `get_model_config()`: Helper for runtime parameter overrides with provider-specific parameter mapping
-
-### Main Application Flow
-- **`main.py`**: Interactive CLI application orchestrating:
-  1. API key initialization from `.env` (via `python-dotenv`)
-  2. Session setup (session_id, account_id)
-  3. Multi-provider LLM query dispatcher (`query_llm()` routes to `query_openai()`, `query_google()`, or `query_anthropic()`)
-  4. Interactive conversation loop with temperature overrides
-  5. CSV logging with detailed metadata (`results.csv`)
+  - `PRODUCTS`: Product identifiers (smartphone_mid, cryptocurrency_corecoin, supplement_melatonin)
+  - `MATERIALS`: Jinja2 template names (digital_ad.j2, organic_social_posts.j2, faq.j2, etc.)
+  - `ENGINES`: LLM providers (openai, google, mistral, anthropic)
+  - `ENGINE_MODELS`: Engine-to-model mapping (e.g., openai → gpt-4o-mini)
+  - `TEMPS`: Temperature values for experimentation (0.2, 0.6, 1.0)
+  - `TIMES`, `REPS`, `REGION`: Experimental factors
 
 ### Batch Processing System
-- **`orchestrator.py`**: Automated job scheduler for running experimental batches
-- **`runner/`**: Batch processing modules with robust retry logic and error handling
-  - `runner/engines/`: Provider-specific clients (OpenAI, Google, Anthropic, Mistral)
-  - `runner/run_job.py`: Batch execution with progress tracking
-  - `runner/generate_matrix.py`: Experimental matrix generation
-- **`core/storage.py`**: SQLite database for storing experiment results with ACID guarantees
+- **`orchestrator.py`**: Master workflow orchestrator with CLI commands:
+  - `run`: Execute pending LLM runs (filtered by time-of-day)
+  - `analyze`: Run evaluation and analytics
+  - `status`: Show pipeline statistics
+  - `schedule`: Automated scheduling at configured times
+- **`runner/`**: Core batch processing modules
+  - `runner/generate_matrix.py`: Generate experimental matrix (creates experiments.csv)
+  - `runner/run_job.py`: Execute LLM jobs with progress tracking
+  - `runner/render.py`: Jinja2 template rendering with product YAMLs
+  - `runner/engines/`: Provider-specific clients with retry logic
+    - `openai_client.py`: OpenAI GPT models
+    - `google_client.py`: Google Gemini models
+    - `mistral_client.py`: Mistral AI models
+    - `anthropic_client.py`: Anthropic Claude models
 
 ### Provider Integration
-Each provider has a dedicated query function handling API-specific schemas:
+Each provider has a dedicated client handling API-specific schemas:
 - **OpenAI**: Uses `openai.chat.completions.create()`, supports `max_completion_tokens`
 - **Google**: Uses `genai.GenerativeModel()`, manually counts tokens
+- **Mistral**: Uses `mistralai.Mistral().chat.complete()`
 - **Anthropic**: Uses `anthropic.Anthropic().messages.create()`, extracts text from content blocks
 
-All providers return normalized response dict: `output_text`, `finish_reason`, `prompt_tokens`, `completion_tokens`, `total_tokens`.
+All clients read model names from `ENGINE_MODELS` config and return normalized response dict: `output_text`, `finish_reason`, `prompt_tokens`, `completion_tokens`, `total_tokens`, `model`.
 
-### Data Collection
-Results saved to CSV with fields: session_id, account_id, run_timestamp, repetition_id, prompt_id, model parameters (temperature, max_tokens, etc.), output_text, token usage, tags, researcher_notes.
+### Data Storage (CSV-First)
+- **`results/experiments.csv`**: Single source of truth for all experimental runs
+  - Tracks: run_id, product_id, engine, temperature, status, tokens, timestamps
+  - CSV format for easy Excel/Google Sheets analysis
+- **`outputs/{run_id}.txt`**: LLM-generated marketing materials
+- **`outputs/prompts/{run_id}.txt`**: Rendered prompts sent to LLMs
+- **Analysis outputs**: Also exported as CSV files
 
 ## Development Commands
 
@@ -58,14 +66,23 @@ pip install -r requirements.txt
 # Activate venv
 source .venv/bin/activate
 
-# Run interactive CLI
-python main.py
-
-# Run test script
+# Test single run
 python test_run.py
 
-# Run batch processing
-python orchestrator.py
+# Test comprehensive (all materials × all engines)
+python test_comprehensive.py
+
+# Generate experimental matrix (1,620 runs)
+python -m runner.generate_matrix
+
+# Check pipeline status
+python orchestrator.py status
+
+# Run batch experiments
+python orchestrator.py run --time-of-day morning
+
+# View results
+cat results/experiments.csv | head -10
 ```
 
 ### Environment Configuration
@@ -87,13 +104,16 @@ MISTRAL_API_KEY=your_key_here
 
 ## Important Notes
 
-- **Dual System Architecture**: The project has two separate systems:
-  - **Interactive CLI** (`main.py`): For manual experimentation with CSV logging
-  - **Batch System** (`orchestrator.py` + `runner/`): For automated batch processing with SQLite storage
-- **API key validation**: App filters available model configurations based on loaded API keys
-- **Provider field**: Every model configuration MUST include `"provider"` field ("openai", "google", "anthropic", or "mistral")
-- **Parameter overrides**: Use `get_model_config(model_key, **overrides)` for runtime temperature/token limit changes
-- **Storage**: Interactive CLI uses CSV; batch system uses SQLite (`core/storage.py`)
+- **Single System Architecture**: Uses batch-only workflow via `orchestrator.py` + `runner/`
+  - **Deprecated**: `main.py` (interactive CLI) archived - use `test_run.py` for manual testing
+  - **Deprecated**: `core/storage.py` (SQLite) archived - CSV-first approach for non-programmer accessibility
+- **Configuration-driven**: All experimental parameters defined in `config.py`
+  - Models controlled via `ENGINE_MODELS` mapping
+  - Engine clients automatically read from config (no hardcoded models)
+- **CSV-first storage**: `results/experiments.csv` is single source of truth
+  - Easy to analyze in Excel/Google Sheets
+  - Tracks status (pending/completed), timestamps, tokens, models
+- **Experimental matrix**: Currently 1,620 runs (3 products × 5 materials × 3 temps × 3 reps × 4 engines)
 - **Security**: Never commit `.env`, credentials, or raw datasets
 
 ## Testing

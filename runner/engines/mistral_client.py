@@ -7,11 +7,13 @@ from typing import Dict, Any, Optional
 from mistralai import Mistral
 from mistralai.models import SDKError
 
+from config import ENGINE_MODELS
+
 
 def call_mistral(
     prompt: str,
     temperature: float,
-    model: str = "mistral-small-latest",
+    model: Optional[str] = None,
     max_tokens: int = 2048,
     timeout: int = 60,
     max_retries: int = 3,
@@ -21,7 +23,7 @@ def call_mistral(
     Args:
         prompt: User prompt text
         temperature: Sampling temperature (0.0-1.0)
-        model: Model identifier (default: mistral-small-latest)
+        model: Model identifier (default: from ENGINE_MODELS config)
         max_tokens: Maximum completion tokens
         timeout: Request timeout in seconds
         max_retries: Maximum retry attempts
@@ -38,7 +40,19 @@ def call_mistral(
     Raises:
         SDKError: If all retries fail
     """
-    client = Mistral(api_key=os.getenv("MISTRAL_API_KEY"))
+    # Use config default if model not specified
+    if model is None:
+        model = ENGINE_MODELS["mistral"]
+
+    # Validate API key
+    api_key = os.getenv("MISTRAL_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "MISTRAL_API_KEY environment variable not set. "
+            "Add it to your .env file or set it in your environment."
+        )
+
+    client = Mistral(api_key=api_key)
 
     for attempt in range(max_retries):
         try:

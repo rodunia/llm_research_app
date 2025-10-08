@@ -6,11 +6,13 @@ from typing import Dict, Any, Optional
 
 from openai import OpenAI, APIError, APITimeoutError, RateLimitError
 
+from config import ENGINE_MODELS
+
 
 def call_openai(
     prompt: str,
     temperature: float,
-    model: str = "gpt-4o-mini",
+    model: Optional[str] = None,
     max_tokens: int = 2048,
     timeout: int = 60,
     max_retries: int = 3,
@@ -20,7 +22,7 @@ def call_openai(
     Args:
         prompt: User prompt text
         temperature: Sampling temperature (0.0-2.0)
-        model: Model identifier (default: gpt-4o-mini)
+        model: Model identifier (default: from ENGINE_MODELS config)
         max_tokens: Maximum completion tokens
         timeout: Request timeout in seconds
         max_retries: Maximum retry attempts
@@ -37,7 +39,19 @@ def call_openai(
     Raises:
         APIError: If all retries fail
     """
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"), timeout=timeout)
+    # Use config default if model not specified
+    if model is None:
+        model = ENGINE_MODELS["openai"]
+
+    # Validate API key
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise ValueError(
+            "OPENAI_API_KEY environment variable not set. "
+            "Add it to your .env file or set it in your environment."
+        )
+
+    client = OpenAI(api_key=api_key, timeout=timeout)
 
     for attempt in range(max_retries):
         try:

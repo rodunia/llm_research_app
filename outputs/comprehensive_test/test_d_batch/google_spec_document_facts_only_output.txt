@@ -1,0 +1,19 @@
+# Nova X5 5G Smartphone — Specification Document
+
+## Key Specifications
+*   Display: 6.5 in
+*   Display Resolution: 2400×1080
+*   Display Refresh Rate: 120 Hz
+*   Battery Nominal Capacity: 5000 mAh
+*   Wired Charging: USB-C 30 W
+*   CPU: Octa-core 2.4 GHz
+*   RAM: 8 GB
+*   Internal Storage: 256 GB UFS 2.2
+*   microSD Support: Up to 1 TB
+*   Cellular Connectivity: 5G sub-6 GHz
+*   Wi-Fi: Wi-Fi 6
+*   Bluetooth: Bluetooth 5.3
+
+## Notes
+*   Region: US
+*   Source: internal product specification

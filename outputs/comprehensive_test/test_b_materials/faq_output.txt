@@ -1,0 +1,21 @@
+**FAQ for Nova X5 5G Smartphone (US)**
+
+**Q1: What is the display size and resolution of the Nova X5?**  
+A1: The Nova X5 features a 6.5 in display with a resolution of 2400×1080 pixels and a refresh rate of 120 Hz for smoother on-screen motion.
+
+**Q2: What is the battery capacity and charging capability of the Nova X5?**  
+A2: The Nova X5 has a nominal battery capacity of 5000 mAh and supports 30 W USB-C wired charging with the included cable/charger.
+
+**Q3: What are the processor and memory specifications of the Nova X5?**  
+A3: The Nova X5 is powered by an octa-core 2.4 GHz CPU and comes with 8 GB of RAM for efficient multitasking.
+
+**Q4: How much storage does the Nova X5 have, and does it support expandable storage?**  
+A4: The Nova X5 offers 256 GB of UFS 2.2 storage and supports microSD cards up to 1 TB for additional storage.
+
+**Q5: What wireless technologies are supported by the Nova X5?**  
+A5: The Nova X5 supports 5G sub-6 GHz connectivity, Wi-Fi 6 networks, and Bluetooth 5.3 for wireless audio and accessories.
+
+**Disclaimers:**  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Actual battery life varies by usage, settings, and network conditions.  
+Avoid liquid exposure; no water-resistance certification is claimed.

@@ -1,0 +1,19 @@
+Write a 400–500 word blog post introducing and promoting Nova X5 5G Smartphone for readers in US.
+
+Use ONLY:
+- Facts (Specs): Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz).; Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W).; Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB).; Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB).; Wireless: 5G sub-6 GHz, Wi-Fi 6, Bluetooth 5.3 (GHz).
+- Authorized claims: 120 Hz display for smoother on-screen motion.; 5G connectivity (sub-6) where available.; Supports Wi-Fi 6 networks.; Bluetooth 5.3 wireless audio and accessories support.; 30 W USB-C fast charging compatible with included cable/charger.
+
+Rules:
+- Derive every statement strictly from the lists above.
+- No comparisons, rankings, guarantees, disease/financial claims, or safety advice beyond the provided text.
+- Preserve numeric values and units exactly as given; do not infer conversions.
+- Use a helpful, readable tone suitable for a brand blog.
+- Include short subheadings.
+
+
+Conclude with:
+Disclaimers:
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Actual battery life varies by usage, settings, and network conditions.
+Avoid liquid exposure; no water-resistance certification is claimed.

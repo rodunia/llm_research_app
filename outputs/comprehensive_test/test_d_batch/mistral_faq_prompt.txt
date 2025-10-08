@@ -1,0 +1,20 @@
+Produce a factual FAQ for Nova X5 5G Smartphone (US).
+
+Base ONLY on:
+- Specs: Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz).; Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W).; Processor & memory: octa-core 2.4 GHz CPU; 8 GB RAM (GHz, GB).; Storage: 256 GB UFS 2.2; microSD support up to 1 TB (GB, TB).; Wireless: 5G sub-6 GHz, Wi-Fi 6, Bluetooth 5.3 (GHz).
+- Authorized claims: 120 Hz display for smoother on-screen motion.; 5G connectivity (sub-6) where available.; Supports Wi-Fi 6 networks.; Bluetooth 5.3 wireless audio and accessories support.; 30 W USB-C fast charging compatible with included cable/charger.
+
+Instructions:
+- Write exactly 5 Q&As.
+- Each answer ≤ 60 words.
+- If a question would require information not provided, answer:
+  "Not stated in the provided information."
+- Keep numeric units and terminology exactly as given.
+- Do not provide how-to advice, medical/financial guidance, guarantees, or comparisons.
+
+
+End with:
+Disclaimers:
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Actual battery life varies by usage, settings, and network conditions.
+Avoid liquid exposure; no water-resistance certification is claimed.

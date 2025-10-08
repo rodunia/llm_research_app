@@ -22,8 +22,8 @@ The application has been completely restructured to align with the desired workf
 - Now follows convention: filename = `{product_id}.yaml`
 
 **Environment Variables (`.env`):**
-- Added `MISTRAL_API_KEY="z1aMlPMpM6n5ASCPnheDxUlIWbadGquG"`
-- Now supports all 3 engines: OpenAI, Google, Mistral
+- Added `MISTRAL_API_KEY` support
+- Now supports all 4 engines: OpenAI, Google, Anthropic, Mistral
 
 ### 2. Dependencies Updated
 

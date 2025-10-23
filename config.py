@@ -4,7 +4,7 @@
 
 # --- 1. EXPERIMENT CONSTANTS ---
 # Frozen matrix constants (see docs/experiment_constants.md)
-# Current: 3 products → 1,620 runs (3 products × 5 materials × 3 temps × 3 reps × 3 times × 4 engines)
+# Current: 3 products → 1,215 runs (3 products × 5 materials × 3 temps × 3 reps × 3 times × 3 engines)
 # Future: 5 products → 2,700 runs (5 products × 5 materials × 3 temps × 3 reps × 3 times × 4 engines)
 
 PRODUCTS = (
@@ -42,7 +42,7 @@ ENGINES = (
     "openai",
     "google",
     "mistral",
-    "anthropic",
+    # "anthropic",  # Disabled
 )
 
 # Engine-to-model mapping (used by runner/engines/)

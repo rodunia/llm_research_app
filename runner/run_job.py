@@ -14,6 +14,7 @@ from runner.engines.google_client import call_google
 from runner.engines.mistral_client import call_mistral
 from runner.engines.anthropic_client import call_anthropic
 from runner.utils import now_iso
+from runner.render import load_product_yaml, render_prompt
 
 app = typer.Typer(help="Run LLM experiments and persist outputs")
 console = Console()
@@ -47,31 +48,39 @@ def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
 
 def run_single_job(
     run_id: str,
-    prompt_path: str,
+    product_id: str,
+    material_type: str,
     engine: str,
     temperature: float,
+    trap_flag: bool = False,
 ) -> Dict[str, Any]:
     """Execute a single experimental run.
 
     Args:
         run_id: Unique run identifier
-        prompt_path: Path to pre-rendered prompt file
+        product_id: Product identifier (e.g., 'smartphone_mid')
+        material_type: Material template name (e.g., 'digital_ad.j2')
         engine: LLM engine name
         temperature: Sampling temperature
+        trap_flag: Whether this is a trap batch experiment
 
     Returns:
         Dict with execution metadata (only fields to update in CSV)
 
     Raises:
-        FileNotFoundError: If prompt file not found
+        FileNotFoundError: If product YAML not found
         Exception: If engine call fails
     """
-    # Read pre-rendered prompt from file
-    prompt_file = Path(prompt_path)
-    if not prompt_file.exists():
-        raise FileNotFoundError(f"Prompt file not found: {prompt_path}")
+    # Load product YAML
+    product_path = Path("products") / f"{product_id}.yaml"
+    product_yaml = load_product_yaml(product_path)
 
-    prompt_text = prompt_file.read_text(encoding="utf-8")
+    # Render prompt on-the-fly from template + product data
+    prompt_text = render_prompt(
+        product_yaml=product_yaml,
+        template_name=material_type,
+        trap_flag=trap_flag
+    )
 
     # Call engine
     started_at = now_iso()
@@ -102,17 +111,21 @@ def run_single_job(
 @app.command()
 def run(
     run_id: str = typer.Option(..., help="Run ID from experiments.csv"),
-    prompt_path: str = typer.Option(..., help="Path to prompt file"),
+    product_id: str = typer.Option(..., help="Product ID (e.g., smartphone_mid)"),
+    material_type: str = typer.Option(..., help="Material template (e.g., digital_ad.j2)"),
     engine: str = typer.Option(..., help="Engine name (openai/google/mistral/anthropic)"),
     temperature: float = typer.Option(..., help="Sampling temperature"),
+    trap_flag: bool = typer.Option(False, help="Trap batch flag"),
 ) -> None:
     """Run a single experiment job (primarily for testing)."""
     try:
         result = run_single_job(
             run_id=run_id,
-            prompt_path=prompt_path,
+            product_id=product_id,
+            material_type=material_type,
             engine=engine,
             temperature=temperature,
+            trap_flag=trap_flag,
         )
 
         typer.echo(f"✓ Completed run_id={run_id}")
@@ -250,9 +263,11 @@ def batch(
             try:
                 result = run_single_job(
                     run_id=row["run_id"],
-                    prompt_path=row["prompt_path"],
+                    product_id=row["product_id"],
+                    material_type=row["material_type"],
                     engine=row["engine"],
                     temperature=float(row["temperature_label"]),
+                    trap_flag=(row.get("trap_flag", "False") == "True"),
                 )
 
                 # Update the row in-memory

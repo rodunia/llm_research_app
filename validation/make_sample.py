@@ -62,7 +62,7 @@ def stratify_sample(
 @app.command()
 def main(
     results: str = typer.Option(
-        "results/results.csv", help="Path to results CSV"
+        "results/experiments.csv", help="Path to experiments CSV"
     ),
     output: str = typer.Option(
         "validation/labels_to_fill.csv", help="Output CSV for manual labels"
@@ -103,9 +103,9 @@ def main(
 
     console.print(f"[cyan]Loaded {len(runs)} runs from {results_path}[/cyan]")
 
-    # Filter to completed runs (output_len > 0)
+    # Filter to completed runs (status == 'completed')
     completed = [
-        run for run in runs if int(run.get("output_len", 0)) > 0
+        run for run in runs if run.get("status") == "completed"
     ]
 
     console.print(f"[cyan]Found {len(completed)} completed runs[/cyan]")

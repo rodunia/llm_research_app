@@ -5,12 +5,12 @@ This document defines the frozen experimental matrix for the LLM research pipeli
 ## Matrix Dimensions
 
 ### Current Scale (Phase 1)
-- **Total runs**: 1,620
-- **Formula**: 3 products × 5 materials × 4 engines × 3 temperatures × 3 times × 3 repetitions
+- **Total runs**: 1,215
+- **Formula**: 3 products × 5 materials × 3 engines × 3 temperatures × 3 times × 3 repetitions
 
 ### Future Scale (Phase 2)
-- **Total runs**: 2,700
-- **Formula**: 5 products × 5 materials × 4 engines × 3 temperatures × 3 times × 3 repetitions
+- **Total runs**: 2,025
+- **Formula**: 5 products × 5 materials × 3 engines × 3 temperatures × 3 times × 3 repetitions
 
 ---
 
@@ -43,13 +43,13 @@ Marketing material types using Jinja2 templates:
 
 ---
 
-### Engines (n=4)
+### Engines (n=3)
 LLM providers with normalized API interfaces:
 
 1. `openai` → `gpt-4o-mini`
 2. `google` → `gemini-2.5-flash`
 3. `mistral` → `mistral-small-latest`
-4. `anthropic` → `claude-3-5-sonnet-20241022`
+<!-- 4. `anthropic` → `claude-3-5-sonnet-20241022` (Disabled) -->
 
 **Model mapping**: Defined in `config.py::ENGINE_MODELS`
 
@@ -115,10 +115,10 @@ Replication indices for statistical analysis:
 
 ### Trap Flag (Base Matrix)
 - **Value**: `false`
-- **Scope**: All 1,620 base matrix runs
+- **Scope**: All 1,215 base matrix runs
 - **Purpose**: Control condition for bias experiments
 
-**Note**: Trap flag experiments (`trap=true`) will be run as a separate batch and are NOT included in the base 1,620-run matrix.
+**Note**: Trap flag experiments (`trap=true`) will be run as a separate batch and are NOT included in the base 1,215-run matrix.
 
 ---
 
@@ -202,7 +202,6 @@ temperature_label         # Sampling temperature
 time_of_day_label         # Temporal label
 repetition_id             # Replication index (1-3)
 trap_flag                 # Boolean (false for base matrix)
-prompt_path               # outputs/prompts/{run_id}.txt
 output_path               # outputs/{run_id}.txt
 status                    # pending | completed
 started_at                # ISO timestamp (execution start)
@@ -214,13 +213,27 @@ total_tokens              # Sum of prompt + completion
 finish_reason             # Completion status
 ```
 
+**Note**: No `prompt_path` needed - prompts are rendered on-the-fly from `prompts/{material_type}` + `products/{product_id}.yaml`.
+
 ### Outputs
 ```
 outputs/
-├── prompts/
-│   └── {run_id}.txt     # Rendered prompt sent to LLM
 └── {run_id}.txt         # Generated marketing material
+
+prompts/
+├── digital_ad.j2                    # Template: Short ads
+├── organic_social_posts.j2          # Template: Social posts
+├── faq.j2                            # Template: FAQs
+├── spec_document_facts_only.j2      # Template: Spec sheets
+└── blog_post_promo.j2               # Template: Blog posts
+
+products/
+├── smartphone_mid.yaml              # Product: Smartphone
+├── cryptocurrency_corecoin.yaml     # Product: Cryptocurrency
+└── supplement_melatonin.yaml        # Product: Supplement
 ```
+
+**Note**: Prompts are rendered on-the-fly from templates + product YAMLs during execution.
 
 ---
 
@@ -237,7 +250,7 @@ python -m runner.generate_matrix --dry-run
 ```
 
 ### Guarantees
-1. **No collisions**: All 1,620 run_ids are unique
+1. **No collisions**: All 1,215 run_ids are unique
 2. **Deterministic**: Same factors → same run_id
 3. **Idempotent**: Re-running skips existing rows/files
 4. **Prompt persistence**: All prompts saved to `outputs/prompts/` during generation
@@ -336,15 +349,17 @@ pytz                # Timezone support
 
 ## Version History
 
+- **2025-10-09**: Updated to 3 engines (3 products, 3 engines, 1,215 runs) - Anthropic disabled
 - **2025-10-08**: Initial freeze (3 products, 4 engines, 1,620 runs)
-- **Future**: Expand to 5 products (2,700 runs)
+- **Future**: Expand to 5 products (2,025 runs)
 
 ---
 
 ## Notes
 
-1. **Bias experiments**: Trap flag runs (`trap=true`) are a **separate batch** not included in base matrix
+1. **Bias experiments**: Trap flag runs (`trap=true`) are a **separate batch** not included in base matrix. Generate with `--trap` or `--both` flag.
 2. **Temporal labels**: `time_of_day` is used for scheduling and drift analysis, not actual execution time
 3. **Repetitions as days**: Treat `repetition_id` as "day 1/2/3" labels for variance analysis
 4. **Region locked**: All products use `US` region; international expansion requires separate matrix
 5. **Model updates**: Update `config.py::ENGINE_MODELS` to change models; run_ids will regenerate
+6. **Anthropic disabled**: Currently running with 3 engines (OpenAI, Google, Mistral). Anthropic can be re-enabled in `config.py::ENGINES`.

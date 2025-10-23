@@ -13,20 +13,19 @@ from runner.utils import make_run_id, append_row
 app = typer.Typer(help="Generate full experimental matrix (1,620 runs)")
 
 
-def generate_full_matrix(dry_run: bool = False) -> None:
-    """Generate full experimental matrix (1,620 runs with 4 engines).
+def generate_full_matrix(dry_run: bool = False, trap_flag: bool = False) -> None:
+    """Generate full experimental matrix (1,215 runs with 3 engines).
 
     Args:
         dry_run: If True, compute first 5 run_ids without file writes
+        trap_flag: If True, generate trap batch with bias-inducing prompts
     """
     # Create output directories
     outputs_dir = Path("outputs")
-    prompts_dir = Path("outputs/prompts")
     results_dir = Path("results")
 
     if not dry_run:
         outputs_dir.mkdir(parents=True, exist_ok=True)
-        prompts_dir.mkdir(parents=True, exist_ok=True)
         results_dir.mkdir(parents=True, exist_ok=True)
 
     # Collision detection set
@@ -37,7 +36,7 @@ def generate_full_matrix(dry_run: bool = False) -> None:
     for product_id, material, time_of_day, temp, rep, engine in itertools.product(
         PRODUCTS, MATERIALS, TIMES, TEMPS, REPS, ENGINES
     ):
-        trap_flag = False  # Base matrix uses trap_flag=False
+        # trap_flag is passed as parameter
 
         # Load product YAML
         product_path = Path("products") / f"{product_id}.yaml"
@@ -91,12 +90,8 @@ def generate_full_matrix(dry_run: bool = False) -> None:
                 return
             continue
 
-        # Define file paths
+        # Define output file path (no prompt file needed)
         output_path = outputs_dir / f"{run_id}.txt"
-        prompt_path = prompts_dir / f"{run_id}.txt"
-
-        # Write prompt file
-        prompt_path.write_text(prompt_text, encoding="utf-8")
 
         # Write placeholder output file
         output_path.write_text("[PLACEHOLDER OUTPUT]\n", encoding="utf-8")
@@ -111,7 +106,6 @@ def generate_full_matrix(dry_run: bool = False) -> None:
             "temperature_label": str(temp),
             "repetition_id": rep,
             "trap_flag": trap_flag,
-            "prompt_path": str(prompt_path),
             "output_path": str(output_path),
             "status": "pending",
             "started_at": "",
@@ -130,7 +124,7 @@ def generate_full_matrix(dry_run: bool = False) -> None:
     if not dry_run:
         typer.echo(f"Generated {total_runs} jobs. No collisions.")
         typer.echo(f"CSV index: results/experiments.csv")
-        typer.echo(f"Prompts saved to: outputs/prompts/")
+        typer.echo(f"Prompts will be rendered on-the-fly from templates/ + products/")
 
 
 @app.command()
@@ -138,10 +132,18 @@ def main(
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Print first 5 run IDs without creating files"
     ),
+    trap: bool = typer.Option(
+        False, "--trap", help="Generate trap batch with bias-inducing prompts"
+    ),
+    both: bool = typer.Option(
+        False, "--both", help="Generate both base and trap batches"
+    ),
 ) -> None:
-    """Generate full experimental matrix (1,620 runs).
+    """Generate experimental matrix.
 
-    Default: Generate 1,620 placeholder outputs and prompts, append rows to results.csv
+    Default: Generate base matrix (trap_flag=False)
+    --trap: Generate trap batch only (trap_flag=True)
+    --both: Generate both base and trap batches
     --dry-run: Print first 5 run_ids without file writes
     """
     # Calculate expected matrix size
@@ -154,15 +156,27 @@ def main(
         * len(ENGINES)
     )
 
-    typer.echo(
-        f"Matrix size: {expected_total} runs "
-        f"({len(PRODUCTS)} products × {len(MATERIALS)} materials × "
-        f"{len(TIMES)} times × {len(TEMPS)} temps × "
-        f"{len(REPS)} reps × {len(ENGINES)} engines)"
-    )
+    if both:
+        typer.echo(
+            f"Generating BOTH base and trap batches ({expected_total * 2} total runs)"
+        )
+        typer.echo(f"\nBase batch (trap_flag=False):")
+        generate_full_matrix(dry_run=dry_run, trap_flag=False)
+        if not dry_run:
+            typer.echo(f"\nTrap batch (trap_flag=True):")
+            generate_full_matrix(dry_run=dry_run, trap_flag=True)
+    else:
+        trap_mode = trap
+        typer.echo(
+            f"Matrix size: {expected_total} runs "
+            f"({len(PRODUCTS)} products × {len(MATERIALS)} materials × "
+            f"{len(TIMES)} times × {len(TEMPS)} temps × "
+            f"{len(REPS)} reps × {len(ENGINES)} engines)"
+        )
+        typer.echo(f"Trap flag: {trap_mode}")
 
-    # Generate matrix
-    generate_full_matrix(dry_run=dry_run)
+        # Generate matrix
+        generate_full_matrix(dry_run=dry_run, trap_flag=trap_mode)
 
 
 if __name__ == "__main__":

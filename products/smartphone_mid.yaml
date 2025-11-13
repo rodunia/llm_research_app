@@ -2,6 +2,8 @@ product_id: smartphone_mid
 name: Nova X5 5G Smartphone
 region: US
 
+target_audience: "Tech-savvy early adopters (ages 25-40) who value performance and modern features without premium pricing. They stay current with technology trends and prioritize specifications like 5G connectivity, high refresh rates, and fast charging."
+
 specs:
   - "Display: 6.5 in, 2400×1080 resolution, 120 Hz refresh rate (in, px, Hz)."
   - "Battery: 5000 mAh nominal capacity; USB-C 30 W wired charging (mAh, W)."

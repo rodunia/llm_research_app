@@ -68,7 +68,7 @@ def render_prompt(
         jinja2.UndefinedError: If required variables are missing in template
     """
     # Validate required keys
-    required_keys = ["name", "region", "specs", "authorized_claims", "disclaimers"]
+    required_keys = ["name", "region", "target_audience", "specs", "authorized_claims", "disclaimers"]
     missing_keys = [key for key in required_keys if key not in product_yaml]
 
     if missing_keys:
@@ -84,8 +84,10 @@ def render_prompt(
     context = {
         "name": product_yaml["name"],
         "region": product_yaml["region"],
+        "target_audience": product_yaml["target_audience"],
         "specs": product_yaml["specs"],
         "authorized_claims": product_yaml["authorized_claims"],
+        "prohibited_or_unsupported_claims": product_yaml.get("prohibited_or_unsupported_claims", []),
         "disclaimers": product_yaml["disclaimers"],
         "trap_flag": trap_flag,
     }

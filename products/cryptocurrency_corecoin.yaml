@@ -2,6 +2,8 @@ product_id: cryptocurrency_corecoin
 name: CoreCoin (CRC)
 region: US
 
+target_audience: "Risk-aware crypto innovators (ages 22-50) who value transparency, decentralization, and technical fundamentals over hype. They understand blockchain technology, prefer open-source projects, and prioritize control over their digital assets."
+
 specs:
   - "Consensus: Proof-of-Stake; minimum stake 1,000 CRC (CRC)."
   - "Average block time: 5 s (s)."

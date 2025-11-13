@@ -348,6 +348,70 @@ def validate_numeric_claim(
 
 # --- Overclaim Detection ---
 
+def validate_ad_format(output_text: str) -> Dict[str, Any]:
+    """Validate digital_ad.j2 output format and character limits.
+
+    Parses Facebook ad output format (Headline/Primary Text/Description) and
+    validates character counts against specified limits.
+
+    Args:
+        output_text: Generated ad text
+
+    Returns:
+        Dictionary with validation results:
+        {
+            "headline": str,
+            "headline_length": int,
+            "headline_exceeds_limit": bool,
+            "primary_text": str,
+            "primary_text_length": int,
+            "primary_text_exceeds_limit": bool,
+            "description": str,
+            "description_length": int,
+            "description_exceeds_limit": bool,
+            "format_valid": bool
+        }
+    """
+    # Parse output sections
+    headline_match = re.search(r'^Headline:\s*(.+?)$', output_text, re.MULTILINE)
+    primary_match = re.search(r'^Primary Text:\s*(.+?)$', output_text, re.MULTILINE)
+    description_match = re.search(r'^Description:\s*(.+?)$', output_text, re.MULTILINE)
+
+    headline = headline_match.group(1).strip() if headline_match else ""
+    primary_text = primary_match.group(1).strip() if primary_match else ""
+    description = description_match.group(1).strip() if description_match else ""
+
+    # Character limits from digital_ad.j2 template
+    HEADLINE_LIMIT = 40
+    PRIMARY_TEXT_LIMIT = 125
+    DESCRIPTION_LIMIT = 30
+
+    headline_length = len(headline)
+    primary_text_length = len(primary_text)
+    description_length = len(description)
+
+    headline_exceeds = headline_length > HEADLINE_LIMIT
+    primary_exceeds = primary_text_length > PRIMARY_TEXT_LIMIT
+    description_exceeds = description_length > DESCRIPTION_LIMIT
+
+    # Format is valid if all sections are present
+    format_valid = bool(headline and primary_text and description)
+
+    return {
+        "headline": headline,
+        "headline_length": headline_length,
+        "headline_exceeds_limit": headline_exceeds,
+        "primary_text": primary_text,
+        "primary_text_length": primary_text_length,
+        "primary_text_exceeds_limit": primary_exceeds,
+        "description": description,
+        "description_length": description_length,
+        "description_exceeds_limit": description_exceeds,
+        "format_valid": format_valid,
+        "any_limit_exceeded": headline_exceeds or primary_exceeds or description_exceeds
+    }
+
+
 def detect_overclaims(output_text: str) -> List[str]:
     """Detect superlatives and exaggerated language.
 

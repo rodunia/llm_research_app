@@ -30,6 +30,11 @@ class Product(BaseModel):
     product_id: str = Field(..., description="Unique product identifier")
     name: str = Field(..., description="Product display name")
     region: str = Field(..., description="Geographic region (e.g., US)")
+    target_audience: str = Field(
+        ...,
+        description="Target audience psychographic profile",
+        min_length=10
+    )
     specs: List[str] = Field(..., description="Technical specifications with units")
     authorized_claims: List[str] = Field(..., description="Approved marketing claims")
     prohibited_or_unsupported_claims: List[str] = Field(

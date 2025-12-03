@@ -1,0 +1,6 @@
+# Frontend dependencies for LLM Research App
+streamlit>=1.28.0
+pandas>=2.0.0
+pyyaml>=6.0
+python-dotenv>=1.0.0
+plotly>=5.0.0

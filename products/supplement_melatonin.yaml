@@ -1,27 +1,39 @@
 product_id: supplement_melatonin
-name: Melatonin Tablets 3 mg (Immediate-Release)
+name: Melatonin Tablets 3mg
+risk_level: Low (Supplement)
+category_focus: Health/Wellness
 region: US
 
-target_audience: "Health-conscious achievers (ages 28-45) whose racing minds often keep them from falling asleep. They seek a clean, gentle solution that ensures they wake up refreshed and productive."
+target_audience: "Adults aged 25-55 experiencing temporary sleep disruption (e.g., travel, stress). Individuals seeking a non-habit-forming, natural sleep aid."
+
+tone: "Scientific, Trustworthy, and Calming"
 
 specs:
-  - "Each tablet contains 3 mg melatonin (mg)."
-  - "Serving size: 1 tablet (3 mg per serving)."
-  - "Tablets per bottle: 120 (count)."
-  - "Excipients: microcrystalline cellulose 100 mg/tablet; magnesium stearate 5 mg/tablet (mg)."
-  - "Allergen status: 0 mg gluten, 0 mg soy, 0 mg dairy per serving (mg)."
+  - "Dose: 3mg Melatonin, Immediate-Release"
+  - "Formula: Vegan, Non-GMO, free of gluten and major allergens"
+  - "Manufacturing: Produced in a cGMP (Current Good Manufacturing Practices) facility"
+  - "Purpose: Supports natural, healthy sleep patterns"
+  - "Testing: Third-party tested for purity and potency"
+  - "Verification: Ingredients are verified for identity and dosage accuracy"
+
+mandatory_statements:
+  - "Consult a physician before use if you have a medical condition."
+  - "Do not exceed the recommended dose."
+  - "Supports healthy sleep patterns when used as directed."
+  - "This product is a dietary supplement, not a drug."
 
 authorized_claims:
-  - Supports healthy sleep patterns when used as directed.
-  - Non-habit forming.
-  - Manufactured in a facility that follows current Good Manufacturing Practices (cGMP).
-  - Suitable for vegans and vegetarians.
-  - Third-party tested for identity and heavy metals (lead < 0.5 ppm).
+  - A gentle dose that works with your body's natural rhythm.
+  - Non-habit forming formula for peace of mind.
+  - Helps reduce the time it takes to fall asleep.
+  - Designed to help prevent next-day grogginess.
+  - Supports healthy sleep cycles and relaxation.
 
 prohibited_or_unsupported_claims:
-  - Treats, cures, or prevents insomnia or jet lag.
-  - Guarantees sleep onset within a specific number of minutes.
-  - Safe for children under 12 without medical advice.
+  - Claims that cure, treat, or prevent any medical condition (e.g., insomnia, jet lag).
+  - Claims guaranteeing a specific sleep onset time (e.g., "sleep in 10 minutes").
+  - Claims guaranteeing "100% cure" or "zero side effects."
+  - Claims that it is FDA-approved (supplements are not approved, only regulated).
 
 disclaimers:
   - These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease.

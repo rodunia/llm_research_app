@@ -47,10 +47,10 @@ ENGINES = (
 
 # Engine-to-model mapping (used by runner/engines/)
 ENGINE_MODELS = {
-    "openai": "gpt-4o-mini",
-    "google": "gemini-2.5-flash",
+    "openai": "gpt-4o",  # Upgraded from gpt-4o-mini to full gpt-4o
+    "google": "gemini-2.0-flash-exp",  # Using 2.0 experimental (more permissive)
     "mistral": "mistral-small-latest",
-    "anthropic": "claude-3-5-sonnet-20241022",
+    "anthropic": "claude-3-opus-20240229",  # Claude 3 Opus (your API key tier)
 }
 
 REGION = "US"

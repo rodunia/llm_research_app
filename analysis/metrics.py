@@ -372,19 +372,45 @@ def validate_ad_format(output_text: str) -> Dict[str, Any]:
             "format_valid": bool
         }
     """
-    # Parse output sections
-    headline_match = re.search(r'^Headline:\s*(.+?)$', output_text, re.MULTILINE)
-    primary_match = re.search(r'^Primary Text:\s*(.+?)$', output_text, re.MULTILINE)
-    description_match = re.search(r'^Description:\s*(.+?)$', output_text, re.MULTILINE)
-
-    headline = headline_match.group(1).strip() if headline_match else ""
-    primary_text = primary_match.group(1).strip() if primary_match else ""
-    description = description_match.group(1).strip() if description_match else ""
-
     # Character limits from digital_ad.j2 template
     HEADLINE_LIMIT = 40
     PRIMARY_TEXT_LIMIT = 125
     DESCRIPTION_LIMIT = 30
+
+    # More flexible parsing - look for section headers (case-insensitive)
+    headline = ""
+    primary_text = ""
+    description = ""
+
+    # Split by lines and look for sections
+    lines = output_text.split('\n')
+    current_section = None
+
+    for line in lines:
+        line_stripped = line.strip()
+        line_lower = line_stripped.lower()
+
+        # Detect section headers
+        if line_lower.startswith('headline:'):
+            current_section = 'headline'
+            # Extract text after colon
+            headline = line_stripped.split(':', 1)[1].strip() if ':' in line_stripped else ""
+        elif line_lower.startswith('primary text:') or line_lower.startswith('primary:'):
+            current_section = 'primary'
+            # Extract text after colon
+            primary_text = line_stripped.split(':', 1)[1].strip() if ':' in line_stripped else ""
+        elif line_lower.startswith('description:'):
+            current_section = 'description'
+            # Extract text after colon
+            description = line_stripped.split(':', 1)[1].strip() if ':' in line_stripped else ""
+        elif line_stripped and current_section:
+            # Continue multi-line content
+            if current_section == 'headline' and not headline:
+                headline = line_stripped
+            elif current_section == 'primary' and not primary_text:
+                primary_text = line_stripped
+            elif current_section == 'description' and not description:
+                description = line_stripped
 
     headline_length = len(headline)
     primary_text_length = len(primary_text)

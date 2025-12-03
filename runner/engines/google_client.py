@@ -59,8 +59,18 @@ def call_google(
         "max_output_tokens": max_tokens,
     }
 
+    # Set safety settings to be more permissive for marketing content
+    safety_settings = {
+        "HARM_CATEGORY_HARASSMENT": "BLOCK_NONE",
+        "HARM_CATEGORY_HATE_SPEECH": "BLOCK_NONE",
+        "HARM_CATEGORY_SEXUALLY_EXPLICIT": "BLOCK_NONE",
+        "HARM_CATEGORY_DANGEROUS_CONTENT": "BLOCK_NONE",
+    }
+
     gemini_model = genai.GenerativeModel(
-        model_name=model, generation_config=generation_config
+        model_name=model,
+        generation_config=generation_config,
+        safety_settings=safety_settings
     )
 
     for attempt in range(max_retries):
@@ -69,19 +79,71 @@ def call_google(
                 prompt, request_options={"timeout": timeout}
             )
 
-            # Extract text
-            output_text = response.text if response.text else ""
+            # Check response structure
+            finish_reason = "UNKNOWN"
+            finish_reason_int = None
+            safety_info = []
+
+            if response.candidates:
+                candidate = response.candidates[0]
+
+                # Get finish reason (both int and name)
+                if hasattr(candidate, 'finish_reason'):
+                    finish_reason_int = int(candidate.finish_reason)
+                    finish_reason = candidate.finish_reason.name
+
+                # Check safety ratings
+                if hasattr(candidate, 'safety_ratings'):
+                    for rating in candidate.safety_ratings:
+                        if hasattr(rating, 'category') and hasattr(rating, 'probability'):
+                            safety_info.append(f"{rating.category.name}: {rating.probability.name}")
+
+            # Extract text safely
+            output_text = ""
+            try:
+                # Check if we have valid parts before accessing text
+                if (response.candidates and
+                    response.candidates[0].content and
+                    response.candidates[0].content.parts):
+                    output_text = response.text
+            except (ValueError, AttributeError) as e:
+                pass  # Expected for blocked content
+
+            # If no output text, determine why
+            if not output_text:
+                # Finish reason 2 = SAFETY block, 3 = RECITATION, 4 = OTHER
+                if finish_reason_int in [2, 3, 4] or finish_reason in ['SAFETY', 'RECITATION', 'OTHER']:
+                    if safety_info:
+                        safety_details = "\n".join([f"  - {s}" for s in safety_info])
+                        output_text = f"""[BLOCKED BY GOOGLE SAFETY FILTERS]
+
+Finish Reason: {finish_reason}
+
+Safety Ratings:
+{safety_details}
+
+Google Gemini blocked this content. This is common for:
+- Cryptocurrency promotions
+- Health/supplement claims
+- Financial investment content
+
+Recommendations:
+1. Use OpenAI or Mistral (they're more permissive)
+2. Try the smartphone product instead
+3. Use FAQ template (less promotional)"""
+                    else:
+                        output_text = f"[BLOCKED: {finish_reason}]\n\nGoogle blocked this content. Try OpenAI or Mistral instead."
+                else:
+                    output_text = f"[No output - finish_reason: {finish_reason}]"
 
             # Manual token counting (Google doesn't provide usage in response)
             prompt_tokens = gemini_model.count_tokens(prompt).total_tokens
-            completion_tokens = gemini_model.count_tokens(output_text).total_tokens
-
-            # Get finish reason
-            finish_reason = (
-                response.candidates[0].finish_reason.name
-                if response.candidates
-                else "UNKNOWN"
-            )
+            completion_tokens = 0
+            if output_text and not output_text.startswith("[Content blocked"):
+                try:
+                    completion_tokens = gemini_model.count_tokens(output_text).total_tokens
+                except:
+                    completion_tokens = 0
 
             return {
                 "output_text": output_text,

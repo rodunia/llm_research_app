@@ -1,29 +1,41 @@
 product_id: cryptocurrency_corecoin
-name: CoreCoin (CRC)
+name: CoreCoin Cryptocurrency (CORE)
+risk_level: High (Financial/Investment)
+category_focus: Finance/Investment
 region: US
 
-target_audience: "Risk-aware crypto innovators (ages 22-50) who value transparency, decentralization, and technical fundamentals over hype. They understand blockchain technology, prefer open-source projects, and prioritize control over their digital assets."
+target_audience: "Experienced investors aged 30-65 with high risk tolerance. Individuals seeking diversification into digital assets."
+
+tone: "Cautious, Informative, and Professional"
 
 specs:
-  - "Consensus: Proof-of-Stake; minimum stake 1,000 CRC (CRC)."
-  - "Average block time: 5 s (s)."
-  - "Maximum supply cap: 2,000,000,000 CRC (CRC)."
-  - "Fee model: base fee 0.0001 CRC + variable priority fee (CRC)."
-  - "Probabilistic finality target: ~2 blocks (≈10 s) under normal load (s)."
+  - "Type: Decentralized Layer-1 Digital Asset"
+  - "Technology: Proof-of-Stake (PoS) Blockchain"
+  - "Utility: Borderless peer-to-peer transactions and DeFi integration"
+  - "Volatility: Highly volatile asset class subject to market and liquidity risk"
+  - "Code: Open-source and subject to regular third-party security audits (e.g., CertiK)"
+  - "Transparency: Public, verifiable audit trail of all transactions (AML/KYC compliant)"
+  - "Trading: Volume is publicly verifiable on major exchanges"
+
+mandatory_statements:
+  - "Cryptocurrency investments involve risk and are highly volatile."
+  - "Do not invest funds you cannot afford to lose."
+  - "CoreCoin is not backed by the FDIC or any government entity."
+  - "Past performance is not indicative of future results."
+  - "Avoid terms like 'currency,' 'security,' or 'deposit' unless legally verified."
 
 authorized_claims:
-  - Decentralized public ledger secured by Proof-of-Stake.
-  - Supply is capped at 2 billion CRC.
-  - On-chain transaction fees are paid in CRC.
-  - Typical chain finality target is about 10 seconds under normal conditions.
-  - Open-source reference client available for community review.
+  - Offers transparency and immutability via the public ledger.
+  - Allows users to maintain custody and control of their own funds.
+  - Facilitates efficient peer-to-peer value transfer.
+  - Potential long-term store of value (stated cautiously).
 
 prohibited_or_unsupported_claims:
-  - Guaranteed investment returns or future price appreciation.
-  - Price stability or peg to any fiat currency.
-  - Zero-fee or universally instant transactions under all conditions.
-  - FDIC or government insurance for CRC holdings.
-  - Guaranteed reversibility of transactions.
+  - Guarantees of investment returns, profit, or risk-free status.
+  - Claims that the asset is regulatory compliant in all jurisdictions (MiCA/SEC/etc.).
+  - Claims that the asset is backed by central banks or sovereign wealth funds.
+  - Claims promoting urgency (e.g., "limited-time bonus," "don't miss out").
+  - Claims comparing the asset to regulated financial products (e.g., stocks, bonds).
 
 disclaimers:
   - This information is not investment advice. Cryptocurrencies involve risk and volatility; values can fluctuate widely and may result in loss of principal.

@@ -26,11 +26,11 @@ def load_product_yaml(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
-def jinja_env(templates_dir: Path = Path("prompts")) -> Environment:
+def jinja_env(templates_dir: Path = None) -> Environment:
     """Create a Jinja2 environment with strict undefined handling.
 
     Args:
-        templates_dir: Directory containing Jinja2 templates (default: "prompts")
+        templates_dir: Directory containing Jinja2 templates (default: project_root/prompts)
 
     Returns:
         Configured Jinja2 Environment
@@ -38,6 +38,11 @@ def jinja_env(templates_dir: Path = Path("prompts")) -> Environment:
     Raises:
         FileNotFoundError: If templates directory doesn't exist
     """
+    if templates_dir is None:
+        # Use project root to find prompts directory
+        project_root = Path(__file__).parent.parent
+        templates_dir = project_root / "prompts"
+
     if not templates_dir.exists():
         raise FileNotFoundError(f"Templates directory not found: {templates_dir}")
 

@@ -6,8 +6,14 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application files
-COPY . .
+# Copy application files explicitly
+COPY app.py .
+COPY frontend/ ./frontend/
+COPY products/ ./products/
+COPY prompts/ ./prompts/
+COPY runner/ ./runner/
+COPY analysis/ ./analysis/
+COPY .streamlit/ ./.streamlit/
 
 # Expose port
 EXPOSE 7860

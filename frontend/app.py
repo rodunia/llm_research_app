@@ -128,11 +128,20 @@ col1, col2 = st.columns(2)
 
 with col1:
     # Product selector
+    product_keys = list(product_options.keys())
+    if not product_keys:
+        st.error("No products found! Please ensure YAML files exist in the products/ directory.")
+        st.stop()
+
     selected_product_name = st.selectbox(
         "Product",
-        options=list(product_options.keys()),
+        options=product_keys,
         help="Select a product to generate content for"
     )
+
+    if not selected_product_name:
+        st.stop()
+
     selected_product_id = product_options[selected_product_name]
 
     # Template selector

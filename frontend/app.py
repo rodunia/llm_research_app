@@ -137,10 +137,14 @@ with col1:
 
     # Template selector
     available_templates = [t for t in template_files if t in template_display]
+    if not available_templates:
+        st.error("No templates found! Please ensure .j2 files exist in the prompts/ directory.")
+        st.stop()
+
     selected_template = st.selectbox(
         "Template",
         options=available_templates,
-        format_func=lambda x: template_display.get(x, x),
+        format_func=lambda x: template_display.get(x, x) if x else "Unknown",
         help="Select the type of marketing material to generate"
     )
 

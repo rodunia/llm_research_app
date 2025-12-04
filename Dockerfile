@@ -16,6 +16,9 @@ COPY runner/ ./runner/
 COPY analysis/ ./analysis/
 COPY .streamlit/ ./.streamlit/
 
+# Verify files were copied
+RUN ls -la products/ && ls -la prompts/
+
 # Expose port
 EXPOSE 7860
 

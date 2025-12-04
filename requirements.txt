@@ -1,9 +1,9 @@
-streamlit
+streamlit==1.40.1
 anthropic
 openai
 google-generativeai
 mistralai
 python-dotenv
 pyyaml
-rapidfuzz
-pint
+pandas
+jinja2

@@ -1,5 +1,6 @@
 FROM python:3.9-slim
 
+# Force rebuild - products and prompts should be included
 WORKDIR /app
 
 # Copy requirements first for better caching

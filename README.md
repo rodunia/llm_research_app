@@ -1,6 +1,17 @@
+---
+title: LLM Research App
+emoji: 🔬
+colorFrom: red
+colorTo: purple
+sdk: streamlit
+sdk_version: "1.40.1"
+app_file: app.py
+pinned: false
+---
+
 # LLM Research Application
 
-Systematic experimentation platform for comparing LLM outputs across multiple providers (OpenAI, Google Gemini, Mistral) with controlled parameters and comprehensive logging.
+Systematic experimentation platform for comparing LLM outputs across multiple providers (OpenAI, Google Gemini, Anthropic Claude, Mistral) with controlled parameters and comprehensive logging.
 
 ## Quick Start
 

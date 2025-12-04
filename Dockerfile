@@ -1,24 +1,22 @@
-FROM python:3.10-slim
+# Use python 3.9 for better compatibility
+FROM python:3.9-slim
 
-WORKDIR /app
+# Set up a user (Hugging Face requires this to avoid permission errors)
+RUN useradd -m -u 1000 user
+USER user
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR $HOME/app
 
-# Copy application files
-COPY requirements.txt .
+# Copy files
+COPY --chown=user . $HOME/app
+
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
-
-# Expose Streamlit port
+# Run the app on port 7860
 EXPOSE 7860
 
-# Health check
-HEALTHCHECK CMD curl --fail http://localhost:7860/_stcore/health || exit 1
-
-# Run Streamlit app
-CMD ["streamlit", "run", "app.py", "--server.port=7860", "--server.address=0.0.0.0", "--server.headless=true"]
+# IMPORTANT: Point to 'demo_progress.py' instead of 'app.py'
+ENTRYPOINT ["streamlit", "run", "demo_progress.py", "--server.port=7860", "--server.address=0.0.0.0"]

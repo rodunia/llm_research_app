@@ -3,8 +3,9 @@ title: LLM Research App
 emoji: 🔬
 colorFrom: red
 colorTo: purple
-sdk: docker
-app_port: 7860
+sdk: streamlit
+sdk_version: 1.40.1
+app_file: frontend/app.py
 pinned: false
 license: mit
 ---

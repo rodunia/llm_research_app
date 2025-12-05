@@ -1,16 +1,11 @@
 """
 LLM Research App - Hugging Face Entry Point
-Executes frontend/app.py for Streamlit deployment
+Runs frontend/app.py for Streamlit deployment
 """
 
+# This file just runs the frontend app
+# We do it by executing the file directly so paths work correctly
+import subprocess
 import sys
-from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent
-sys.path.insert(0, str(project_root))
-
-# Execute the frontend app
-frontend_app = project_root / "frontend" / "app.py"
-with open(frontend_app) as f:
-    exec(f.read())
+subprocess.run([sys.executable, "frontend/app.py"])

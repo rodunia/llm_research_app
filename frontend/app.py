@@ -8,13 +8,7 @@ import sys
 from pathlib import Path
 
 # Add project root to path for imports
-# Handle both direct execution and exec() from app.py
-if '__file__' in globals():
-    project_root = Path(__file__).parent.parent
-else:
-    # When run via exec(), __file__ might not be set correctly
-    # Use current working directory as project root
-    project_root = Path.cwd()
+project_root = Path(__file__).parent.parent
 sys.path.insert(0, str(project_root))
 
 # Page configuration (must be first Streamlit command)

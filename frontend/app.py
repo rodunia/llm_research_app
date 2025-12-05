@@ -8,10 +8,16 @@ import sys
 from pathlib import Path
 
 # Add project root to path for imports
-project_root = Path(__file__).parent.parent
+# Handle both direct execution and exec() from app.py
+if '__file__' in globals():
+    project_root = Path(__file__).parent.parent
+else:
+    # When run via exec(), __file__ might not be set correctly
+    # Use current working directory as project root
+    project_root = Path.cwd()
 sys.path.insert(0, str(project_root))
 
-# Page configuration
+# Page configuration (must be first Streamlit command)
 st.set_page_config(
     page_title="LLM Research App",
     page_icon="🔬",
@@ -91,6 +97,18 @@ with st.sidebar:
     st.markdown("### 📚 Resources")
     st.markdown("- [Documentation](https://github.com/rodunia/llm_research_app)")
     st.markdown("- [Report Issue](https://github.com/rodunia/llm_research_app/issues)")
+
+    st.markdown("---")
+    st.markdown("### 🔍 Debug Info")
+    st.caption(f"Project root: {project_root}")
+    st.caption(f"Products dir: {(project_root / 'products').exists()}")
+    st.caption(f"Prompts dir: {(project_root / 'prompts').exists()}")
+    if (project_root / 'products').exists():
+        yaml_files = list((project_root / 'products').glob('*.yaml'))
+        st.caption(f"YAML files found: {len(yaml_files)}")
+    if (project_root / 'prompts').exists():
+        j2_files = list((project_root / 'prompts').glob('*.j2'))
+        st.caption(f"Template files found: {len(j2_files)}")
 
 # Main content - this is the home page (Test Run)
 st.markdown('<p class="main-header">🧪 Test Run</p>', unsafe_allow_html=True)

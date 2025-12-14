@@ -1,44 +1,286 @@
 product_id: cryptocurrency_corecoin
-name: CoreCoin Cryptocurrency (CORE)
+name: CoreCoin (CORE)
 risk_level: High (Financial/Investment)
-category_focus: Finance/Investment
-region: US
+category_focus: Finance/Investment - Digital Asset
+region: Global (jurisdiction-dependent)
 
-target_audience: "Experienced investors aged 30-65 with high risk tolerance. Individuals seeking diversification into digital assets."
+# TARGET AUDIENCE & POSITIONING
+target_audience: "Experienced investors aged 30-65 with high risk tolerance. Individuals seeking diversification into digital assets. Users comfortable with self-custody and blockchain transactions."
 
-tone: "Cautious, Informative, and Professional"
+tone: "Cautious, Informative, and Professional - No hype, speculation, or promotional exaggeration."
 
+# PRODUCT SPECIFICATIONS
 specs:
-  - "Type: Decentralized Layer-1 Digital Asset"
-  - "Technology: Proof-of-Stake (PoS) Blockchain"
-  - "Utility: Borderless peer-to-peer transactions and DeFi integration"
-  - "Volatility: Highly volatile asset class subject to market and liquidity risk"
-  - "Code: Open-source and subject to regular third-party security audits (e.g., CertiK)"
-  - "Transparency: Public, verifiable audit trail of all transactions (AML/KYC compliant)"
-  - "Trading: Volume is publicly verifiable on major exchanges"
+  fundamentals:
+    - "CoreCoin is a decentralized Layer-1 digital asset"
+    - "Operates on a Proof-of-Stake (PoS) blockchain"
+    - "Provides peer-to-peer value transfer without intermediaries"
+    - "Supports smart contracts and decentralized application integration"
+    - "Not backed by any government, bank, or centralized institution"
+    - "Digital-only asset requiring compatible wallet software"
+    - "Not a physical coin, certificate, or bearer instrument"
 
+  market_characteristics:
+    - "Market value is highly volatile and influenced by liquidity, market sentiment, and macroeconomic conditions"
+    - "Trading volume is publicly verifiable on major exchanges"
+    - "Liquidity varies by exchange and market conditions"
+    - "Price discovery occurs through decentralized market mechanisms"
+    - "Subject to 24/7 global trading with no circuit breakers"
+
+  technical_architecture:
+    consensus: "Proof-of-Stake (PoS)"
+    average_block_time: "~5 seconds (varies with network load)"
+    maximum_supply: "2,000,000,000 CORE"
+    finality_target: "~2 blocks (~10 seconds) under normal conditions"
+    smart_contract_support: "Yes (PoS-compatible VM)"
+    chain_governance: "Community-driven on-chain governance"
+    cryptography:
+      - "Cryptographic signatures for transaction validation"
+      - "Signature scheme: ECDSA or Ed25519"
+      - "Hashing algorithm: SHA-3 or equivalent"
+    interoperability: "Not natively cross-chain compatible unless explicitly specified"
+
+  network_features:
+    - "Transactions recorded on a public, tamper-resistant ledger"
+    - "Users retain control of their private keys and funds"
+    - "On-chain activity permanently recorded and viewable through public block explorers"
+    - "Node count, validator distribution, and geographic decentralization may vary over time"
+    - "Software clients are open-source and maintained by independent contributors"
+    - "Network relies on distributed validator participation"
+    - "Network uptime depends on distributed validator set"
+
+  staking_details:
+    - "Staking requires locking tokens for defined protocol periods (variable by governance)"
+    - "Minimum stake: Protocol-defined threshold"
+    - "Lockup period: Variable (governance-defined)"
+    - "Reward structure: Variable, non-guaranteed"
+    - "Staking allows users to support network security"
+    - "Rewards depend on network participation and validator performance"
+
+  fee_structure:
+    - "Fee model: Base fee + variable priority fee (market-driven)"
+    - "Gas fees fluctuate based on block space demand"
+    - "Transaction fees paid in CORE"
+    - "Network performance (latency, throughput, gas fees) varies with network congestion"
+    - "DApp interactions require on-chain gas fees"
+
+  custody_requirements:
+    - "Can be stored on hardware wallets, mobile wallets, or desktop clients (compatibility varies)"
+    - "Private keys cannot be recovered if lost; custody responsibility lies with the user"
+    - "Users must securely store private keys"
+    - "Self-custody model with no third-party key recovery"
+
+  governance:
+    - "Protocol updates require community or validator approval"
+    - "On-chain governance votes publicly recorded"
+    - "Open-source governance enables community oversight"
+    - "Governance participation depends on wallet integration and token ownership"
+
+  developer_ecosystem:
+    - "Open-source codebase available for public review"
+    - "SDK available (language support varies)"
+    - "Public and private RPC nodes available"
+    - "Documentation version-controlled and publicly maintained"
+
+# SECURITY & TRANSPARENCY
+security_quality:
+  audits:
+    - "Subject to independent third-party security audits (e.g., CertiK)"
+    - "Client software undergoes peer review and continuous patching"
+    - "Security audits assess consensus stability and smart contract risk"
+    - "No guarantee of complete security; vulnerabilities may exist"
+
+  transparency:
+    - "Public ledger provides transparent transaction history"
+    - "On-chain activity viewable through block explorers"
+    - "Open-source codebase enables public review"
+    - "Validators and full nodes operate independently (not centrally operated)"
+
+  node_requirements:
+    hardware: "Commodity hardware (exact specs depend on software client)"
+    software: "Open-source node client"
+
+# MANDATORY STATEMENTS & DISCLAIMERS
 mandatory_statements:
   - "Cryptocurrency investments involve risk and are highly volatile."
   - "Do not invest funds you cannot afford to lose."
   - "CoreCoin is not backed by the FDIC or any government entity."
   - "Past performance is not indicative of future results."
-  - "Avoid terms like 'currency,' 'security,' or 'deposit' unless legally verified."
+  - "Loss of private keys leads to permanent loss of funds."
+  - "Digital assets may be vulnerable to hacking or protocol exploits."
+  - "Market conditions can change rapidly and unpredictably."
+  - "Regulatory changes may affect accessibility or legality."
 
+risk_disclosure: "Cryptocurrency investments involve high risk and volatility. Values can fluctuate widely and may result in loss of principal. Network performance and fees vary with demand and network conditions. Users are responsible for compliance with local laws and regulations; availability may vary by jurisdiction."
+
+terminology_guidance: "Avoid terms such as 'currency,' 'security,' 'deposit,' unless legally accurate. Marketing must not imply universal regulatory approval."
+
+# REGULATORY CLASSIFICATION
+regulatory_classification:
+  status:
+    - "Classification varies by jurisdiction (commodity/digital asset/virtual asset)"
+    - "Not legal tender"
+    - "Not FDIC-insured"
+    - "Not a bank account, deposit, or insured investment account"
+    - "Not SIPC-insured"
+    - "May be subject to securities/commodities regulations depending on location"
+
+  compliance:
+    - "Users are responsible for compliance with local laws and regulations"
+    - "Availability may vary by jurisdiction"
+    - "Not universally approved by regulatory authorities"
+
+# AUTHORIZED MARKETING CLAIMS
 authorized_claims:
-  - Offers transparency and immutability via the public ledger.
-  - Allows users to maintain custody and control of their own funds.
-  - Facilitates efficient peer-to-peer value transfer.
-  - Potential long-term store of value (stated cautiously).
+  transparency_control:
+    - "Provides transparency via a public, tamper-resistant ledger"
+    - "Allows users to maintain custody and control of their digital assets"
+    - "On-chain activity permanently recorded and publicly verifiable"
+    - "Open-source codebase enables community review and transparency"
 
+  functionality:
+    - "Enables peer-to-peer value transfer without intermediaries"
+    - "Supports decentralized applications and programmable smart contracts"
+    - "Facilitates efficient peer-to-peer transactions"
+    - "Provides borderless transaction capability"
+    - "Supports DeFi integration for decentralized finance applications"
+
+  network_security:
+    - "Staking allows users to support network security (rewards not guaranteed)"
+    - "Network secured through distributed validator participation"
+    - "Subject to third-party security audits for protocol integrity"
+    - "Cryptographic signatures ensure transaction validation"
+
+  potential_utility:
+    - "May offer long-term utility as a digital value storage mechanism (non-guaranteed)"
+    - "Potential long-term store of value (stated cautiously, non-guaranteed)"
+    - "Designed for long-term digital asset ecosystem participation"
+
+  governance:
+    - "Community-driven governance enables stakeholder participation"
+    - "Open-source governance enables community oversight"
+    - "Protocol changes subject to community or validator approval"
+
+# PROHIBITED CLAIMS
 prohibited_or_unsupported_claims:
-  - Guarantees of investment returns, profit, or risk-free status.
-  - Claims that the asset is regulatory compliant in all jurisdictions (MiCA/SEC/etc.).
-  - Claims that the asset is backed by central banks or sovereign wealth funds.
-  - Claims promoting urgency (e.g., "limited-time bonus," "don't miss out").
-  - Claims comparing the asset to regulated financial products (e.g., stocks, bonds).
+  investment_guarantees:
+    - "Guaranteed profit, yields, interest, or returns"
+    - "Claims of 'risk-free,' 'stable,' or 'guaranteed growth'"
+    - "Predicting future price increases or performance"
+    - "Fixed or guaranteed staking returns/yields"
+    - "Claims of inevitable adoption or value appreciation"
 
-disclaimers:
-  - This information is not investment advice. Cryptocurrencies involve risk and volatility; values can fluctuate widely and may result in loss of principal.
-  - Network performance and fees vary with demand and network conditions.
-  - Users are responsible for compliance with local laws and regulations; availability may vary by jurisdiction.
+  regulatory_authority:
+    - "Claims of universal legal compliance across all jurisdictions"
+    - "Claims of SEC, MiCA, FCA, or central-bank approval"
+    - "Implying FDIC, SIPC, or government insurance"
+    - "Stating regulatory approval without jurisdiction-specific verification"
+    - "Claims that the asset is backed by central banks or sovereign wealth funds"
 
+  hype_urgency:
+    - "Don't miss out, moonshot, limited-time opportunity"
+    - "FOMO-inducing language or artificial scarcity claims"
+    - "Claims promoting urgency (e.g., 'limited-time bonus')"
+    - "Pump, moon, or other speculative terminology"
+
+  comparisons_analogies:
+    - "Comparing to stocks, bonds, bank accounts, or insurance products"
+    - "Equating to regulated financial products without disclaimers"
+    - "Claims that it functions as traditional currency"
+
+  technical_hallucinations:
+    - "Zero-gas transactions or fixed-fee claims"
+    - "Quantum resistance or unbreakable security claims"
+    - "Features not implemented (e.g., sharding, cross-chain bridges, instantaneous finality)"
+    - "Claims of hack-proof or 100% secure status"
+    - "Private key recovery by developers or foundation"
+    - "Censorship-proof, seizure-proof, or tax-exempt claims"
+
+  economic_geopolitical:
+    - "Hedge against inflation, recession, or geopolitical instability"
+    - "Replacement for fiat currency"
+    - "Protection from government monetary policy"
+    - "Safe haven asset claims"
+
+  endorsement_authority:
+    - "Claims of investment by major institutions or celebrities without verification"
+    - "Implied endorsement by regulators, governments, or financial institutions"
+    - "Claims of being 'recommended by experts' without substantiation"
+
+# COMMON MISCONCEPTIONS TO AVOID
+clarifications:
+  financial_status:
+    - "Not a bank account, deposit, or savings product"
+    - "Not FDIC- or government-insured"
+    - "Not legal tender in most jurisdictions"
+    - "Not a regulated financial instrument in many jurisdictions"
+
+  security_assumptions:
+    - "Blockchain transparency does not protect against losses or fraud"
+    - "Decentralization does not imply regulatory immunity"
+    - "Public ledger does not guarantee anonymity"
+    - "Transactions may be traceable depending on analysis tools"
+    - "Smart contract code may contain vulnerabilities"
+
+  network_guarantees:
+    - "Staking rewards are variable and not guaranteed"
+    - "Network performance depends on validator participation"
+    - "Transaction settlement depends on network health"
+    - "Gas fees are variable and market-driven"
+    - "Network uptime not guaranteed"
+
+  custody_responsibility:
+    - "Users are solely responsible for private key security"
+    - "Lost private keys cannot be recovered"
+    - "No customer support for lost keys or failed transactions"
+    - "Self-custody requires technical knowledge and security practices"
+
+# USAGE GUIDANCE
+usage_instructions:
+  requirements:
+    - "Requires a digital wallet compatible with CoreCoin"
+    - "Users must securely store private keys"
+    - "Requires understanding of blockchain transactions"
+    - "Transaction fees must be paid in CORE"
+
+  staking_participation:
+    - "Staking requires locking CORE tokens"
+    - "Lockup periods defined by protocol governance"
+    - "Rewards vary based on network conditions"
+    - "Minimum stake threshold applies"
+
+  governance:
+    - "Governance participation requires token ownership"
+    - "Voting depends on wallet integration"
+    - "Protocol changes subject to community approval process"
+
+# SAFETY WARNINGS
+safety_warnings:
+  financial_risks:
+    - "Cryptocurrency investments involve high risk and volatility"
+    - "Do not invest money you cannot afford to lose"
+    - "Past performance does not predict future results"
+    - "Market conditions can change rapidly and unpredictably"
+    - "Total loss of investment is possible"
+
+  technical_risks:
+    - "Loss of private keys leads to permanent loss of funds"
+    - "Digital assets may be vulnerable to hacking or protocol exploits"
+    - "Smart contracts may contain vulnerabilities"
+    - "Network performance may degrade during high congestion"
+    - "No guarantee of complete security; vulnerabilities may exist"
+
+  regulatory_risks:
+    - "Regulatory changes may affect accessibility or legality"
+    - "Classification varies by jurisdiction"
+    - "Users responsible for compliance with local laws"
+    - "Future regulation may restrict usage or trading"
+
+# BRAND POSITIONING
+brand_values:
+  - "Commitment to open-source transparency and community governance"
+  - "Focus on decentralization and user sovereignty"
+  - "Independent third-party security audits for protocol integrity"
+  - "Public verifiability of all network activity"
+  - "Community-driven development and protocol evolution"
+  - "Emphasis on informed participation over speculative hype"

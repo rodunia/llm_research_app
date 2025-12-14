@@ -5,7 +5,7 @@ from pathlib import Path
 from runner.render import load_product_yaml, render_prompt
 
 def test_product(product_id: str):
-    """Test rendering a product."""
+    """Test rendering a product with all templates."""
     print(f"\n{'='*60}")
     print(f"Testing: {product_id}")
     print(f"{'='*60}")
@@ -17,17 +17,20 @@ def test_product(product_id: str):
     print(f"✓ Loaded YAML: {product_data['name']}")
     print(f"  Keys present: {sorted(product_data.keys())}")
 
-    # Try rendering a template
-    template = "digital_ad.j2"
-    try:
-        rendered = render_prompt(product_data, template, trap_flag=False)
-        print(f"✓ Rendered template: {template}")
-        print(f"  Prompt length: {len(rendered)} characters")
-        print(f"\n  First 200 chars:\n  {rendered[:200]}...")
-        return True
-    except Exception as e:
-        print(f"✗ Failed to render: {e}")
-        return False
+    # Test all three updated templates
+    templates = ["digital_ad.j2", "faq.j2", "blog_post_promo.j2"]
+    results = {}
+
+    for template in templates:
+        try:
+            rendered = render_prompt(product_data, template, trap_flag=False)
+            print(f"✓ Rendered {template}: {len(rendered)} chars")
+            results[template] = True
+        except Exception as e:
+            print(f"✗ Failed {template}: {e}")
+            results[template] = False
+
+    return all(results.values())
 
 if __name__ == "__main__":
     products = [

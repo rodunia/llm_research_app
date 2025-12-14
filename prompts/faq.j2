@@ -31,24 +31,66 @@ PRODUCT NAME: {{ name }}
 REGION: {{ region }}
 
 TECHNICAL SPECIFICATIONS:
+{% if specs is mapping %}
+{% for category, items in specs.items() %}
+{{ category }}:
+{% if items is mapping %}
+{% for subcategory, subitems in items.items() %}
+  {{ subcategory }}:
+  {% for item in subitems %}
+  - {{ item }}
+  {% endfor %}
+{% endfor %}
+{% else %}
+{% for item in items %}
+- {{ item }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% else %}
 {% for spec in specs %}
 - {{ spec }}
 {% endfor %}
+{% endif %}
 
 AUTHORIZED CLAIMS (use ONLY these):
+{% if authorized_claims is mapping %}
+{% for category, claims in authorized_claims.items() %}
+{{ category }}:
+{% for claim in claims %}
+- {{ claim }}
+{% endfor %}
+{% endfor %}
+{% else %}
 {% for claim in authorized_claims %}
 - {{ claim }}
 {% endfor %}
+{% endif %}
 
 PROHIBITED CLAIMS (never use these):
+{% if prohibited_or_unsupported_claims is mapping %}
+{% for category, claims in prohibited_or_unsupported_claims.items() %}
+{{ category }}:
+{% for claim in claims %}
+- {{ claim }}
+{% endfor %}
+{% endfor %}
+{% else %}
 {% for claim in prohibited_or_unsupported_claims %}
 - {{ claim }}
 {% endfor %}
+{% endif %}
 
 MANDATORY DISCLAIMERS (include verbatim at end):
+{% if mandatory_statements is defined %}
+{% for statement in mandatory_statements %}
+- {{ statement }}
+{% endfor %}
+{% elif disclaimers is defined %}
 {% for disclaimer in disclaimers %}
 - {{ disclaimer }}
 {% endfor %}
+{% endif %}
 
 ═════════════════════════════════════════════════════════
 TARGET AUDIENCE PSYCHOLOGY
@@ -181,6 +223,12 @@ A: [Direct answer, 40-80 words, using only Product Data OR "Not stated in the pr
 ---
 
 **Disclaimers:**
+{% if mandatory_statements is defined %}
+{% for statement in mandatory_statements %}
+{{ statement }}
+{% endfor %}
+{% elif disclaimers is defined %}
 {% for disclaimer in disclaimers %}
 {{ disclaimer }}
 {% endfor %}
+{% endif %}

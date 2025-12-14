@@ -72,8 +72,8 @@ def render_prompt(
         jinja2.TemplateNotFound: If template doesn't exist
         jinja2.UndefinedError: If required variables are missing in template
     """
-    # Validate required keys
-    required_keys = ["name", "region", "target_audience", "specs", "authorized_claims", "disclaimers"]
+    # Validate minimal required keys (more flexible for enhanced YAMLs)
+    required_keys = ["name", "target_audience", "specs", "authorized_claims"]
     missing_keys = [key for key in required_keys if key not in product_yaml]
 
     if missing_keys:
@@ -85,16 +85,12 @@ def render_prompt(
     env = jinja_env()
     template = env.get_template(template_name)
 
-    # Build context with required keys + trap_flag
-    context = {
-        "name": product_yaml["name"],
-        "region": product_yaml["region"],
-        "target_audience": product_yaml["target_audience"],
-        "specs": product_yaml["specs"],
-        "authorized_claims": product_yaml["authorized_claims"],
-        "prohibited_or_unsupported_claims": product_yaml.get("prohibited_or_unsupported_claims", []),
-        "disclaimers": product_yaml["disclaimers"],
-        "trap_flag": trap_flag,
-    }
+    # Build context: pass through entire product_yaml plus trap_flag
+    # This allows templates to access all fields including new enhanced structure
+    context = {**product_yaml, "trap_flag": trap_flag}
+
+    # Ensure backward compatibility by adding 'region' if missing
+    if "region" not in context:
+        context["region"] = product_yaml.get("region", "Global")
 
     return template.render(**context)

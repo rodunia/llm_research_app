@@ -7,3 +7,8 @@ python-dotenv
 pyyaml
 pandas
 jinja2
+
+# Optional: Improved sentence segmentation for claim extraction (v2.0+)
+# If not installed, falls back to regex-based splitting
+# No model download required - uses blank("en") + sentencizer
+spacy>=3.7

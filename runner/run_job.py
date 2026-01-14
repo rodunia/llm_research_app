@@ -1,6 +1,8 @@
 """Job runner for executing LLM experiments from results index."""
 
 import csv
+import os
+import socket
 from pathlib import Path
 from typing import Dict, Any, Optional
 import time
@@ -15,6 +17,16 @@ from runner.engines.mistral_client import call_mistral
 from runner.engines.anthropic_client import call_anthropic
 from runner.utils import now_iso
 from runner.render import load_product_yaml, render_prompt
+from runner.job_store import (
+    initialize_db,
+    claim_jobs,
+    mark_running,
+    mark_completed,
+    mark_failed,
+    get_job,
+    get_status_counts,
+    export_status_to_csv
+)
 
 app = typer.Typer(help="Run LLM experiments and persist outputs")
 console = Console()
@@ -152,17 +164,32 @@ def batch(
     repetition: Optional[int] = typer.Option(
         None, "--repetition", "-r", help="Filter by repetition ID (1/2/3)"
     ),
+    user: Optional[str] = typer.Option(
+        None, "--user", "-u", help="User identifier (for multi-user claiming)"
+    ),
+    max_jobs: int = typer.Option(
+        999999, "--max-jobs", help="Maximum number of jobs to claim"
+    ),
+    claim_only: bool = typer.Option(
+        False, "--claim-only", help="Claim jobs without executing (for debugging)"
+    ),
+    db_path: str = typer.Option(
+        "results/experiments.db", "--db-path", help="Path to SQLite job database"
+    ),
     resume: bool = typer.Option(
         False, "--resume", help="Resume incomplete runs (status != 'completed')"
     ),
     dry_run: bool = typer.Option(
         False, "--dry-run", help="Print pending runs without executing"
     ),
+    session_id: Optional[str] = typer.Option(
+        None, "--session-id", help="Session identifier for provenance"
+    ),
 ) -> None:
-    """Execute pending jobs from experiments CSV with optional filters.
+    """Execute pending jobs using atomic claiming from SQLite job store.
 
-    Reads experiments.csv, identifies pending jobs (status != 'completed'),
-    and executes them with progress tracking. Updates CSV in-place.
+    Uses experiments.db for atomic claiming (concurrency-safe for multi-user execution).
+    experiments.csv remains the design matrix; DB is authoritative for runtime state.
 
     Filters can be combined (e.g., --time-of-day morning --engine openai).
     """
@@ -172,33 +199,31 @@ def batch(
         typer.echo(f"Error: Index file not found: {index_path}", err=True)
         raise typer.Exit(1)
 
-    # Read index
-    with open(index_path, "r", encoding="utf-8") as f:
-        reader = csv.DictReader(f)
-        rows = list(reader)
+    # Initialize DB from CSV if needed
+    typer.echo(f"[cyan]Initializing job database from {index_path}...[/cyan]")
+    try:
+        initialize_db(csv_path=str(index_path), db_path=db_path)
+    except Exception as e:
+        typer.echo(f"Error initializing database: {e}", err=True)
+        raise typer.Exit(1)
 
-    # Filter pending jobs
-    pending = []
-    for row in rows:
-        # Check status
-        status = row.get("status", "pending")
-        if not resume and status == "completed":
-            continue
+    # Determine user (for claiming)
+    if user is None:
+        # Default to hostname+pid for single-user backward compatibility
+        user = f"{socket.gethostname()}_{os.getpid()}"
+        typer.echo(f"[dim]No --user specified, using: {user}[/dim]")
 
-        # Apply filters
-        if time_of_day and row.get("time_of_day_label") != time_of_day:
-            continue
+    # Build claim filters
+    claim_filters = {}
+    if time_of_day:
+        claim_filters["time_of_day"] = time_of_day
+    if engine:
+        claim_filters["engine"] = engine
+    if repetition is not None:
+        claim_filters["repetition_id"] = repetition
 
-        if engine and row.get("engine") != engine:
-            continue
-
-        if repetition is not None and int(row.get("repetition_id", 0)) != repetition:
-            continue
-
-        # Check if output exists
-        output_path = row.get("output_path", "")
-        if status != "completed" or not Path(output_path).exists():
-            pending.append(row)
+    # Get status counts before claiming
+    status_counts = get_status_counts(db_path=db_path, filters=claim_filters)
 
     # Build filter description
     filters_desc = []
@@ -210,23 +235,48 @@ def batch(
         filters_desc.append(f"rep={repetition}")
     filter_str = f" ({', '.join(filters_desc)})" if filters_desc else ""
 
-    typer.echo(f"Found {len(pending)} pending jobs (of {len(rows)} total){filter_str}")
+    typer.echo(f"\n[bold]Job Status{filter_str}:[/bold]")
+    typer.echo(f"  Pending: {status_counts['pending']}")
+    typer.echo(f"  Running: {status_counts['running']}")
+    typer.echo(f"  Completed: {status_counts['completed']}")
+    typer.echo(f"  Failed: {status_counts['failed']}")
+    typer.echo(f"  Total: {status_counts['total']}\n")
 
     if dry_run:
-        typer.echo("\nFirst 10 pending jobs:")
-        for row in pending[:10]:
-            typer.echo(
-                f"  {row['run_id'][:12]} | {row['engine']:10} | "
-                f"{row['product_id']:20} | {row['material_type']:30} | "
-                f"temp={row['temperature_label']} time={row['time_of_day_label']} rep={row['repetition_id']}"
-            )
+        typer.echo("[yellow]Dry-run mode: No jobs will be claimed or executed[/yellow]")
         return
 
-    if not pending:
-        typer.echo("No pending jobs to execute.")
+    if status_counts['pending'] == 0:
+        typer.echo("[yellow]No pending jobs to claim.[/yellow]")
         return
 
-    # Execute pending jobs with progress bar
+    # Atomically claim jobs
+    claim_limit = min(max_jobs, status_counts['pending'])
+    typer.echo(f"[cyan]Claiming up to {claim_limit} jobs for user: {user}...[/cyan]")
+
+    try:
+        claimed_run_ids = claim_jobs(
+            user=user,
+            db_path=db_path,
+            filters=claim_filters,
+            limit=claim_limit
+        )
+    except Exception as e:
+        typer.echo(f"Error claiming jobs: {e}", err=True)
+        raise typer.Exit(1)
+
+    if not claimed_run_ids:
+        typer.echo("[yellow]No jobs were claimed (may have been claimed by another user)[/yellow]")
+        return
+
+    typer.echo(f"[green]✓ Claimed {len(claimed_run_ids)} jobs[/green]\n")
+
+    if claim_only:
+        typer.echo("[yellow]--claim-only mode: Jobs claimed but not executed[/yellow]")
+        typer.echo(f"Claimed run_ids: {', '.join(r[:12] for r in claimed_run_ids[:10])}...")
+        return
+
+    # Execute claimed jobs
     completed = 0
     failed = 0
     start_time = time.time()
@@ -246,37 +296,52 @@ def batch(
 
         task = progress.add_task(
             "[cyan]Executing LLM runs...",
-            total=len(pending)
+            total=len(claimed_run_ids)
         )
 
-        for i, row in enumerate(pending, 1):
-            run_id_short = row['run_id'][:12]
-            engine_name = row['engine']
-            product = row['product_id']
+        for i, run_id in enumerate(claimed_run_ids, 1):
+            # Get job details from DB
+            job = get_job(run_id, db_path=db_path)
+            if not job:
+                console.print(f"[red]✗ Job not found: {run_id}[/red]")
+                failed += 1
+                progress.advance(task)
+                continue
+
+            run_id_short = run_id[:12]
+            engine_name = job["engine"]
+            product = job["product_id"]
 
             # Update progress description with current job
             progress.update(
                 task,
-                description=f"[cyan]Run {i}/{len(pending)} | {engine_name} | {product} | {run_id_short}"
+                description=f"[cyan]Run {i}/{len(claimed_run_ids)} | {engine_name} | {product} | {run_id_short}"
             )
 
             try:
+                # Mark as running
+                started_at = now_iso()
+                mark_running(run_id, started_at=started_at, session_id=session_id, db_path=db_path)
+
+                # Execute job
                 result = run_single_job(
-                    run_id=row["run_id"],
-                    product_id=row["product_id"],
-                    material_type=row["material_type"],
-                    engine=row["engine"],
-                    temperature=float(row["temperature_label"]),
-                    trap_flag=(row.get("trap_flag", "False") == "True"),
+                    run_id=run_id,
+                    product_id=job["product_id"],
+                    material_type=job["material_type"],
+                    engine=job["engine"],
+                    temperature=float(job["temperature_label"]),
+                    trap_flag=bool(job["trap_flag"]),
                 )
 
-                # Update the row in-memory
-                row.update(result)
+                # Mark as completed
+                completed_at = now_iso()
+                mark_completed(run_id, completed_at=completed_at, result=result, db_path=db_path)
                 completed += 1
 
             except Exception as e:
                 console.print(f"[red]✗ Failed {run_id_short}: {e}[/red]")
-                row["status"] = "failed"
+                completed_at = now_iso()
+                mark_failed(run_id, error=str(e), completed_at=completed_at, db_path=db_path)
                 failed += 1
 
             # Update progress
@@ -284,16 +349,14 @@ def batch(
 
     # Calculate statistics
     elapsed_time = time.time() - start_time
-    avg_time_per_run = elapsed_time / len(pending) if pending else 0
+    avg_time_per_run = elapsed_time / len(claimed_run_ids) if claimed_run_ids else 0
 
-    # Write updated results back to CSV
-    console.print(f"\n[cyan]Writing updated results to {index_path}[/cyan]")
-    with open(index_path, "w", newline="", encoding="utf-8") as f:
-        if rows:
-            fieldnames = list(rows[0].keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(rows)
+    # Export status back to CSV for compatibility
+    console.print(f"\n[cyan]Exporting status to {index_path}...[/cyan]")
+    try:
+        export_status_to_csv(csv_path=str(index_path), db_path=db_path)
+    except Exception as e:
+        console.print(f"[yellow]Warning: Could not export status to CSV: {e}[/yellow]")
 
     # Display summary
     console.print("\n[bold]Execution Summary[/bold]")
@@ -301,7 +364,7 @@ def batch(
     if failed > 0:
         console.print(f"[red]✗ Failed: {failed}[/red]")
     console.print(f"[cyan]⏱ Total time: {elapsed_time:.1f}s ({avg_time_per_run:.1f}s per run)[/cyan]")
-    console.print(f"[cyan]📊 Success rate: {(completed / len(pending) * 100):.1f}%[/cyan]" if pending else "")
+    console.print(f"[cyan]📊 Success rate: {(completed / len(claimed_run_ids) * 100):.1f}%[/cyan]" if claimed_run_ids else "")
 
 
 if __name__ == "__main__":

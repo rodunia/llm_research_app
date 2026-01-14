@@ -28,6 +28,7 @@ Usage:
 """
 
 import sys
+import os
 from pathlib import Path
 from datetime import datetime
 import subprocess
@@ -113,11 +114,16 @@ def execute_runs(time_of_day: str = None, session_id: str = None) -> bool:
 
     cmd = [sys.executable, "-m", "runner.run_job", "batch"]
 
+    # Pass through --user from ENV var RESEARCH_USER if set (for multi-user claiming)
+    user = os.environ.get("RESEARCH_USER")
+    if user:
+        cmd.extend(["--user", user])
+
+    if time_of_day:
+        cmd.extend(["--time-of-day", time_of_day])
+
     if session_id:
         cmd.extend(["--session-id", session_id])
-
-    # Note: Filtering by time_of_day needs to be implemented in run_job.py
-    # For now, we'll run all pending and document this limitation
 
     description = f"Executing {time_of_day or 'all'} runs"
     return run_command(cmd, description)
@@ -351,21 +357,41 @@ def status() -> None:
     """Show pipeline status and statistics."""
     console.print("\n[bold]Pipeline Status[/bold]\n")
 
-    # Check matrix
-    if check_matrix_exists():
-        import csv
-        with open("results/experiments.csv", "r") as f:
-            reader = csv.DictReader(f)
-            rows = list(reader)
-            total = len(rows)
-            pending = sum(1 for r in rows if r.get("status") == "pending")
-            completed = sum(1 for r in rows if r.get("status") == "completed")
+    # Check matrix - prefer DB if available, fallback to CSV
+    db_path = Path("results/experiments.db")
+    if db_path.exists():
+        # Read from DB (authoritative runtime state)
+        try:
+            from runner.job_store import get_status_counts
+            counts = get_status_counts(db_path=str(db_path))
 
-        console.print(f"[green]✓[/green] Matrix generated: {total} total runs")
-        console.print(f"  • Pending: {pending}")
-        console.print(f"  • Completed: {completed}")
-    else:
-        console.print("[yellow]○[/yellow] Matrix not generated")
+            console.print(f"[green]✓[/green] Matrix tracked in DB: {counts['total']} total runs")
+            console.print(f"  • Pending: {counts['pending']}")
+            console.print(f"  • Claimed: {counts['claimed']}")
+            console.print(f"  • Running: {counts['running']}")
+            console.print(f"  • Completed: {counts['completed']}")
+            console.print(f"  • Failed: {counts['failed']}")
+        except Exception as e:
+            console.print(f"[yellow]Warning: Could not read DB, falling back to CSV: {e}[/yellow]")
+            # Fall through to CSV reading
+            db_path = None
+
+    if not db_path or not db_path.exists():
+        # Fallback: read from CSV
+        if check_matrix_exists():
+            import csv
+            with open("results/experiments.csv", "r") as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+                total = len(rows)
+                pending = sum(1 for r in rows if r.get("status") == "pending")
+                completed = sum(1 for r in rows if r.get("status") == "completed")
+
+            console.print(f"[green]✓[/green] Matrix generated: {total} total runs")
+            console.print(f"  • Pending: {pending}")
+            console.print(f"  • Completed: {completed}")
+        else:
+            console.print("[yellow]○[/yellow] Matrix not generated")
 
     # Check outputs
     outputs_dir = Path("outputs")

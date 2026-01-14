@@ -99,33 +99,35 @@ def is_candidate_claim(sentence: str) -> Tuple[bool, List[str]]:
     if re.search(numeric_pattern, sent_lower, re.IGNORECASE):
         triggers.append("numeric")
 
-    # 2. Claim verbs
-    words = set(re.findall(r'\b\w+\b', sent_lower))
-    if words & CLAIM_VERBS:
-        triggers.append("claim_verb")
-
-    # 3. Guarantee language (high-risk)
+    # 2. Guarantee language (high-risk)
     for guarantee_word in GUARANTEE_WORDS:
         if guarantee_word in sent_lower:
             triggers.append("guarantee")
             break
 
-    # 4. Medical claims (regulated)
+    # 3. Medical claims (regulated)
     for medical_term in MEDICAL_TERMS:
         if medical_term in sent_lower:
             triggers.append("medical")
             break
 
-    # 5. Financial promises (regulated)
+    # 4. Financial promises (regulated)
     for financial_term in FINANCIAL_TERMS:
         if financial_term in sent_lower:
             triggers.append("financial")
             break
 
-    # 6. Comparative statements
+    # 5. Comparative statements
     comparative_pattern = r'\b(better|faster|more|less|superior|best|#1|number one|leading|top)\b'
     if re.search(comparative_pattern, sent_lower):
         triggers.append("comparative")
+
+    # 6. Claim verbs (only add if at least one anchor trigger is present)
+    # This prevents common verbs like "is/are/has" from inflating claim counts
+    words = set(re.findall(r'\b\w+\b', sent_lower))
+    has_claim_verb = bool(words & CLAIM_VERBS)
+    if has_claim_verb and len(triggers) > 0:
+        triggers.append("claim_verb")
 
     # Sentence is a candidate if it has any triggers
     return (len(triggers) > 0, triggers)
@@ -166,6 +168,7 @@ def extract_claim_candidates(
                 "sent_index": sent_idx,
                 "char_span": (start, end),
                 "trigger_types": triggers,
+                "extractor_version": "v1.1",
                 # DeBERTa fields will be added later
                 "deberta": None,
                 "severity": None,
@@ -206,9 +209,19 @@ if __name__ == "__main__":
     sents3 = split_sentences(test3)
     assert len(sents3) == 1
     is_claim3, triggers3 = is_candidate_claim(sents3[0][0])
-    # This might trigger if "considering" matches claim_verb - let's be flexible
-    print(f"  Test 3: {sents3[0][0]}")
-    print(f"  Triggers: {triggers3} (OK if empty or minimal)\n")
+    assert not is_claim3, f"Expected non-claim sentence, but got triggers: {triggers3}"
+    assert len(triggers3) == 0, f"Expected no triggers, got {triggers3}"
+    print(f"✓ Test 3 passed: {sents3[0][0]}")
+    print(f"  Triggers: {triggers3} (no triggers, as expected)\n")
+
+    # Test 3b: Sentence with claim_verb but no anchor (should NOT trigger)
+    test3b = "This product is designed to help you."
+    sents3b = split_sentences(test3b)
+    assert len(sents3b) == 1
+    is_claim3b, triggers3b = is_candidate_claim(sents3b[0][0])
+    assert not is_claim3b, f"Expected non-claim (claim_verb alone), but got triggers: {triggers3b}"
+    print(f"✓ Test 3b passed: {sents3b[0][0]}")
+    print(f"  Triggers: {triggers3b} (claim_verb alone doesn't trigger)\n")
 
     # Test 4: Multi-sentence text
     test4 = "Our smartphone has 128 GB of storage. It provides 7 years of updates. You'll love it!"
@@ -232,7 +245,15 @@ if __name__ == "__main__":
     for claim in claims4:
         print(f"    - Sent {claim['sent_index']}: {claim['sentence']}")
         print(f"      Triggers: {claim['trigger_types']}")
-    print()
+
+    # Verify only first two sentences extracted (both have numeric triggers)
+    assert len(claims4) == 2, f"Expected 2 claims, got {len(claims4)}"
+    assert claims4[0]['sent_index'] == 0, "First claim should be sentence 0"
+    assert claims4[1]['sent_index'] == 1, "Second claim should be sentence 1"
+    assert "numeric" in claims4[0]['trigger_types'], "First claim should have numeric trigger"
+    assert "numeric" in claims4[1]['trigger_types'], "Second claim should have numeric trigger"
+    print(f"✓ Verified: Only sentences with anchor triggers extracted\n")
 
     print("✅ All self-checks passed!")
-    print("\nClaim extractor is deterministic and LLM-free.")
+    print("\nClaim extractor v1.1: claim_verb no longer triggers extraction alone.")
+    print("Only sentences with anchor triggers (numeric/guarantee/medical/financial/comparative) are extracted.")

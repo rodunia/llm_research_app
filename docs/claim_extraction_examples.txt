@@ -1,0 +1,241 @@
+================================================================================
+CLAIM EXTRACTION EXAMPLES
+================================================================================
+
+Real examples from the LLM research pipeline, showing structure-aware claim
+extraction (v2.0).
+
+All excerpts below are verbatim segments of model-generated outputs (not prompts).
+Claims are exact substrings; offsets are shown for traceability.
+
+Features demonstrated:
+- Block-aware parsing (headlines, Q/A, disclaimers)
+- Claim kind tagging (product_claim vs disclaimer)
+- Anchor-based trigger detection (numeric, guarantee, medical, financial, comparative)
+- Exact char_span offsets (all sentences are verifiable substrings)
+
+================================================================================
+
+
+================================================================================
+EXAMPLE 1 — DIGITAL AD
+================================================================================
+
+Run ID: digital_ad
+Product: unknown | Engine: unknown
+Extractor: v2.0
+
+--- Generated Text Excerpt (Verbatim Model Output) ---
+
+Experience the Nova X5 5G Smartphone with a stunning 6.5 in 120 Hz display,
+5000 mAh battery, and lightning-fast 30 W USB-C charging. Enjoy 5G connectivity,
+Wi-Fi 6, and Bluetooth 5.3 support.
+
+Learn more.
+
+Disclaimers:
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Actual battery life varies by usage, settings, and network conditions.
+Avoid liquid exposure; no water-resistance certification is claimed.
+
+--- Extracted Claims (Verbatim) ---
+
+CLAIM 1:
+  Claim ID:     digital_ad::sent000...
+  Claim Kind:   product_claim
+  Block Kind:   unknown
+  Triggers:     numeric
+  Char Span:    (0, 133)
+  Sentence:     Experience the Nova X5 5G Smartphone with a stunning 6.5 in
+                120 Hz display, 5000...
+
+CLAIM 2:
+  Claim ID:     digital_ad::sent001...
+  Claim Kind:   product_claim
+  Block Kind:   unknown
+  Triggers:     numeric
+  Char Span:    (134, 192)
+  Sentence:     Enjoy 5G connectivity, Wi-Fi 6, and Bluetooth 5.3 support....
+
+CLAIM 3:
+  Claim ID:     digital_ad::sent002...
+  Claim Kind:   product_claim
+  Block Kind:   unknown
+  Triggers:     comparative
+  Char Span:    (195, 206)
+  Sentence:     Learn more....
+
+CLAIM 4:
+  Claim ID:     digital_ad::sent003...
+  Claim Kind:   disclaimer
+  Block Kind:   blog_disclaimers
+  Triggers:     numeric
+  Char Span:    (225, 306)
+  Sentence:     Network availability (including 5G) depends on carrier and
+                coverage; speeds vary...
+
+Summary:
+- Total extracted claims: 4
+- Product claims: 3
+- Disclaimer claims: 1
+- Meta claims: 0
+- NOTE: All sentences are exact substrings (offset-traceable)
+
+
+================================================================================
+EXAMPLE 2 — FAQ
+================================================================================
+
+Run ID: faq
+Product: unknown | Engine: unknown
+Extractor: v2.0
+
+--- Generated Text Excerpt (Verbatim Model Output) ---
+
+**FAQ for Nova X5 5G Smartphone (US)**
+
+**Q1: What is the display size and resolution of the Nova X5?**
+A1: The Nova X5 features a 6.5 in display with a resolution of 2400×1080 pixels
+and a 120 Hz refresh rate for smoother on-screen motion.
+
+**Q2: What is the battery capacity and charging specifications?**
+A2: The Nova X5 has a nominal battery capacity of 5000 mAh and supports 30 W
+USB-C wired
+
+[... middle section omitted ...]
+
+gies does the Nova X5 support?**
+A5: The Nova X5 supports 5G sub-6 GHz connectivity, Wi-Fi 6 networks, and
+Bluetooth 5.3 for wireless audio and accessories.
+
+Disclaimers:
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Actual battery life varies by usage, settings, and network conditions.
+Avoid liquid exposure; no water-resistance certification is claimed.
+
+--- Extracted Claims (Verbatim) ---
+
+CLAIM 1:
+  Claim ID:     faq::sent000...
+  Claim Kind:   product_claim
+  Block Kind:   unknown
+  Triggers:     numeric
+  Char Span:    (0, 38)
+  Sentence:     **FAQ for Nova X5 5G Smartphone (US)**...
+
+CLAIM 2:
+  Claim ID:     faq::sent001...
+  Claim Kind:   disclaimer
+  Block Kind:   faq_disclaimers
+  Triggers:     numeric
+  Char Span:    (960, 1041)
+  Sentence:     Network availability (including 5G) depends on carrier and
+                coverage; speeds vary...
+
+Summary:
+- Total extracted claims: 2
+- Product claims: 1
+- Disclaimer claims: 1
+- Meta claims: 0
+- NOTE: All sentences are exact substrings (offset-traceable)
+
+
+================================================================================
+EXAMPLE 3 — BLOG POST
+================================================================================
+
+Run ID: blog_post_promo
+Product: unknown | Engine: unknown
+Extractor: v2.0
+
+--- Generated Text Excerpt (Verbatim Model Output) ---
+
+# Introducing the Nova X5 5G Smartphone
+
+The smartphone market is constantly evolving, and the latest addition to the
+lineup is the Nova X5 5G. This device is built for those who demand exceptional
+performance and cutting-edge technology. Let's take a closer look at what makes
+the Nova X5 stand out.
+
+## Stunning Display
+
+One of the standout features of the Nova X5 is its impressive 6.5-inch displa
+
+[... middle section omitted ...]
+
+ts stunning display, robust performance, ample storage, and long-lasting battery
+life, it's an excellent choice for anyone in the market for a new smartphone.
+
+**Disclaimers:**
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Actual battery life varies by usage, settings, and network conditions. Avoid
+liquid exposure; no water-resistance certification is claimed.
+
+--- Extracted Claims (Verbatim) ---
+
+CLAIM 1:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_title
+  Triggers:     numeric, claim_verb
+  Char Span:    (41, 143)
+  Sentence:     The smartphone market is constantly evolving, and the latest
+                addition to the lin...
+
+CLAIM 2:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_heading
+  Triggers:     numeric
+  Char Span:    (591, 704)
+  Sentence:     With a 120 Hz refresh rate, users can expect smoother on-screen
+                motion, enhancin...
+
+CLAIM 3:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_heading
+  Triggers:     numeric, claim_verb
+  Char Span:    (731, 867)
+  Sentence:     Under the hood, the Nova X5 is powered by an octa-core 2.4 GHz
+                CPU, ensuring tha...
+
+CLAIM 4:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_heading
+  Triggers:     numeric
+  Char Span:    (868, 977)
+  Sentence:     With 8 GB of RAM, multitasking becomes seamless, allowing you to
+                switch between ...
+
+CLAIM 5:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_heading
+  Triggers:     numeric, claim_verb
+  Char Span:    (1095, 1219)
+  Sentence:     The Nova X5 offers an impressive 256 GB of UFS 2.2 storage,
+                providing plenty of ...
+
+CLAIM 6:
+  Claim ID:     blog_post_promo::sen...
+  Claim Kind:   product_claim
+  Block Kind:   blog_heading
+  Triggers:     numeric, claim_verb
+  Char Span:    (1946, 2050)
+  Sentence:     The Nova X5 supports 5G sub-6 GHz connectivity where available,
+                ensuring you can...
+
+Summary:
+- Total extracted claims: 9
+- Product claims: 7
+- Disclaimer claims: 2
+- Meta claims: 0
+- (Showing 6 of 9 claims)
+- NOTE: All sentences are exact substrings (offset-traceable)
+
+
+================================================================================
+END OF EXAMPLES
+================================================================================

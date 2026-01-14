@@ -21,6 +21,8 @@ from scipy import stats
 from rich.console import Console
 from rich.table import Table
 
+from analysis.schema_eval import get_metric_value
+
 app = typer.Typer(help="Generate analytics reports from experimental results")
 console = Console()
 
@@ -87,18 +89,18 @@ def calculate_engine_comparison(eval_results: List[Dict], results_df: pd.DataFra
     for engine in merged["engine"].unique():
         engine_data = merged[merged["engine"] == engine]
 
-        # Extract metrics
-        metrics_list = [r["metrics"] for r in eval_results if r["engine"] == engine]
+        # Filter results for this engine
+        engine_results = [r for r in eval_results if r.get("engine") == engine]
 
-        if not metrics_list:
+        if not engine_results:
             continue
 
-        # Aggregate metrics
-        total_claims = sum(m["total_claims"] for m in metrics_list)
-        hit_rate_avg = np.mean([m["hit_rate"] for m in metrics_list])
-        contradiction_rate_avg = np.mean([m["contradiction_rate"] for m in metrics_list])
-        unsupported_rate_avg = np.mean([m["unsupported_rate"] for m in metrics_list])
-        overclaim_rate_avg = np.mean([m["overclaim_rate"] for m in metrics_list])
+        # Aggregate metrics (using schema-tolerant accessor)
+        total_claims = sum(get_metric_value(r, "total_claims") for r in engine_results)
+        hit_rate_avg = np.mean([get_metric_value(r, "hit_rate") for r in engine_results])
+        contradiction_rate_avg = np.mean([get_metric_value(r, "contradiction_rate") for r in engine_results])
+        unsupported_rate_avg = np.mean([get_metric_value(r, "unsupported_rate") for r in engine_results])
+        overclaim_rate_avg = np.mean([get_metric_value(r, "overclaim_rate") for r in engine_results])
 
         # Token stats
         avg_prompt_tokens = engine_data["prompt_tokens"].mean()
@@ -106,8 +108,8 @@ def calculate_engine_comparison(eval_results: List[Dict], results_df: pd.DataFra
         avg_total_tokens = engine_data["total_tokens"].mean()
 
         # Error counts
-        numeric_errors = sum(r["numeric_error_count"] for r in eval_results if r["engine"] == engine)
-        unit_errors = sum(r["unit_error_count"] for r in eval_results if r["engine"] == engine)
+        numeric_errors = sum(get_metric_value(r, "numeric_error_count") for r in engine_results)
+        unit_errors = sum(get_metric_value(r, "unit_error_count") for r in engine_results)
 
         engine_stats.append({
             "engine": engine,
@@ -146,14 +148,14 @@ def calculate_drift_analysis(eval_results: List[Dict]) -> pd.DataFrame:
 
     groupby_cols = ["engine", "product_id", "material_type", "temperature"]
     for group_key, group_data in eval_df.groupby(groupby_cols):
-        metrics_list = group_data["metrics"].tolist()
+        group_results = group_data.to_dict('records')
 
-        if len(metrics_list) < 2:
+        if len(group_results) < 2:
             continue
 
-        # Extract rates across repetitions
-        hit_rates = [m["hit_rate"] for m in metrics_list]
-        overclaim_rates = [m["overclaim_rate"] for m in metrics_list]
+        # Extract rates across repetitions (using schema-tolerant accessor)
+        hit_rates = [get_metric_value(r, "hit_rate") for r in group_results]
+        overclaim_rates = [get_metric_value(r, "overclaim_rate") for r in group_results]
 
         drift_stats.append({
             "engine": group_key[0],
@@ -188,10 +190,10 @@ def calculate_temperature_effects(eval_results: List[Dict]) -> pd.DataFrame:
     temp_stats = []
 
     for (engine, product_id, temp), group_data in eval_df.groupby(["engine", "product_id", "temperature"]):
-        metrics_list = group_data["metrics"].tolist()
+        group_results = group_data.to_dict('records')
 
-        hit_rate_avg = np.mean([m["hit_rate"] for m in metrics_list])
-        overclaim_rate_avg = np.mean([m["overclaim_rate"] for m in metrics_list])
+        hit_rate_avg = np.mean([get_metric_value(r, "hit_rate") for r in group_results])
+        overclaim_rate_avg = np.mean([get_metric_value(r, "overclaim_rate") for r in group_results])
 
         temp_stats.append({
             "engine": engine,
@@ -222,10 +224,10 @@ def calculate_product_breakdown(eval_results: List[Dict]) -> pd.DataFrame:
     product_stats = []
 
     for (engine, product_id, material), group_data in eval_df.groupby(["engine", "product_id", "material_type"]):
-        metrics_list = group_data["metrics"].tolist()
+        group_results = group_data.to_dict('records')
 
-        hit_rate_avg = np.mean([m["hit_rate"] for m in metrics_list])
-        overclaim_rate_avg = np.mean([m["overclaim_rate"] for m in metrics_list])
+        hit_rate_avg = np.mean([get_metric_value(r, "hit_rate") for r in group_results])
+        overclaim_rate_avg = np.mean([get_metric_value(r, "overclaim_rate") for r in group_results])
 
         product_stats.append({
             "engine": engine,

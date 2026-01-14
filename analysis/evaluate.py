@@ -19,6 +19,8 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 from runner.render import load_product_yaml
 from analysis.metrics import evaluate_output, EvaluationResult
 from analysis.bias_screen import detect_bias, calculate_bias_score
+from analysis.schema_eval import ensure_per_run_schema
+from analysis.claim_extractor import extract_claim_candidates
 
 app = typer.Typer(help="Evaluate experimental outputs with LLM-free metrics")
 console = Console()
@@ -167,6 +169,43 @@ def evaluate(
             # Read output
             output_text = output_file.read_text(encoding="utf-8")
 
+            # Extract deterministic claim candidates (LLM-free) and save to file
+            # This is instrumentation only - does not affect evaluation metrics
+            try:
+                claims_dir = Path("analysis/claims")
+                claims_dir.mkdir(parents=True, exist_ok=True)
+
+                run_metadata = {
+                    "run_id": run_id,
+                    "product_id": product_id,
+                    "material_type": run.get("material_type"),
+                    "engine": run.get("engine"),
+                    "temperature": run.get("temperature_label"),
+                    "time_of_day": run.get("time_of_day_label"),
+                    "repetition_id": run.get("repetition_id"),
+                }
+
+                claim_candidates = extract_claim_candidates(output_text, run_metadata)
+
+                # Save claims to JSON
+                claims_file = claims_dir / f"{run_id}.json"
+                with open(claims_file, "w", encoding="utf-8") as f:
+                    json.dump(claim_candidates, f, indent=2, ensure_ascii=False)
+
+                # Update claims index (append mode)
+                claims_index = Path("analysis/claims_index.jsonl")
+                with open(claims_index, "a", encoding="utf-8") as f:
+                    index_entry = {
+                        "run_id": run_id,
+                        "path": str(claims_file),
+                        "n_claims": len(claim_candidates)
+                    }
+                    f.write(json.dumps(index_entry) + "\n")
+
+            except Exception as e:
+                # Don't fail evaluation if claim extraction fails
+                console.print(f"[yellow]Warning: Claim extraction failed for {run_id[:12]}: {e}[/yellow]")
+
             # Evaluate
             try:
                 result = evaluate_single_run(
@@ -181,6 +220,9 @@ def evaluate(
                 result["temperature"] = run.get("temperature_label")
                 result["time_of_day"] = run.get("time_of_day_label")
                 result["repetition_id"] = run.get("repetition_id")
+
+                # Ensure canonical schema (backward compatible)
+                result = ensure_per_run_schema(result)
 
                 per_run_results.append(result)
 

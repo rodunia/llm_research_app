@@ -3,9 +3,12 @@
 import csv
 import hashlib
 import json
+import subprocess
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
+import importlib.metadata
 
 
 def canonical_json(d: dict) -> str:
@@ -66,3 +69,96 @@ def append_row(row: dict, path: str = "results/results.csv") -> None:
             writer.writeheader()
 
         writer.writerow(row)
+
+
+def get_git_hash() -> str:
+    """Get current git commit hash.
+
+    Returns:
+        Git commit hash (short) or "unknown" if not in a git repo
+    """
+    try:
+        result = subprocess.run(
+            ["git", "rev-parse", "--short", "HEAD"],
+            capture_output=True,
+            text=True,
+            timeout=5,
+            check=False
+        )
+        if result.returncode == 0:
+            return result.stdout.strip()
+    except Exception:
+        pass
+    return "unknown"
+
+
+def get_package_versions() -> Dict[str, str]:
+    """Get versions of key packages.
+
+    Returns:
+        Dictionary of package name -> version string
+    """
+    key_packages = [
+        "transformers", "torch", "typer", "pandas", "numpy",
+        "rapidfuzz", "pint", "rich", "openai", "anthropic",
+        "google-generativeai", "mistralai"
+    ]
+
+    versions = {}
+    for pkg in key_packages:
+        try:
+            versions[pkg] = importlib.metadata.version(pkg)
+        except importlib.metadata.PackageNotFoundError:
+            versions[pkg] = "not_installed"
+
+    return versions
+
+
+def write_manifest(
+    session_id: str,
+    config_snapshot: Optional[Dict[str, Any]] = None,
+    manifest_dir: str = "results/manifests"
+) -> Path:
+    """Write a reproducibility manifest for a session.
+
+    Args:
+        session_id: Unique session identifier (e.g., "manual_20260114_143000")
+        config_snapshot: Optional config dict snapshot (PRODUCTS, MATERIALS, etc.)
+        manifest_dir: Directory to write manifests (default: results/manifests)
+
+    Returns:
+        Path to written manifest file
+    """
+    manifest_path = Path(manifest_dir)
+    manifest_path.mkdir(parents=True, exist_ok=True)
+
+    manifest_file = manifest_path / f"{session_id}.json"
+
+    # Don't overwrite existing manifests
+    if manifest_file.exists():
+        # Append a suffix
+        counter = 1
+        while True:
+            manifest_file = manifest_path / f"{session_id}_{counter}.json"
+            if not manifest_file.exists():
+                break
+            counter += 1
+
+    # Build manifest
+    manifest = {
+        "session_id": session_id,
+        "timestamp": now_iso(),
+        "git_hash": get_git_hash(),
+        "python_version": sys.version,
+        "package_versions": get_package_versions(),
+    }
+
+    # Add config snapshot if provided
+    if config_snapshot:
+        manifest["config"] = config_snapshot
+
+    # Write manifest
+    with open(manifest_file, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2, ensure_ascii=False)
+
+    return manifest_file

@@ -4,8 +4,9 @@
 
 # --- 1. EXPERIMENT CONSTANTS ---
 # Frozen matrix constants (see docs/experiment_constants.md)
-# Current: 3 products → 1,215 runs (3 products × 5 materials × 3 temps × 3 reps × 3 times × 3 engines)
-# Future: 5 products → 2,700 runs (5 products × 5 materials × 3 temps × 3 reps × 3 times × 4 engines)
+# Current: 3 products → 729 runs (3 products × 3 materials × 3 temps × 3 reps × 3 times × 3 engines)
+# Note: organic_social_posts and spec_document excluded from production
+# Future: 5 products with 5 materials × 4 engines = variable based on active materials
 
 PRODUCTS = (
     "smartphone_mid",
@@ -18,9 +19,9 @@ PRODUCTS = (
 
 MATERIALS = (
     "digital_ad.j2",
-    "organic_social_posts.j2",
+    # "organic_social_posts.j2",  # Excluded from production
     "faq.j2",
-    "spec_document_facts_only.j2",
+    # "spec_document_facts_only.j2",  # Excluded from production
     "blog_post_promo.j2",
 )
 

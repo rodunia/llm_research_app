@@ -24,11 +24,56 @@ env/
 # Data and results
 data/
 outputs/*.txt
+outputs/*.json
+outputs/**/*.json
 outputs/prompts/*.txt
 
 # Exclude CSV results but keep experiments template
 *.csv
 !results/experiments.csv
+
+# Working files and generated data
+results/*.jsonl
+results/*.jsonl.old
+results/*.txt
+analysis/*.json
+outputs/enhanced_prompts_test/
+tests/
+
+# Utility and test scripts
+run_*.sh
+*_test.py
+browse_outputs.sh
+check_status.sh
+consolidate_outputs.py
+fix_csv_status.py
+monitor_extraction.py
+analyze_dataset.py
+augment_training_data.py
+generate_more_augmentations.py
+regenerate_with_context.py
+view_results.py
+runner/extract_claims.py
+runner/train_deberta.py
+runner/infer_deberta.py
+requirements_deberta.txt
+deberta_training_colab.ipynb
+
+# Working documentation
+CLAIM_EXTRACTION_SUMMARY.md
+DEBERTA_WORKFLOW.md
+EXECUTION_LOG.md
+FINDING_OUTPUTS.md
+GOOGLE_COLAB_GUIDE.md
+HUMAN_IN_THE_LOOP_SUMMARY.md
+README_OPERATORS.md
+REFACTORING_SUMMARY.md
+SHIFT_GUIDE.md
+
+# Backup files
+.env.bak
+*.bak
+*.backup
 
 # OS
 .DS_Store

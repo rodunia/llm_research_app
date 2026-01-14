@@ -41,25 +41,21 @@ Avoid liquid exposure; no water-resistance certification is claimed.
 ======================================================================
 ENGINE: OPENAI
 Model: gpt-4o-mini-2024-07-18
-Tokens: 337 prompt + 108 completion = 445 total
+Tokens: 337 prompt + 100 completion = 437 total
 ----------------------------------------------------------------------
-Experience the Nova X5 5G Smartphone with a stunning 6.5 in display, 120 Hz refresh rate, and powerful 5000 mAh battery. Enjoy 5G connectivity, Wi-Fi 6 support, and fast 30 W USB-C charging. 
+Experience the Nova X5 5G Smartphone with a 6.5 in, 2400×1080, 120 Hz display. Enjoy 5G connectivity, Wi-Fi 6 support, and 30 W USB-C fast charging. 
 
 Learn more.
 
-Disclaimers:  
-Network availability (including 5G) depends on carrier and coverage; speeds vary.  
-Actual battery life varies by usage, settings, and network conditions.  
-Avoid liquid exposure; no water-resistance certification is claimed.
+Disclaimers: Network availability (including 5G) depends on carrier and coverage; speeds vary. Actual battery life varies by usage, settings, and network conditions. Avoid liquid exposure; no water-resistance certification is claimed.
 
 ======================================================================
 ENGINE: GOOGLE
 Model: gemini-2.5-flash
-Tokens: 372 prompt + 139 completion = 511 total
+Tokens: 372 prompt + 134 completion = 506 total
 ----------------------------------------------------------------------
-Nova X5 5G Smartphone: stunning 6.5 in, 120 Hz display for smoother motion. Enjoy 5G connectivity (sub-6 GHz) and Wi-Fi 6. Fast charge its 5000 mAh battery with 30 W USB-C. Powered by octa-core 2.4 GHz CPU, 8 GB RAM, 256 GB storage.
-
-Learn more
+Nova X5 5G: Enjoy a 6.5 in 120 Hz display for smoother motion. Fast charge its 5000 mAh battery with 30 W USB-C. Features an octa-core 2.4 GHz CPU, 8 GB RAM, and 256 GB storage. Connect with 5G and Wi-Fi 6.
+Learn more.
 
 Disclaimers:
 Network availability (including 5G) depends on carrier and coverage; speeds vary.
@@ -69,10 +65,12 @@ Avoid liquid exposure; no water-resistance certification is claimed.
 ======================================================================
 ENGINE: MISTRAL
 Model: mistral-small-latest
-Tokens: 361 prompt + 133 completion = 494 total
+Tokens: 361 prompt + 138 completion = 499 total
 ----------------------------------------------------------------------
-**Nova X5 5G Smartphone – Smooth & Fast!**
-6.5" 120 Hz display, 5000 mAh battery, 30 W fast charging. Octa-core 2.4 GHz CPU, 8 GB RAM, 256 GB storage. 5G, Wi-Fi 6, Bluetooth 5.3. **Learn more!**
+**Nova X5 5G Smartphone**
+6.5" 120 Hz display, 5000 mAh battery, 30 W USB-C fast charging. Octa-core 2.4 GHz CPU, 8 GB RAM, 256 GB storage (expandable to 1 TB). 5G sub-6 GHz, Wi-Fi 6, Bluetooth 5.3.
+
+Learn more.
 
 **Disclaimers:**
 Network availability (including 5G) depends on carrier and coverage; speeds vary. Actual battery life varies by usage, settings, and network conditions. Avoid liquid exposure; no water-resistance certification is claimed.

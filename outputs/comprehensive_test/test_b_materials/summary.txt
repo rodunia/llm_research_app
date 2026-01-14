@@ -8,20 +8,20 @@ Materials tested: 5
 
 digital_ad.j2:
   Prompt: 1268 chars
-  Output: 438 chars
-  Tokens: 445
+  Output: 450 chars
+  Tokens: 449
   Model: gpt-4o-mini-2024-07-18
 
 organic_social_posts.j2:
   Prompt: 1308 chars
-  Output: 595 chars
-  Tokens: 492
+  Output: 549 chars
+  Tokens: 488
   Model: gpt-4o-mini-2024-07-18
 
 faq.j2:
   Prompt: 1226 chars
-  Output: 1282 chars
-  Tokens: 667
+  Output: 1185 chars
+  Tokens: 645
   Model: gpt-4o-mini-2024-07-18
 
 spec_document_facts_only.j2:
@@ -32,6 +32,6 @@ spec_document_facts_only.j2:
 
 blog_post_promo.j2:
   Prompt: 1303 chars
-  Output: 3080 chars
-  Tokens: 973
+  Output: 2822 chars
+  Tokens: 935
   Model: gpt-4o-mini-2024-07-18

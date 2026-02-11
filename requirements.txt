@@ -12,3 +12,8 @@ jinja2
 # If not installed, falls back to regex-based splitting
 # No model download required - uses blank("en") + sentencizer
 spacy>=3.7
+
+# Glass Box Audit Pipeline dependencies
+transformers>=4.30.0
+torch>=2.0.0
+tqdm

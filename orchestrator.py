@@ -153,6 +153,51 @@ def create_validation_sample() -> bool:
     )
 
 
+def extract_claims(engine: str = None, force: bool = False) -> bool:
+    """Extract claims from completed outputs using LLM (temp=0).
+
+    Args:
+        engine: Filter by engine (openai/google/mistral), or None for all
+        force: Re-extract even if claims already exist
+
+    Returns:
+        True if successful
+    """
+    cmd = [sys.executable, "-m", "runner.extract_claims"]
+
+    if engine:
+        cmd.extend(["--engine", engine])
+
+    if force:
+        cmd.append("--force")
+
+    description = f"Extracting claims ({engine or 'all engines'})"
+    return run_command(cmd, description)
+
+
+def verify_claims(inplace: bool = True) -> bool:
+    """Verify extracted claims using DeBERTa NLI.
+
+    Args:
+        inplace: Update claim JSON files in-place (default: True)
+
+    Returns:
+        True if successful
+    """
+    cmd = [
+        sys.executable, "-m", "analysis.deberta_verify_claims",
+        "--in", "outputs/*_claims.json",
+        "--products-dir", "products/"
+    ]
+
+    if inplace:
+        cmd.append("--inplace")
+    else:
+        cmd.extend(["--out", "results/all_claims_verified.jsonl"])
+
+    return run_command(cmd, "Verifying claims with DeBERTa NLI")
+
+
 @app.command()
 def run(
     time_of_day: str = typer.Option(
@@ -350,6 +395,58 @@ def run_scheduled_job(time_of_day: str) -> None:
 
     except Exception as e:
         console.print(f"\n[bold red]✗ {time_of_day.capitalize()} run failed: {e}[/bold red]\n")
+
+
+@app.command()
+def extract(
+    engine: str = typer.Option(
+        None,
+        "--engine",
+        "-e",
+        help="Engine to extract from (openai/google/mistral), or all if not specified"
+    ),
+    force: bool = typer.Option(
+        False,
+        "--force",
+        "-f",
+        help="Re-extract even if claims already exist"
+    )
+) -> None:
+    """Extract claims from completed outputs using LLM (temp=0).
+
+    This runs claim extraction on all completed runs for the specified engine.
+    Uses GPT-4o-mini at temperature=0 for reproducible extraction.
+    """
+    console.print("\n[bold]LLM Research Pipeline - Claim Extraction[/bold]")
+    console.print(f"Engine: {engine or 'all'}")
+    console.print(f"Force re-extract: {force}\n")
+
+    if not extract_claims(engine=engine, force=force):
+        raise typer.Exit(1)
+
+    console.print("\n[bold green]✓ Claim extraction complete[/bold green]")
+
+
+@app.command()
+def verify(
+    inplace: bool = typer.Option(
+        True,
+        "--inplace/--to-file",
+        help="Update JSON files in-place (default) or write to separate file"
+    )
+) -> None:
+    """Verify extracted claims using DeBERTa NLI.
+
+    This runs DeBERTa verification on all extracted claims, comparing them
+    against the product YAML ground truth (premise).
+    """
+    console.print("\n[bold]LLM Research Pipeline - Claim Verification[/bold]")
+    console.print(f"Mode: {'in-place update' if inplace else 'separate output file'}\n")
+
+    if not verify_claims(inplace=inplace):
+        raise typer.Exit(1)
+
+    console.print("\n[bold green]✓ Claim verification complete[/bold green]")
 
 
 @app.command()

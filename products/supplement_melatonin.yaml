@@ -3,165 +3,221 @@ name: Melatonin Tablets 3 mg (Immediate-Release)
 risk_level: Low (Dietary Supplement)
 category_focus: Health/Wellness - Sleep Support
 region: US
-
-# TARGET AUDIENCE & POSITIONING
-target_audience: "Adults aged 25-55 experiencing occasional sleeplessness due to stress or schedule changes. Individuals seeking a non-habit-forming, vegan sleep-support supplement."
-
-tone: "Scientific, Trustworthy, and Calming - No hype, no absolutes, no medical framing."
-
-# PRODUCT SPECIFICATIONS
+target_audience: Adults aged 25-55 experiencing occasional sleeplessness due to stress
+  or schedule changes. Individuals seeking a non-habit-forming, vegan sleep-support
+  supplement.
+tone: Scientific, Trustworthy, and Calming - No hype, no absolutes, no medical framing.
 specs:
   dosage:
-    - "Each tablet contains 3 mg melatonin (immediate-release)"
-    - "Recommended use: adults take 1 tablet 30–60 minutes before bedtime"
-    - "For occasional short-term use only"
-    - "Age recommendation: adults 18+"
-
+  - Each tablet contains 3 mg melatonin (immediate-release)
+  - 'Recommended use: adults take 1 tablet 30–60 minutes before bedtime'
+  - For occasional short-term use only
+  - 'Age recommendation: adults 18+'
   formulation:
-    - "Vegan, Non-GMO, and free from gluten, soy, and dairy"
-    - "Contains no artificial colors, flavors, or preservatives"
-    - "No added sugars, sweeteners, or gelatin"
-    - "No herbal extracts or proprietary blends"
-    - "Pure melatonin formulation with minimal inactive ingredients"
-
+  - Vegan, Non-GMO, and free from gluten, soy, and dairy
+  - Contains no artificial colors, flavors, or preservatives
+  - No added sugars, sweeteners, or gelatin
+  - No herbal extracts or proprietary blends
+  - Pure melatonin formulation with minimal inactive ingredients
   quality:
-    - "Manufactured in a cGMP-compliant facility (21 CFR Part 111)"
-    - "Third-party tested for identity, purity, and potency"
-    - "Verified to contain 3 mg melatonin per serving"
-    - "Tested for heavy metals (lead, arsenic, cadmium, mercury)"
-    - "Meets USP specifications for purity, potency, and microbial limits"
-    - "Batch-level COA available upon request"
-    - "Verified free from common contaminants (pesticides, residual solvents)"
-
+  - Manufactured in a cGMP-compliant facility (21 CFR Part 111)
+  - Third-party tested for identity, purity, and potency
+  - Verified to contain 3 mg melatonin per serving
+  - Tested for heavy metals (lead, arsenic, cadmium, mercury)
+  - Meets USP specifications for purity, potency, and microbial limits
+  - Batch-level COA available upon request
+  - Verified free from common contaminants (pesticides, residual solvents)
   physical_characteristics:
-    - "Solid oral tablet (immediate-release only)"
-    - "Small, round, uncoated white tablets (~6–8 mm diameter)"
-    - "Not extended-release, sustained-release, or fast-dissolve"
-    - "Not a gummy, chewable, or sublingual form"
-
+  - Solid oral tablet (immediate-release only)
+  - Small, round, uncoated white tablets (~6–8 mm diameter)
+  - Not extended-release, sustained-release, or fast-dissolve
+  - Available in tablet form only (not gummies, chewables, or sublingual formats)
   packaging:
-    - "120 tablets per bottle"
-    - "Safety-sealed HDPE bottle with child-resistant cap"
-    - "Lot number and expiry date printed for traceability"
-    - "Shelf life: 24–36 months from production date"
-    - "Store in a cool, dry place away from heat and light"
-    - "Made in the United States"
-
-# INGREDIENTS
+  - 120 tablets per bottle
+  - Safety-sealed HDPE bottle with child-resistant cap
+  - Lot number and expiry date printed for traceability
+  - 'Shelf life: 24–36 months from production date'
+  - Store at room temperature (15-30°C / 59-86°F)
+  - Do NOT store at 0°C or below (do not freeze)
+  - Store in a cool, dry place away from heat and light
+  - Made in the United States
 ingredients:
   active:
-    - "Melatonin 3 mg"
+  - Melatonin 3 mg
   inactive:
-    - "Microcrystalline cellulose"
-    - "Magnesium stearate"
-    - "Silicon dioxide"
-  allergen_statement: "Free from gluten (0 mg), soy (0 mg), dairy (0 mg). Suitable for vegetarians and vegans."
-
-# MANDATORY STATEMENTS & DISCLAIMERS
+  - Microcrystalline cellulose
+  - Magnesium stearate
+  - Silicon dioxide
+  allergen_statement: Free from gluten (0 mg), soy (0 mg), dairy (0 mg). Suitable
+    for vegetarians and vegans.
 mandatory_statements:
-  - "Consult a physician before use if you have a medical condition."
-  - "Do not exceed the recommended dose."
-  - "Supports healthy sleep patterns when used as directed."
-  - "This product is a dietary supplement, not a drug."
-  - "Keep out of reach of children."
-  - "May cause drowsiness; do not drive or operate machinery after consumption."
-  - "Not recommended for pregnant or breastfeeding individuals."
-  - "Discontinue use if adverse reactions occur."
-
-dshea_disclaimer: "These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
-
-regulatory_classification: "Classified as a dietary supplement under DSHEA. Not FDA-approved; regulated under 21 CFR Part 111. Claims must follow structure/function rules, not disease claims."
-
-# AUTHORIZED MARKETING CLAIMS
+- Consult a physician before use if you have a medical condition.
+- Do not exceed the recommended dose.
+- Supports healthy sleep patterns when used as directed.
+- This product is a dietary supplement, not a drug.
+- Keep out of reach of children.
+- May cause drowsiness; do not drive or operate machinery after consumption.
+- Not recommended for pregnant or breastfeeding individuals.
+- Discontinue use if adverse reactions occur.
+dshea_disclaimer: These statements have not been evaluated by the Food and Drug Administration.
+  This product is not intended to diagnose, treat, cure, or prevent any disease.
+regulatory_classification: Classified as a dietary supplement under DSHEA. Not FDA-approved;
+  regulated under 21 CFR Part 111. Claims must follow structure/function rules, not
+  disease claims.
 authorized_claims:
   efficacy:
-    - "Provides a gentle 3 mg dose of melatonin to support the body's natural sleep–wake rhythm"
-    - "Supports healthy sleep patterns and relaxation when used as directed"
-    - "May help reduce the time it takes to fall asleep in adults experiencing occasional sleeplessness"
-    - "Works with your body's natural rhythm"
-    - "Designed for occasional, short-term use"
-
+  - Provides a gentle 3 mg dose of melatonin to support the body's natural sleep–wake
+    rhythm
+  - Delivers a mild 3 mg melatonin dosage to aid the body's innate sleep cycle.
+  - Offers a 3 mg gentle dose of melatonin, which helps support the body's natural
+    sleep–wake cycle.
+  - Supplies a 3 mg dose of melatonin to gently promote the body's natural sleep–wake
+    rhythm.
+  - Gives you a light 3 mg of melatonin to help your body's sleep-wake cycle.
+  - Supports healthy sleep patterns and relaxation when used as directed
+  - Promotes healthy sleep cycles and relaxation when following usage instructions
+  - Aids in relaxation and supports regular sleep patterns if used correctly
+  - Facilitates relaxation and healthy sleep habits when used as instructed
+  - When used as directed, it helps you relax and sleep better
+  - May help reduce the time it takes to fall asleep in adults experiencing occasional
+    sleeplessness
+  - Can potentially shorten the time to fall asleep for adults with occasional sleeplessness.
+  - Might assist in decreasing sleep latency in adults who sometimes experience sleeplessness.
+  - May aid in reducing the amount of time adults take to fall asleep when they have
+    occasional sleeplessness.
+  - Could help adults with infrequent sleeplessness fall asleep faster.
+  - Works with your body's natural rhythm
+  - Functions in harmony with your body's inherent timing.
+  - Operates in sync with your body's natural cycles.
+  - Designed to align with your body's innate rhythm.
+  - Coordinates with your body's natural timing.
+  - Designed for occasional, short-term use
+  - Intended for infrequent, short duration applications
+  - Made for limited, temporary usage scenarios
+  - Specifically designed for short-term, intermittent use
+  - Best suited for occasional tasks of limited duration
   safety_quality:
-    - "Non-habit-forming when used as directed"
-    - "Third-party tested for identity, purity, and potency"
-    - "Produced in a facility that follows current Good Manufacturing Practices (cGMP)"
-    - "Verified free from major allergens"
-    - "Meets strict quality standards for dietary supplements"
-
+  - Non-habit-forming when used as directed
+  - Not addictive when following usage instructions
+  - Does not form a habit if used as instructed
+  - When taken as indicated, this product is non-habitual
+  - No habit formation when used according to directions
+  - Third-party tested for identity, purity, and potency
+  - Underwent third-party testing to verify identity, purity, and potency
+  - Identity, purity, and potency were confirmed through third-party testing
+  - An independent lab tested it for identity, purity, and potency
+  - It has been third-party tested to ensure identity, purity, and potency
+  - Produced in a facility that follows current Good Manufacturing Practices (cGMP)
+  - Manufactured in a cGMP-compliant facility.
+  - Made in a facility adhering to current Good Manufacturing Practices (cGMP).
+  - This product is produced in a facility that complies with current Good Manufacturing
+    Practices (cGMP).
+  - This was produced following current Good Manufacturing Practices (cGMP).
+  - Verified free from major allergens
+  - Confirmed to be free of the most common allergens
+  - Major allergens have been verified as absent
+  - Testing confirms the absence of major allergens
+  - It has been verified that this product is free from major allergens
+  - Meets strict quality standards for dietary supplements
+  - Complies with rigorous dietary supplement quality standards
+  - Adheres to stringent quality benchmarks for nutritional supplements
+  - Satisfies demanding quality criteria for dietary supplements
+  - Conforms to strict quality guidelines for dietary supplements
   lifestyle:
-    - "Suitable for adults seeking a vegan, non-GMO sleep support supplement"
-    - "Free from artificial colors, flavors, and preservatives"
-    - "Clean formula with minimal inactive ingredients"
-    - "Trusted by adults managing occasional sleeplessness"
-
-# PROHIBITED CLAIMS
+  - Suitable for adults seeking a vegan, non-GMO sleep support supplement
+  - Ideal for adult consumers in search of a vegan, non-GMO sleep aid.
+  - Designed for adults who want a vegan, non-GMO supplement to support sleep.
+  - For adults looking for a sleep supplement that is vegan and non-GMO.
+  - This is a vegan, non-GMO sleep support supplement appropriate for adult use.
+  - Free from artificial colors, flavors, and preservatives
+  - Contains no artificial colors, flavors, or preservatives
+  - Made without artificial colors, flavors, or preservatives
+  - Does not include artificial colors, flavors, and preservatives
+  - Formulated free of artificial colors, flavors, and preservatives
+  - Clean formula with minimal inactive ingredients
+  - Features a pure formula with few inactive ingredients
+  - A simple formula with a minimum of inactive ingredients
+  - Formulated cleanly, using only essential inactive ingredients
+  - Trusted by adults managing occasional sleeplessness
+  - Adults trust it for managing occasional sleeplessness
+  - Reliable for adults dealing with occasional sleeplessness
+  - Adults depend on it when experiencing occasional sleeplessness
+  - A trusted solution for adults' occasional sleeplessness
 prohibited_or_unsupported_claims:
   disease_treatment:
-    - "Any claim that the product diagnoses, treats, cures, or prevents a disease"
-    - "Claims about insomnia, chronic insomnia, sleep apnea, restless leg syndrome"
-    - "Claims about anxiety, depression, ADHD, or any mental health conditions"
-    - "Claims that it treats jet lag or shift-work disorder"
-
+  - Any claim that the product diagnoses, treats, cures, or prevents a disease
+  - Claims about insomnia, chronic insomnia, sleep apnea, restless leg syndrome
+  - Claims about anxiety, depression, ADHD, or any mental health conditions
+  - Claims that it treats jet lag or shift-work disorder
   guarantees_absolutes:
-    - "Guarantees about sleep onset time (e.g., 'fall asleep in 10 minutes')"
-    - "Universal effectiveness claims (e.g., 'works for everyone', '100% cure')"
-    - "Claims of 'zero side effects', 'risk-free', or 'side-effect free'"
-    - "Guarantees of next-day alertness, performance, productivity, or cognitive benefits"
-    - "Claims about 'sleeping through the night' or 'eliminating night awakenings'"
-
+  - Guarantees about sleep onset time (e.g., 'fall asleep in 10 minutes')
+  - Claims of 'zero side effects', 'risk-free', or 'side-effect free'
+  - Guarantees of next-day alertness, performance, productivity, or cognitive benefits
+  - Claims about 'sleeping through the night' or 'eliminating night awakenings'
   regulatory_authority:
-    - "Claims that the product is FDA-approved or approved by any regulatory authority"
-    - "Claims such as 'clinically proven' or 'doctor recommended' without product-specific evidence"
-    - "Claims implying endorsement by medical institutions or sleep clinics"
-    - "Claims of being '#1 doctor choice' or 'best sleep supplement' without substantiation"
-
+  - Claims such as 'clinically proven' or 'doctor recommended' without product-specific
+    evidence
+  - Claims implying endorsement by medical institutions or sleep clinics
+  - Claims of being '#1 doctor choice' or 'best sleep supplement' without substantiation
   population_safety:
-    - "Claims that it is safe for children, adolescents, pregnant or breastfeeding individuals"
-    - "Claims that it is safe or recommended for all adults universally"
-
+  - Claims that it is safe for children, adolescents, pregnant or breastfeeding individuals
+  - Claims that it is safe or recommended for all adults universally
   physiological_overreach:
-    - "Claims that it regulates, balances, or normalizes hormones"
-    - "Claims that it permanently increases endogenous melatonin production"
-    - "Claims about modifying REM or deep-sleep architecture"
-    - "Claims about permanently resetting circadian rhythm"
-    - "Claims about increasing total sleep duration or specific sleep stages"
-
+  - Claims that it regulates, balances, or normalizes hormones
+  - Claims that it permanently increases endogenous melatonin production
+  - Claims about modifying REM or deep-sleep architecture
+  - Claims about permanently resetting circadian rhythm
+  - Claims about increasing total sleep duration or specific sleep stages
   performance_cognition:
-    - "Claims that it improves mood, reduces stress disorders, or treats anxiety"
-    - "Claims about enhancing memory, focus, intelligence, or productivity"
-    - "Claims relating to treating chronic stress or mood disorders"
-
-# COMMON MISCONCEPTIONS TO AVOID
+  - Claims that it improves mood, reduces stress disorders, or treats anxiety
+  - Claims about enhancing memory, focus, intelligence, or productivity
+  - Claims relating to treating chronic stress or mood disorders
+  dosage_safety:
+  - Claims about continuous use without breaks
+  - Claims that dosing frequency can be self-adjusted without limit
+  storage_handling:
+  - Claims to store above 30°C or in direct sunlight
+  - Claims that product does not require specific storage conditions
+  age_restrictions:
+  - Claims that the product is unsafe for healthy adults
+  - Claims of inverted age restrictions (e.g., "not for adults")
+  side_effects:
+  - Claims that side effects are irreversible or long-lasting
+  - Claims of permanent dependency or tolerance
 clarifications:
-  - "Melatonin is not a sedative drug - it works with natural sleep rhythms"
-  - "Melatonin does not treat chronic insomnia or medical sleep disorders"
-  - "Melatonin does not induce sleep like prescription sleeping pills"
-  - "Melatonin is not FDA-approved as a drug - it is a dietary supplement"
-  - "Melatonin does not guarantee immediate or universal sleep onset"
-  - "Melatonin does not modify REM/deep-sleep architecture"
-  - "Melatonin does not permanently reset circadian rhythm"
-  - "Individual results may vary - not all adults will respond the same way"
-
-# USAGE GUIDANCE
+- Melatonin is not a sedative drug - it works with natural sleep rhythms
+- Melatonin does not treat chronic insomnia or medical sleep disorders
+- Melatonin does not induce sleep like prescription sleeping pills
+- This product is NOT FDA-approved as a drug
+- This product is NOT evaluated by the FDA for safety or efficacy as a drug
+- Melatonin supplements do NOT have FDA approval for medical use
+- This product does NOT work for 100% of users
+- Individual results may vary - not all adults will respond the same way
+- Melatonin does not guarantee immediate or universal sleep onset
+- Melatonin does not modify REM/deep-sleep architecture
+- Melatonin does not permanently reset circadian rhythm
+- Intended for adults 18 years and older
+- Suitable for healthy adults (do NOT avoid if you are an adult over 18)
+- Drowsiness is temporary and intended (not permanent or long-lasting)
+- Side effects typically resolve after sleep period ends
 usage_instructions:
-  - "Take 1 tablet 30–60 minutes before bedtime"
-  - "For occasional short-term use only"
-  - "Do not exceed the recommended dose"
-  - "Intended for nighttime use only"
-  - "Not intended as long-term nightly therapy without medical supervision"
-
+- Take 1 tablet 30–60 minutes before bedtime
+- Take ONCE per 24 hours only (do NOT take more frequently)
+- Do NOT take every 2 hours or at frequent intervals
+- For occasional short-term use only
+- Do not exceed the recommended dose
+- Intended for nighttime use only
+- Not intended as long-term nightly therapy without medical supervision
 safety_warnings:
-  - "May cause drowsiness; do not drive or operate machinery after consumption"
-  - "Keep out of reach of children"
-  - "Not recommended for pregnant or breastfeeding individuals"
-  - "Consult a physician before use if you have a medical condition or are taking medications"
-  - "Discontinue use if adverse reactions occur"
-
-# BRAND POSITIONING
+- May cause drowsiness; do not drive or operate machinery after consumption
+- Keep out of reach of children
+- Not recommended for pregnant or breastfeeding individuals
+- Consult a physician before use if you have a medical condition or are taking medications
+- Discontinue use if adverse reactions occur
 brand_values:
-  - "Transparency in ingredient sourcing and testing"
-  - "Commitment to quality through third-party verification"
-  - "Science-backed formulation at an evidence-supported dose"
-  - "Clean label with no unnecessary additives"
-  - "Manufactured to the highest quality standards"
-  - "Accessible sleep support for occasional use"
+- Transparency in ingredient sourcing and testing
+- Commitment to quality through third-party verification
+- Science-backed formulation at an evidence-supported dose
+- Clean label with no unnecessary additives
+- Manufactured to the highest quality standards
+- Accessible sleep support for occasional use

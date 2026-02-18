@@ -3,10 +3,11 @@
 # All experimental parameters, prompts, models, and users are defined here.
 
 # --- 1. EXPERIMENT CONSTANTS ---
-# Frozen matrix constants (see docs/experiment_constants.md)
-# Current: 3 products → 729 runs (3 products × 3 materials × 3 temps × 3 reps × 3 times × 3 engines)
-# Note: organic_social_posts and spec_document excluded from production
-# Future: 5 products with 5 materials × 4 engines = variable based on active materials
+# Current Setup (2025-01-15):
+# - 3 products × 3 materials × 3 temps × 3 runs/day × 3 engines = 243 runs per day
+# - Single user (no multi-user for now)
+# - Materials: FAQ, Digital Ads, Blog Post Promos only
+# - Runs 3 times per day (morning, afternoon, evening)
 
 PRODUCTS = (
     "smartphone_mid",
@@ -18,11 +19,12 @@ PRODUCTS = (
 )
 
 MATERIALS = (
-    "digital_ad.j2",
-    # "organic_social_posts.j2",  # Excluded from production
     "faq.j2",
-    # "spec_document_facts_only.j2",  # Excluded from production
+    "digital_ad.j2",
     "blog_post_promo.j2",
+    # Excluded from current usage:
+    # "organic_social_posts.j2",
+    # "spec_document_facts_only.j2",
 )
 
 TIMES = (
@@ -37,13 +39,13 @@ TEMPS = (
     1.0,  # high - more creative
 )
 
-REPS = (1, 2, 3)  # Repetition indices (used as "day" labels)
+REPS = (1, 2, 3)  # Three runs per day (morning/afternoon/evening)
 
 ENGINES = (
     "openai",
     "google",
     "mistral",
-    # "anthropic",  # Disabled
+    # "anthropic",  # Excluded per research protocol
 )
 
 # Engine-to-model mapping (used by runner/engines/)
@@ -57,11 +59,9 @@ ENGINE_MODELS = {
 REGION = "US"
 
 # --- 2. USER ACCOUNTS ---
-# A list of researcher accounts to be used in the experiments.
+# Single user setup for current research
 USER_ACCOUNTS = [
-    "account_1",
-    "account_2",
-    "account_3",
+    "researcher_primary",  # Single user for now
 ]
 
 # --- 3. LEGACY CONFIGURATIONS (ARCHIVED) ---

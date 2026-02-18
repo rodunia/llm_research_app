@@ -64,17 +64,30 @@ def build_premise(product_yaml_dict: Dict[str, Any]) -> str:
     authorized = []
     authorized_claims = product_yaml_dict.get('authorized_claims', [])
 
-    # Handle both list of dicts and list of strings
-    for claim in authorized_claims:
-        if isinstance(claim, dict):
-            statement = claim.get('statement', '')
-        elif isinstance(claim, str):
-            statement = claim
-        else:
-            continue
-
-        if statement:
-            authorized.append(statement)
+    # Handle nested dict structure (current YAML format: {efficacy: [...], safety: [...]})
+    if isinstance(authorized_claims, dict):
+        for category, claims in authorized_claims.items():
+            if isinstance(claims, list):
+                for claim_text in claims:
+                    if isinstance(claim_text, dict):
+                        statement = claim_text.get('statement', '')
+                    elif isinstance(claim_text, str):
+                        statement = claim_text
+                    else:
+                        continue
+                    if statement:
+                        authorized.append(statement)
+    # Handle flat list (legacy format)
+    elif isinstance(authorized_claims, list):
+        for claim in authorized_claims:
+            if isinstance(claim, dict):
+                statement = claim.get('statement', '')
+            elif isinstance(claim, str):
+                statement = claim
+            else:
+                continue
+            if statement:
+                authorized.append(statement)
 
     if authorized:
         sections.append("AUTHORIZED:\n" + "\n".join(f"- {stmt}" for stmt in authorized))
@@ -83,18 +96,33 @@ def build_premise(product_yaml_dict: Dict[str, Any]) -> str:
 
     # Section 2: PROHIBITED CLAIMS
     prohibited = []
-    prohibited_claims = product_yaml_dict.get('prohibited_claims', [])
+    # Try new key first (with underscore), fallback to legacy key
+    prohibited_claims = product_yaml_dict.get('prohibited_or_unsupported_claims') or product_yaml_dict.get('prohibited_claims', [])
 
-    for claim in prohibited_claims:
-        if isinstance(claim, dict):
-            statement = claim.get('statement', '')
-        elif isinstance(claim, str):
-            statement = claim
-        else:
-            continue
-
-        if statement:
-            prohibited.append(statement)
+    # Handle nested dict structure (current YAML format)
+    if isinstance(prohibited_claims, dict):
+        for category, claims in prohibited_claims.items():
+            if isinstance(claims, list):
+                for claim_text in claims:
+                    if isinstance(claim_text, dict):
+                        statement = claim_text.get('statement', '')
+                    elif isinstance(claim_text, str):
+                        statement = claim_text
+                    else:
+                        continue
+                    if statement:
+                        prohibited.append(statement)
+    # Handle flat list (legacy format)
+    elif isinstance(prohibited_claims, list):
+        for claim in prohibited_claims:
+            if isinstance(claim, dict):
+                statement = claim.get('statement', '')
+            elif isinstance(claim, str):
+                statement = claim
+            else:
+                continue
+            if statement:
+                prohibited.append(statement)
 
     if prohibited:
         sections.append("PROHIBITED:\n" + "\n".join(f"- {stmt}" for stmt in prohibited))
@@ -103,16 +131,34 @@ def build_premise(product_yaml_dict: Dict[str, Any]) -> str:
 
     # Section 3: SPECS
     specs = []
-    technical_specs = product_yaml_dict.get('technical_specs', [])
+    specs_data = product_yaml_dict.get('specs', {})
 
-    for spec in technical_specs:
-        if isinstance(spec, dict):
-            category = spec.get('category', '')
-            value = spec.get('value_with_units', '')
-            if category and value:
-                specs.append(f"{category}: {value}")
-        elif isinstance(spec, str):
-            specs.append(spec)
+    # Handle nested dict structure (current YAML format)
+    if isinstance(specs_data, dict):
+        for category, items in specs_data.items():
+            if isinstance(items, list):
+                for item in items:
+                    specs.append(f"{category}: {item}")
+            elif isinstance(items, dict):
+                # Recursively handle nested dicts (e.g., camera_system with subcategories)
+                for subcategory, subitems in items.items():
+                    if isinstance(subitems, list):
+                        for item in subitems:
+                            specs.append(f"{category}.{subcategory}: {item}")
+                    else:
+                        specs.append(f"{category}.{subcategory}: {subitems}")
+            else:
+                specs.append(f"{category}: {items}")
+    # Handle flat list (legacy format)
+    elif isinstance(specs_data, list):
+        for spec in specs_data:
+            if isinstance(spec, dict):
+                category = spec.get('category', '')
+                value = spec.get('value_with_units', '')
+                if category and value:
+                    specs.append(f"{category}: {value}")
+            elif isinstance(spec, str):
+                specs.append(spec)
 
     if specs:
         sections.append("SPECS:\n" + "\n".join(f"- {spec}" for spec in specs))
@@ -121,9 +167,10 @@ def build_premise(product_yaml_dict: Dict[str, Any]) -> str:
 
     # Section 4: DISCLAIMERS
     disclaimers = []
-    mandatory_disclaimers = product_yaml_dict.get('mandatory_disclaimers', [])
+    # Try new key first, fallback to legacy key
+    disclaimers_data = product_yaml_dict.get('mandatory_statements') or product_yaml_dict.get('mandatory_disclaimers', [])
 
-    for disclaimer in mandatory_disclaimers:
+    for disclaimer in disclaimers_data:
         if isinstance(disclaimer, dict):
             statement = disclaimer.get('statement', '')
         elif isinstance(disclaimer, str):

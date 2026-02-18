@@ -62,18 +62,33 @@ def extract_prohibited_claims(product_yaml: Dict[str, Any]) -> List[str]:
         List of prohibited claim statements
     """
     prohibited = []
-    prohibited_claims = product_yaml.get('prohibited_claims', [])
+    # Try new key first (with underscore), fallback to legacy key
+    prohibited_claims = product_yaml.get('prohibited_or_unsupported_claims') or product_yaml.get('prohibited_claims', [])
 
-    for claim in prohibited_claims:
-        if isinstance(claim, dict):
-            statement = claim.get('statement', '')
-        elif isinstance(claim, str):
-            statement = claim
-        else:
-            continue
-
-        if statement:
-            prohibited.append(statement)
+    # Handle nested dict structure (current YAML format)
+    if isinstance(prohibited_claims, dict):
+        for category, claims in prohibited_claims.items():
+            if isinstance(claims, list):
+                for claim_text in claims:
+                    if isinstance(claim_text, dict):
+                        statement = claim_text.get('statement', '')
+                    elif isinstance(claim_text, str):
+                        statement = claim_text
+                    else:
+                        continue
+                    if statement:
+                        prohibited.append(statement)
+    # Handle flat list (legacy format)
+    elif isinstance(prohibited_claims, list):
+        for claim in prohibited_claims:
+            if isinstance(claim, dict):
+                statement = claim.get('statement', '')
+            elif isinstance(claim, str):
+                statement = claim
+            else:
+                continue
+            if statement:
+                prohibited.append(statement)
 
     return prohibited
 

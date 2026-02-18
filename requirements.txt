@@ -7,6 +7,7 @@ python-dotenv
 pyyaml
 pandas
 jinja2
+matplotlib>=3.5.0  # For visualization plots
 
 # Optional: Improved sentence segmentation for claim extraction (v2.0+)
 # If not installed, falls back to regex-based splitting
@@ -17,3 +18,7 @@ spacy>=3.7
 transformers>=4.30.0
 torch>=2.0.0
 tqdm
+tenacity>=8.0.0
+
+# Semantic pre-filtering (Phase 1 optimization)
+sentence-transformers>=2.2.2

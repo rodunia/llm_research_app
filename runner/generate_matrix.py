@@ -93,8 +93,8 @@ def generate_full_matrix(dry_run: bool = False, trap_flag: bool = False) -> None
         # Define output file path (no prompt file needed)
         output_path = outputs_dir / f"{run_id}.txt"
 
-        # Write placeholder output file
-        output_path.write_text("[PLACEHOLDER OUTPUT]\n", encoding="utf-8")
+        # Note: Output file will be created by run_job.py when experiment executes
+        # No placeholder file is created - experiments.csv tracks pending vs completed
 
         # Append metadata row to CSV
         row = {

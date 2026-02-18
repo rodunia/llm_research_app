@@ -3,289 +3,334 @@ name: Nova X5 5G Smartphone
 risk_level: Medium (Technology/Performance/Security)
 category_focus: Software, AI, and Security Longevity
 region: Global (features vary by region)
-
-# TARGET AUDIENCE & POSITIONING
-target_audience: "Tech-savvy users prioritizing security, long-term support, and clean software. Consumers focused on AI-powered photography and real-time translation. Users seeking guaranteed OS/security patches for several years."
-
-tone: "Technical, Innovative, Trustworthy - Strictly factual, cautious, and non-exaggerated."
-
-# PRODUCT SPECIFICATIONS
+target_audience: Tech-savvy users prioritizing security, long-term support, and clean
+  software. Consumers focused on AI-powered photography and real-time translation.
+  Users seeking guaranteed OS/security patches for several years.
+tone: Technical, Innovative, Trustworthy - Strictly factual, cautious, and non-exaggerated.
 specs:
   processor_ai:
-    - "Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)"
-    - "Security: Titan M2 security coprocessor for hardware-level protection"
-    - "AI-optimized performance; not designed for peak synthetic benchmarks"
-    - "On-device AI capabilities for translation, image processing, and more"
-    - "Hybrid on-device and cloud-based AI for select tasks"
-
+  - 'Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)'
+  - 'Security: Titan M2 security coprocessor for hardware-level protection'
+  - AI-optimized performance; not designed for peak synthetic benchmarks
+  - On-device AI capabilities for translation, image processing, and more
+  - Hybrid on-device and cloud-based AI for select tasks
   display:
-    - "6.3\" Actua OLED display with 120 Hz refresh rate"
-    - "High-quality OLED technology for vibrant colors and deep blacks"
-    - "Smooth scrolling and responsive touch experience"
-
+  - 6.3" Actua OLED display with 120 Hz refresh rate
+  - High-quality OLED technology for vibrant colors and deep blacks
+  - Smooth scrolling and responsive touch experience
   camera_system:
     main_camera:
-      - "50 MP main camera with Optical Image Stabilization (OIS)"
-      - "12 MP ultra-wide camera"
-      - "Multi-frame computational photography powered by Tensor G4 NPU"
-      - "4K video recording at 60fps"
-      - "1080p video at 120-240fps for slow-motion"
+    - 50 MP main camera with Optical Image Stabilization (OIS)
+    - 12 MP ultra-wide camera
+    - Multi-frame computational photography powered by Tensor G4 NPU
+    - 4K video recording at 60fps
+    - 1080p video at 120-240fps for slow-motion
     front_camera:
-      - "10.8 MP front-facing camera"
+    - 10.8 MP front-facing camera
     capabilities:
-      - "Advanced computational photography for enhanced image quality"
-      - "Real-time AI-powered image processing"
-      - "Night mode and HDR capabilities"
-
+    - Advanced computational photography for enhanced image quality
+    - Real-time AI-powered image processing
+    - Night mode and HDR capabilities
   battery_charging:
-    - "4700–5000 mAh Li-ion battery (regional variation)"
-    - "30–45W USB-C fast charging (charger availability varies by region)"
-    - "Battery capacity will degrade over time with normal use"
-    - "Actual battery life varies by usage, settings, and network conditions"
-
+  - 4700–5000 mAh Li-ion battery (regional variation)
+  - 30–45W USB-C fast charging (charger availability varies by region)
+  - Battery capacity will degrade over time with normal use
+  - Actual battery life varies by usage, settings, and network conditions
   memory_storage:
-    - "Storage options: 128 GB / 256 GB / 512 GB UFS 3.1"
-    - "RAM configurations: 8 GB or 12 GB LPDDR5X"
-    - "No expandable storage via microSD"
-
+  - 'Storage options: 128 GB / 256 GB / 512 GB UFS 3.1'
+  - 'RAM configurations: 8 GB or 12 GB LPDDR5X'
+  - No expandable storage via microSD
   connectivity:
-    - "5G Sub-6 GHz support"
-    - "LTE fallback for broader coverage"
-    - "Wi-Fi 6/6E for fast wireless connectivity"
-    - "Bluetooth 5.x for peripheral connections"
-    - "NFC for contactless payments and data transfer"
-    - "GPS support: GPS, GLONASS, Galileo, BeiDou"
-    - "Single nano-SIM + eSIM capability (regional variation)"
-
+  - 5G Sub-6 GHz support
+  - LTE fallback for broader coverage
+  - Wi-Fi 6/6E for fast wireless connectivity
+  - Bluetooth 5.x for peripheral connections
+  - NFC for contactless payments and data transfer
+  - 'GPS support: GPS, GLONASS, Galileo, BeiDou'
+  - Single nano-SIM + eSIM capability (regional variation)
   build_design:
-    - "Aluminum frame construction"
-    - "Gorilla Glass Victus back panel"
-    - "Dimensions: ~152 × 72 × 8.7 mm"
-    - "Weight: ~190 grams"
-    - "Premium build quality with durable materials"
-
+  - Aluminum frame construction
+  - Gorilla Glass Victus back panel
+  - 'Dimensions: ~152 × 72 × 8.7 mm'
+  - 'Weight: ~190 grams'
+  - Premium build quality with durable materials
   sensors_biometrics:
-    - "Under-display optical fingerprint sensor"
-    - "Face unlock capability"
-    - "Accelerometer, gyroscope, magnetometer"
-    - "Proximity sensor and ambient light sensor"
-
+  - Under-display optical fingerprint sensor
+  - Face unlock capability
+  - Accelerometer, gyroscope, magnetometer
+  - Proximity sensor and ambient light sensor
   audio:
-    - "Stereo speakers with noise reduction"
-    - "USB-C high-resolution audio support"
-    - "No 3.5mm headphone jack"
-
+  - Stereo speakers with noise reduction
+  - USB-C high-resolution audio support
+  - No 3.5mm headphone jack
   software_updates:
-    - "Ships with the latest Android release"
-    - "Clean, bloatware-free Android experience"
-    - "Guaranteed 7 years of OS and security updates"
-    - "Regular security patch schedule"
-    - "Multi-layer hardware security verified by Titan M2"
-    - "End-to-end OS-level security architecture"
-
-# SECURITY & QUALITY
+  - Ships with the latest Android release
+  - Clean, bloatware-free Android experience
+  - Guaranteed 7 years of OS and security updates
+  - Regular security patch schedule
+  - Multi-layer hardware security verified by Titan M2
+  - End-to-end OS-level security architecture
 security_features:
   hardware:
-    - "Titan M2 security coprocessor for hardware-backed protection"
-    - "Multi-layer security approach from chip to OS level"
-    - "Hardware-level encryption for sensitive data"
-    - "Secure boot and verified boot process"
-
+  - Titan M2 security coprocessor for hardware-backed protection
+  - Multi-layer security approach from chip to OS level
+  - Hardware-level encryption for sensitive data
+  - Secure boot and verified boot process
   software:
-    - "Regular security patches documented publicly"
-    - "Device undergoes routine vulnerability assessments"
-    - "No system is impenetrable; security depends on user configuration and updates"
-
+  - Regular security patches documented publicly
+  - Device undergoes routine vulnerability assessments
+  - No system is impenetrable; security depends on user configuration and updates
   limitations:
-    - "No device can guarantee complete protection from emerging threats"
-    - "Security effectiveness depends partly on user behavior and app choices"
-    - "Not immune to malware, phishing, or social engineering attacks"
-
-# MANDATORY STATEMENTS & DISCLAIMERS
+  - No device can guarantee complete protection from emerging threats
+  - Security effectiveness depends partly on user behavior and app choices
+  - Not immune to malware, phishing, or social engineering attacks
 mandatory_statements:
-  - "Actual battery life and performance may vary over the 7-year support period."
-  - "Not all new software features released during the 7 years will be supported by older hardware."
-  - "Device utilizes a multi-layer security approach, but no system is impenetrable."
-  - "Some advanced AI features may require a stable internet connection (cloud processing)."
-  - "Network availability (including 5G) depends on carrier and coverage; speeds vary."
-  - "Battery capacity will degrade over time with normal Li-ion aging."
-  - "Performance may decline with app complexity and OS evolution over time."
-
+- Actual battery life and performance may vary over the 7-year support period.
+- Not all new software features released during the 7 years will be supported by older
+  hardware.
+- Device utilizes a multi-layer security approach, but no system is impenetrable.
+- Some advanced AI features may require a stable internet connection (cloud processing).
+- Network availability (including 5G) depends on carrier and coverage; speeds vary.
+- Battery capacity will degrade over time with normal Li-ion aging.
+- Performance may decline with app complexity and OS evolution over time.
 usage_limitations:
-  - "Not all future Android features will be supported across the full 7 years"
-  - "Long-term performance may vary as software evolves"
-  - "Cloud-dependent features rely on regional bandwidth and service availability"
-  - "AI features may change, be updated, or be discontinued over time"
-  - "Not all carriers support all wireless bands; compatibility varies by region"
-
+- Not all future Android features will be supported across the full 7 years
+- Long-term performance may vary as software evolves
+- Cloud-dependent features rely on regional bandwidth and service availability
+- AI features may change, be updated, or be discontinued over time
+- Not all carriers support all wireless bands; compatibility varies by region
 safety_notes:
-  - "Device is not waterproof unless explicitly certified (no IP rating specified)"
-  - "Avoid liquid exposure; no water-resistance certification claimed"
-  - "Overheating may occur under heavy load or during fast charging"
-  - "Normal Li-ion battery aging affects performance and battery life over time"
-
-# REGULATORY CLASSIFICATION
+- Device is not waterproof unless explicitly certified (no IP rating specified)
+- Avoid liquid exposure; no water-resistance certification claimed
+- Overheating may occur under heavy load or during fast charging
+- Normal Li-ion battery aging affects performance and battery life over time
 regulatory_classification:
-  - "Consumer electronics product; not medical, safety, or defense equipment"
-  - "SAR compliance varies by region and regulatory requirements"
-  - "Encryption features may be subject to export regulations in certain jurisdictions"
-  - "Marketing claims must align with FTC/EU consumer electronics regulations"
-
-# AUTHORIZED MARKETING CLAIMS
+- Consumer electronics product; not medical, safety, or defense equipment
+- SAR compliance varies by region and regulatory requirements
+- Encryption features may be subject to export regulations in certain jurisdictions
+- Marketing claims must align with FTC/EU consumer electronics regulations
 authorized_claims:
   software_experience:
-    - "Delivers a clean, bloatware-free Android experience"
-    - "Provides guaranteed OS and security updates for seven years"
-    - "Designed for consistent long-term software performance and reliable patch cadence"
-    - "Delivers the purest Android experience with zero bloatware"
-
+  - Delivers a clean, bloatware-free Android experience
+  - Provides a pure Android experience without bloatware
+  - Offers an Android experience that is clean and free of bloatware
+  - Gives you a bloatware-free and clean Android experience
+  - Supplies a clean Android experience, devoid of bloatware
+  - Provides guaranteed OS and security updates for seven years
+  - Guarantees OS and security updates for a period of seven years
+  - Offers seven years of assured OS and security updates
+  - Provides a seven-year guarantee for OS and security updates
+  - You're guaranteed to get OS and security updates for 7 years
+  - Designed for consistent long-term software performance and reliable patch cadence
+  - Engineered for sustained software performance over time and a dependable update
+    schedule.
+  - Built to deliver consistent software performance in the long run and a reliable
+    rhythm of patches.
+  - Created for stable, long-term software performance and a dependable patch release
+    cycle.
+  - Made to ensure consistent software performance long-term, with patches released
+    on a reliable schedule.
+  - Delivers the purest Android experience with zero bloatware
+  - Provides a clean Android experience free of bloatware
+  - Offers the most streamlined Android experience without any bloatware
+  - Gives you a pure Android experience, completely free of bloatware
+  - Experience Android in its purest form, with absolutely zero bloatware
   ai_capabilities:
-    - "Features advanced computational photography powered by the Tensor G4 NPU"
-    - "Offers real-time AI tools such as live translation and smart image processing"
-    - "Integrates hybrid on-device and cloud-based AI for select tasks"
-    - "Features integrated AI tools for real-time tasks like live translation"
-    - "On-device AI processing for enhanced privacy on select features"
-
+  - Features advanced computational photography powered by the Tensor G4 NPU
+  - Equipped with state-of-the-art computational photography, thanks to the Tensor
+    G4 NPU.
+  - The Tensor G4 NPU enables cutting-edge computational photography capabilities.
+  - Leverages the Tensor G4 NPU to provide advanced computational photography features.
+  - Utilizes the Tensor G4 NPU for its sophisticated computational photography.
+  - Boasts advanced computational photography, all powered by the Tensor G4 NPU.
+  - Offers real-time AI tools such as live translation and smart image processing
+  - Provides AI-powered real-time tools, including live translation and intelligent
+    image processing.
+  - Features real-time AI capabilities like live translation and smart image manipulation.
+  - Includes instant AI tools, for example, live translation and intelligent image
+    analysis.
+  - Gives you access to real-time AI tools; think live translation and smart image
+    processing.
+  - Integrates hybrid on-device and cloud-based AI for select tasks
+  - Incorporates a hybrid AI system, using both on-device and cloud processing for
+    certain functions
+  - Features integrated hybrid AI, leveraging both on-device and cloud capabilities
+    for specific operations
+  - Employs a hybrid AI approach, combining on-device and cloud-based processing for
+    particular tasks
+  - Uses a hybrid AI model, integrating on-device and cloud AI for a selection of
+    tasks
+  - Features integrated AI tools for real-time tasks like live translation
+  - Includes built-in AI tools that perform real-time functions such as live translation
+  - Offers integrated AI-powered tools for immediate tasks, including live translation
+  - Equipped with integrated AI tools to handle real-time operations like live translation
+  - Has AI tools built in, enabling real-time actions like live translation
+  - On-device AI processing for enhanced privacy on select features
+  - AI processing occurs directly on the device, enhancing privacy for certain features.
+  - Select features utilize on-device AI processing to improve privacy.
+  - Privacy is enhanced on specific features through local AI processing.
+  - Certain features employ on-device AI, boosting privacy.
   security:
-    - "Enhanced hardware-backed security via the Titan M2 chip"
-    - "Multi-layer hardware security verified by Titan M2"
-    - "End-to-end security architecture from chip to OS"
-    - "Regular security patches with documented public schedule"
-
+  - Enhanced hardware-backed security via the Titan M2 chip
+  - Improved security with hardware backing through the Titan M2 chip
+  - The Titan M2 chip provides enhanced hardware-level security
+  - Titan M2 chip enables better security with hardware support
+  - Get enhanced, hardware-backed security thanks to the Titan M2 chip
+  - Multi-layer hardware security verified by Titan M2
+  - Titan M2 verified multi-layer hardware security
+  - Multi-layered hardware security confirmed by Titan M2
+  - Titan M2 confirms the multi-layer hardware security
+  - Hardware security with multiple layers verified using Titan M2
+  - End-to-end security architecture from chip to OS
+  - Complete security architecture spanning from the chip to the operating system
+  - Comprehensive security design encompassing everything from the chip to the OS
+  - Security architecture that covers all aspects from the chip level to the OS
+  - A security architecture that protects the entire system, from the chip to the
+    OS
+  - Regular security patches with documented public schedule
+  - Consistent security patches released on a documented public schedule
+  - Security patches provided regularly, according to a published schedule
+  - Scheduled security patches with publicly available documentation
+  - We provide routine security patches based on a documented, public timeline
   camera:
-    - "Offers a superior camera experience powered by computational photography"
-    - "Advanced multi-frame processing for enhanced image quality"
-    - "AI-powered real-time image enhancements"
-
+  - Offers a superior camera experience powered by computational photography
+  - Delivers an enhanced camera experience through computational photography.
+  - Provides a better camera experience using the power of computational photography.
+  - Features an excellent camera experience driven by computational photography.
+  - The camera experience is enhanced by computational photography.
+  - Advanced multi-frame processing for enhanced image quality
+  - Improved image quality through advanced multi-frame processing.
+  - Enhanced image quality is achieved via advanced multi-frame processing.
+  - Advanced multi-frame processing improves image quality.
+  - Image quality is enhanced with advanced multi-frame processing.
+  - AI-powered real-time image enhancements
+  - Real-time image improvements powered by AI
+  - AI provides real-time enhancements to images
+  - Image quality is improved in real-time using AI
+  - Utilizing AI for real-time image enhancement
   longevity:
-    - "Guarantees fast, consistent software and security patches for seven years"
-    - "Long-term support commitment for sustained device value"
-    - "Designed for extended device lifecycle with ongoing updates"
-
-# PROHIBITED CLAIMS
+  - Guarantees fast, consistent software and security patches for seven years
+  - Promises fast and reliable software and security updates for seven years
+  - Provides seven years of guaranteed, consistent software and security patches
+  - Ensures speedy, consistent software and security updates are delivered for seven
+    years
+  - You're guaranteed to get fast, consistent software and security patches for seven
+    years
+  - Long-term support commitment for sustained device value
+  - A long-term support pledge to maintain device value over time
+  - Dedicated long-term support to ensure lasting device value
+  - Sustained device value through our long-term support promise
+  - We are committed to long-term support, protecting your device's value
+  - Designed for extended device lifecycle with ongoing updates
+  - Engineered for long-term device use with continuous updates
+  - Created for a prolonged device lifespan with consistent updates
+  - Built to last with a long device lifecycle and regular updates
+  - Made for extended use, providing ongoing updates to keep your device current
 prohibited_or_unsupported_claims:
   security_exaggerations:
-    - "Claims of '100% unbreachable,' 'unhackable,' or 'military-grade guaranteed' protection"
-    - "Implying immunity to malware, phishing, or social engineering attacks"
-    - "Guaranteeing absolute encryption safety or complete data breach prevention"
-    - "Claiming Titan M2 prevents all types of data breaches or surveillance"
-    - "No smartphone is 'unhackable' or '100% secure'"
-
+  - Claims of '100% unbreachable,' 'unhackable,' or 'military-grade guaranteed' protection
+  - Implying immunity to malware, phishing, or social engineering attacks
+  - Guaranteeing absolute encryption safety or complete data breach prevention
+  - Claiming Titan M2 prevents all types of data breaches or surveillance
+  - No smartphone is 'unhackable' or '100% secure'
   longevity_exaggerations:
-    - "Claims the device maintains Day-1 battery life for 7 years"
-    - "Claims the device maintains Day-1 performance speed for the full 7 years"
-    - "Promise that ALL future Android/AI features will remain compatible"
-    - "Claims that ALL future AI features will be functional across the entire 7-year support period"
-    - "Guaranteeing indefinite OS compatibility or unlimited future support"
-
+  - Claims the device maintains Day-1 battery life for 7 years
+  - Claims the device maintains Day-1 performance speed for the full 7 years
+  - Promise that ALL future Android/AI features will remain compatible
+  - Claims that ALL future AI features will be functional across the entire 7-year
+    support period
+  - Guaranteeing indefinite OS compatibility or unlimited future support
   performance_exaggerations:
-    - "Calling it the 'fastest Android phone' or implying benchmark leadership"
-    - "Claims that the phone is the 'fastest Android device on the market'"
-    - "Guaranteeing specific FPS or sustained gaming performance"
-    - "Claims of peak synthetic benchmark scores as primary selling point"
-    - "Exaggerating raw processing power over AI optimization"
-
+  - Calling it the 'fastest Android phone' or implying benchmark leadership
+  - Claims that the phone is the 'fastest Android device on the market'
+  - Guaranteeing specific FPS or sustained gaming performance
+  - Claims of peak synthetic benchmark scores as primary selling point
+  - Exaggerating raw processing power over AI optimization
   camera_hallucinations:
-    - "Adding periscope zoom, optical zoom modules, or telephoto lenses not present"
-    - "Claims of variable aperture or additional camera sensors not listed"
-    - "Claiming DSLR-equivalent or professional camera performance"
-    - "Inventing camera specifications or features not documented"
-
+  - Adding periscope zoom, optical zoom modules, or telephoto lenses not present
+  - Claims of variable aperture or additional camera sensors not listed
+  - Claiming DSLR-equivalent or professional camera performance
+  - Inventing camera specifications or features not documented
   hardware_specification_hallucinations:
-    - "Inventing satellite messaging or satellite SOS capabilities"
-    - "Claims of expandable storage or microSD card support"
-    - "Adding mmWave 5G support not specified"
-    - "Claims of wireless charging (not supported)"
-    - "Inventing IP water resistance rating (not certified)"
-    - "Claims of complete 'future-proofing' against all technological changes"
-    - "Adding features like stylus support, pop-up cameras, or under-display cameras"
-
+  - Inventing satellite messaging or satellite SOS capabilities
+  - Claims of expandable storage or microSD card support
+  - Adding mmWave 5G support not specified
+  - Claims of wireless charging (not supported)
+  - Inventing IP water resistance rating (not certified)
+  - Claims of complete 'future-proofing' against all technological changes
+  - Adding features like stylus support, pop-up cameras, or under-display cameras
   ai_hallucinations:
-    - "Suggesting the device can run all AI models fully on-device without cloud"
-    - "Claiming permanent cloud uptime or universal feature availability"
-    - "Guaranteeing specific AI capabilities will never require internet connectivity"
-    - "Overpromising AI feature permanence or capabilities"
-
+  - Suggesting the device can run all AI models fully on-device without cloud
+  - Claiming permanent cloud uptime or universal feature availability
+  - Guaranteeing specific AI capabilities will never require internet connectivity
+  - Overpromising AI feature permanence or capabilities
   security_privacy_guarantees:
-    - "Absolute guarantees about data privacy or surveillance prevention"
-    - "Claims that security features eliminate all potential vulnerabilities"
-    - "Implying government-level security certifications not possessed"
-
+  - Absolute guarantees about data privacy or surveillance prevention
+  - Claims that security features eliminate all potential vulnerabilities
+  - Implying government-level security certifications not possessed
   market_legal_claims:
-    - "Stating global support without acknowledging regional variations"
-    - "Implying special regulatory certifications not listed"
-    - "Claiming universal carrier compatibility without disclaimers"
-    - "Overstating warranty coverage or support availability"
-
-# COMMON MISCONCEPTIONS TO AVOID
+  - Stating global support without acknowledging regional variations
+  - Implying special regulatory certifications not listed
+  - Claiming universal carrier compatibility without disclaimers
+  - Overstating warranty coverage or support availability
 clarifications:
   water_resistance:
-    - "Not waterproof unless explicitly certified with IP rating"
-    - "No water-resistance certification is claimed for this device"
-    - "Avoid liquid exposure; device not designed for water submersion"
-
+  - Not waterproof unless explicitly certified with IP rating
+  - No water-resistance certification is claimed for this device
+  - Avoid liquid exposure; device not designed for water submersion
   battery_longevity:
-    - "Battery degradation unavoidable over years with normal Li-ion aging"
-    - "Actual battery life varies significantly by usage patterns"
-    - "Day-1 battery performance will not be maintained for full 7 years"
-
+  - Battery degradation unavoidable over years with normal Li-ion aging
+  - Actual battery life varies significantly by usage patterns
+  - Day-1 battery performance will not be maintained for full 7 years
   security_reality:
-    - "Security chip reduces risk but does not eliminate all vulnerabilities"
-    - "Multi-layer security approach, but no system is impenetrable"
-    - "User behavior and app choices significantly impact security"
-
+  - Security chip reduces risk but does not eliminate all vulnerabilities
+  - Multi-layer security approach, but no system is impenetrable
+  - User behavior and app choices significantly impact security
   performance_benchmarks:
-    - "Benchmarks ≠ real-world longevity or daily usability"
-    - "AI optimization prioritized over synthetic benchmark performance"
-    - "Performance may decline over time with OS updates and app complexity"
-
+  - Benchmarks ≠ real-world longevity or daily usability
+  - AI optimization prioritized over synthetic benchmark performance
+  - Performance may decline over time with OS updates and app complexity
   ai_features:
-    - "AI features may change, require updates, or be discontinued"
-    - "Some AI processing requires cloud connectivity and varies by region"
-    - "On-device AI has limitations compared to cloud-based processing"
-
+  - AI features may change, require updates, or be discontinued
+  - Some AI processing requires cloud connectivity and varies by region
+  - On-device AI has limitations compared to cloud-based processing
   connectivity:
-    - "Not all carriers support all wireless bands; varies by region"
-    - "5G availability depends on carrier infrastructure and coverage"
-    - "mmWave 5G is not supported (only Sub-6 GHz)"
-
+  - Not all carriers support all wireless bands; varies by region
+  - 5G availability depends on carrier infrastructure and coverage
+  - mmWave 5G is not supported (only Sub-6 GHz)
   future_compatibility:
-    - "Not all future Android features will work on this hardware"
-    - "Software updates guaranteed, but feature compatibility may vary"
-    - "Hardware limitations will affect compatibility with future innovations"
-
-# TECHNICAL SPECIFICATIONS (DETAILED)
+  - Not all future Android features will work on this hardware
+  - Software updates guaranteed, but feature compatibility may vary
+  - Hardware limitations will affect compatibility with future innovations
 technical_specs:
-  soc: "Tensor G4 with integrated NPU"
-  security_chip: "Titan M2"
-  display_type: "Actua OLED"
-  display_size: "6.3 inches"
-  refresh_rate: "120 Hz"
-  memory_options: "8 GB or 12 GB LPDDR5X RAM"
-  storage_options: "128 GB / 256 GB / 512 GB UFS 3.1"
-  battery_capacity: "4700–5000 mAh (regional variation)"
-  charging: "30–45W USB-C fast charging"
-  rear_camera_main: "50 MP with OIS"
-  rear_camera_ultrawide: "12 MP"
-  front_camera: "10.8 MP"
-  video_recording: "4K @ 60fps, 1080p @ 120-240fps"
-  cellular: "5G Sub-6 GHz, LTE"
-  wifi: "Wi-Fi 6/6E"
-  bluetooth: "Bluetooth 5.x"
-  nfc: "Yes"
-  gps: "GPS, GLONASS, Galileo, BeiDou"
-  audio: "Stereo speakers, USB-C high-res audio"
-  biometrics: "Under-display fingerprint, face unlock"
-  os_updates: "7 years guaranteed"
-  build_materials: "Aluminum frame, Gorilla Glass Victus"
-  dimensions: "~152 × 72 × 8.7 mm"
-  weight: "~190 grams"
-
-# BRAND POSITIONING
+  soc: Tensor G4 with integrated NPU
+  security_chip: Titan M2
+  display_type: Actua OLED
+  display_size: 6.3 inches
+  refresh_rate: 120 Hz
+  memory_options: 8 GB or 12 GB LPDDR5X RAM
+  storage_options: 128 GB / 256 GB / 512 GB UFS 3.1
+  battery_capacity: 4700–5000 mAh (regional variation)
+  charging: 30–45W USB-C fast charging
+  rear_camera_main: 50 MP with OIS
+  rear_camera_ultrawide: 12 MP
+  front_camera: 10.8 MP
+  video_recording: 4K @ 60fps, 1080p @ 120-240fps
+  cellular: 5G Sub-6 GHz, LTE
+  wifi: Wi-Fi 6/6E
+  bluetooth: Bluetooth 5.x
+  nfc: 'Yes'
+  gps: GPS, GLONASS, Galileo, BeiDou
+  audio: Stereo speakers, USB-C high-res audio
+  biometrics: Under-display fingerprint, face unlock
+  os_updates: 7 years guaranteed
+  build_materials: Aluminum frame, Gorilla Glass Victus
+  dimensions: ~152 × 72 × 8.7 mm
+  weight: ~190 grams
 brand_values:
-  - "Commitment to long-term software support and device longevity"
-  - "Focus on AI-powered user experiences and computational photography"
-  - "Clean, bloatware-free software philosophy"
-  - "Hardware-backed security as a core product pillar"
-  - "Transparent security patch schedule and vulnerability disclosure"
-  - "Balance of on-device and cloud AI for privacy and capability"
+- Commitment to long-term software support and device longevity
+- Focus on AI-powered user experiences and computational photography
+- Clean, bloatware-free software philosophy
+- Hardware-backed security as a core product pillar
+- Transparent security patch schedule and vulnerability disclosure
+- Balance of on-device and cloud AI for privacy and capability

@@ -22,7 +22,8 @@ import yaml
 from dotenv import load_dotenv
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import google.generativeai as genai
+from openai import OpenAI, APIError, RateLimitError, APIConnectionError
+from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_exception_type
 
 # Load environment
 load_dotenv()
@@ -41,10 +42,12 @@ PRODUCTS_DIR = PROJECT_ROOT / "products"
 RESULTS_DIR = PROJECT_ROOT / "results"
 EXPERIMENTS_CSV = RESULTS_DIR / "experiments.csv"
 AUDIT_OUTPUT_CSV = RESULTS_DIR / "final_audit_results.csv"
+CHECKPOINT_FILE = RESULTS_DIR / "audit_checkpoint.jsonl"
+ERROR_LOG_FILE = RESULTS_DIR / "audit_errors.json"
 
-# Google Gemini Configuration
-genai.configure(api_key=os.getenv("GOOGLE_API_KEY"))
-EXTRACTION_MODEL = "gemini-2.0-flash-001"
+# OpenAI Configuration
+openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+EXTRACTION_MODEL = "gpt-4o-mini"
 EXTRACTION_TEMPERATURE = 0
 
 # NLI Configuration
@@ -63,11 +66,58 @@ else:
     logger.info("Using CPU")
 
 
+# ==================== CHECKPOINT & ERROR TRACKING ====================
+
+# Global error log
+error_log = []
+
+def save_checkpoint(result: Dict):
+    """Append single audit result to checkpoint file."""
+    with open(CHECKPOINT_FILE, 'a') as f:
+        json.dump(result, f)
+        f.write('\n')
+
+def load_completed_run_ids() -> set:
+    """Load run_ids that have already been completed from checkpoint."""
+    completed = set()
+    if CHECKPOINT_FILE.exists():
+        with open(CHECKPOINT_FILE) as f:
+            for line in f:
+                try:
+                    result = json.loads(line)
+                    completed.add(result['run_id'])
+                except:
+                    continue
+    if completed:
+        logger.info(f"Loaded {len(completed)} completed runs from checkpoint")
+    return completed
+
+def log_error(run_id: str, run_metadata: dict, error: Exception):
+    """Log error details for troubleshooting."""
+    error_info = {
+        'run_id': run_id,
+        'product_id': run_metadata.get('product_id', 'unknown'),
+        'material_type': run_metadata.get('material_type', 'unknown'),
+        'error': str(error),
+        'error_type': type(error).__name__,
+        'timestamp': time.time()
+    }
+    error_log.append(error_info)
+    logger.error(f"Error auditing {run_id[:12]}: {error}")
+
+def save_error_log():
+    """Save all errors to JSON file."""
+    if error_log:
+        with open(ERROR_LOG_FILE, 'w') as f:
+            json.dump(error_log, f, indent=2)
+        logger.warning(f"Saved {len(error_log)} errors to {ERROR_LOG_FILE}")
+
+
 # ==================== STEP 1: ATOMIC CLAIM EXTRACTION ====================
 
 ATOMIZER_SYSTEM_PROMPT = """You are a forensic claim extraction system for marketing compliance audits.
 
-TASK: Extract EVERY verifiable fact, technical specification, and safety warning from the marketing material.
+TASK: Extract EVERY verifiable fact, technical specification, and safety warning from the marketing material. SEPARATE disclaimers from core claims.
 
 EXTRACTION RULES:
 1. Split compound sentences into atomic facts
@@ -84,18 +134,25 @@ EXTRACTION RULES:
    - Quantitative statements (e.g., "Provides 7 years of updates")
    - Comparative statements (e.g., "Faster than previous generation")
 
-4. Ignore subjective marketing fluff:
+4. SEPARATE disclaimers (hedging/legal statements):
+   - Disclaimers include: "may vary", "depends on", "not guaranteed", "consult", "results may differ"
+   - Disclaimers modify or hedge other claims (e.g., "Battery life may vary")
+
+5. Ignore subjective marketing fluff:
    - Do NOT extract: "stunning", "amazing", "revolutionary", "incredible"
    - Do NOT extract vague claims like: "enhances your experience", "transforms your life"
 
-5. If the material is entirely vague/subjective/fluff, return an empty list []
+6. If the material is entirely vague/subjective/fluff, return empty lists
 
 OUTPUT FORMAT (strict JSON):
 {
-  "claims": [
-    "atomic claim 1",
-    "atomic claim 2",
-    "atomic claim 3"
+  "core_claims": [
+    "atomic core claim 1",
+    "atomic core claim 2"
+  ],
+  "disclaimers": [
+    "disclaimer 1",
+    "disclaimer 2"
   ]
 }
 
@@ -103,9 +160,20 @@ IMPORTANT: Return ONLY valid JSON. No markdown, no explanation.
 """
 
 
-def extract_atomic_claims(material_content: str, product_name: str, material_type: str) -> List[str]:
+@retry(
+    retry=retry_if_exception_type((APIError, RateLimitError, APIConnectionError)),
+    wait=wait_exponential(multiplier=1, min=2, max=30),
+    stop=stop_after_attempt(3),
+    before_sleep=lambda retry_state: logger.warning(
+        f"Retry attempt {retry_state.attempt_number} after API error"
+    )
+)
+def extract_atomic_claims(material_content: str, product_name: str, material_type: str) -> Dict:
     """
-    Extract atomic claims using Google Gemini (Forensic Extraction).
+    Extract atomic claims using OpenAI GPT-4o-mini (Forensic Extraction).
+    Returns both core claims and disclaimers separately.
+
+    Automatically retries up to 3 times on transient API errors with exponential backoff.
 
     Args:
         material_content: Marketing material text
@@ -113,46 +181,38 @@ def extract_atomic_claims(material_content: str, product_name: str, material_typ
         material_type: Type of material (e.g., 'faq', 'digital_ad')
 
     Returns:
-        List of atomic claim strings (empty list if all fluff)
+        Dict with 'core_claims' and 'disclaimers' lists
     """
-    full_prompt = f"""{ATOMIZER_SYSTEM_PROMPT}
-
-PRODUCT: {product_name}
+    user_prompt = f"""PRODUCT: {product_name}
 MATERIAL TYPE: {material_type}
 
 MARKETING MATERIAL:
 {material_content}
 
-Extract all atomic claims as JSON.
+Extract all atomic claims as JSON with core_claims and disclaimers separated.
 """
 
-    try:
-        model = genai.GenerativeModel(
-            model_name=EXTRACTION_MODEL,
-            generation_config={
-                "temperature": EXTRACTION_TEMPERATURE,
-                "response_mime_type": "application/json"
-            }
-        )
+    response = openai_client.chat.completions.create(
+        model=EXTRACTION_MODEL,
+        temperature=EXTRACTION_TEMPERATURE,
+        messages=[
+            {"role": "system", "content": ATOMIZER_SYSTEM_PROMPT},
+            {"role": "user", "content": user_prompt}
+        ],
+        response_format={"type": "json_object"}
+    )
 
-        response = model.generate_content(full_prompt)
-        result = json.loads(response.text)
-        claims = result.get('claims', [])
+    result = json.loads(response.choices[0].message.content)
 
-        logger.debug(f"Extracted {len(claims)} atomic claims")
+    core_claims = result.get('core_claims', [])
+    disclaimers = result.get('disclaimers', [])
 
-        # Rate limiting to avoid 429 errors
-        time.sleep(0.5)
+    logger.debug(f"Extracted {len(core_claims)} core claims, {len(disclaimers)} disclaimers")
 
-        return claims
-
-    except Exception as e:
-        logger.error(f"Atomic extraction failed: {e}")
-        # If rate limited, wait longer before continuing
-        if "429" in str(e) or "Resource exhausted" in str(e):
-            logger.warning("Rate limit hit, waiting 5 seconds...")
-            time.sleep(5)
-        return []
+    return {
+        'core_claims': core_claims,
+        'disclaimers': disclaimers
+    }
 
 
 # ==================== STEP 2: CLAIM VERIFICATION ====================
@@ -170,13 +230,16 @@ class NLIJudge:
         # Label mapping: [contradiction, entailment, neutral]
         self.label_names = ['contradiction', 'entailment', 'neutral']
 
-    def verify_claim(self, claim: str, authorized_claims: List[str]) -> Dict:
+    def verify_claim(self, claim: str, authorized_claims: List[str], specs: List[str] = None, prohibited_claims: List[str] = None, clarifications: List[str] = None) -> Dict:
         """
-        Verify if a claim contradicts any authorized claims.
+        Verify if a claim contradicts any authorized claims, factual specs, prohibited claims, or clarifications.
 
         Args:
             claim: Extracted atomic claim
             authorized_claims: List of authorized claims from YAML
+            specs: Optional list of factual specs from YAML (for fact-checking)
+            prohibited_claims: Optional list of prohibited claims that should NOT appear
+            clarifications: Optional list of clarifications, usage_instructions, safety_warnings (direct contradictions like "NOT FDA-approved")
 
         Returns:
             {
@@ -187,7 +250,16 @@ class NLIJudge:
                 'best_match_type': str (entailment/neutral/contradiction)
             }
         """
-        if not authorized_claims:
+        # Combine authorized claims, specs, prohibited claims, and clarifications for verification
+        all_reference_claims = authorized_claims.copy() if authorized_claims else []
+        if specs:
+            all_reference_claims.extend(specs)
+        if prohibited_claims:
+            all_reference_claims.extend(prohibited_claims)
+        if clarifications:
+            all_reference_claims.extend(clarifications)
+
+        if not all_reference_claims:
             return {
                 'is_violation': False,
                 'violated_rule': None,
@@ -196,13 +268,35 @@ class NLIJudge:
                 'best_match_type': 'no_rules'
             }
 
+        # Category-based filtering to reduce false positives
+        # Classify the claim's category
+        claim_category = classify_claim_category(claim)
+
+        # Filter rules to only same category + general category rules
+        filtered_reference_claims = []
+        for rule in all_reference_claims:
+            rule_category = classify_claim_category(rule)
+            # Compare if same category or if either is 'general' (regulatory, disclaimers, etc.)
+            if rule_category == claim_category or rule_category == 'general' or claim_category == 'general':
+                filtered_reference_claims.append(rule)
+
+        # If no matching category rules, skip validation (avoids comparing camera to display)
+        if not filtered_reference_claims:
+            return {
+                'is_violation': False,
+                'violated_rule': None,
+                'contradiction_score': 0.0,
+                'best_match_rule': None,
+                'best_match_type': 'category_filtered'
+            }
+
         max_contradiction_score = 0.0
         violated_rule = None
         best_match_rule = None
         best_match_type = None
         best_match_score = 0.0
 
-        for auth_claim in authorized_claims:
+        for auth_claim in filtered_reference_claims:
             # Prepare input for cross-encoder
             inputs = self.tokenizer(
                 claim,
@@ -257,9 +351,20 @@ class NLIJudge:
 
 # ==================== UTILITIES ====================
 
-def load_material(run_id: str) -> str:
-    """Load generated marketing material from outputs/."""
-    file_path = OUTPUTS_DIR / f"{run_id}.txt"
+def load_material(run_id: str, output_path: str = None) -> str:
+    """Load generated marketing material from outputs/.
+
+    Args:
+        run_id: Run identifier
+        output_path: Optional explicit path from CSV (e.g., outputs/1.txt)
+    """
+    if output_path:
+        # Use explicit path from CSV (for custom uploaded files)
+        file_path = Path(output_path)
+    else:
+        # Default: construct path from run_id
+        file_path = OUTPUTS_DIR / f"{run_id}.txt"
+
     if not file_path.exists():
         raise FileNotFoundError(f"Material not found: {file_path}")
 
@@ -298,6 +403,147 @@ def flatten_authorized_claims(product_yaml: dict) -> List[str]:
         return []
 
 
+def flatten_specs(product_yaml: dict) -> List[str]:
+    """
+    Flatten nested specs structure into list of factual spec strings.
+    This extracts technical specifications that can be fact-checked.
+
+    Returns:
+        List of spec text strings
+    """
+    specs = product_yaml.get('specs', {})
+    spec_list = []
+
+    def extract_strings(data):
+        """Recursively extract all string values from nested dict/list."""
+        if isinstance(data, str):
+            return [data]
+        elif isinstance(data, list):
+            result = []
+            for item in data:
+                result.extend(extract_strings(item))
+            return result
+        elif isinstance(data, dict):
+            result = []
+            for value in data.values():
+                result.extend(extract_strings(value))
+            return result
+        else:
+            return []
+
+    spec_list = extract_strings(specs)
+    return spec_list
+
+
+def flatten_prohibited_claims(product_yaml: dict) -> List[str]:
+    """
+    Flatten prohibited_or_unsupported_claims into list of strings.
+    These are claims that should NOT appear in marketing materials.
+
+    Returns:
+        List of prohibited claim text strings
+    """
+    prohibited = product_yaml.get('prohibited_or_unsupported_claims', {})
+    prohibited_list = []
+
+    def extract_strings(data):
+        """Recursively extract all string values from nested dict/list."""
+        if isinstance(data, str):
+            return [data]
+        elif isinstance(data, list):
+            result = []
+            for item in data:
+                result.extend(extract_strings(item))
+            return result
+        elif isinstance(data, dict):
+            result = []
+            for value in data.values():
+                result.extend(extract_strings(value))
+            return result
+        else:
+            return []
+
+    prohibited_list = extract_strings(prohibited)
+    return prohibited_list
+
+
+def flatten_clarifications(product_yaml: dict) -> List[str]:
+    """
+    Flatten clarifications, usage_instructions, and safety_warnings into list of strings.
+    These sections contain direct contradiction statements (e.g., "NOT FDA-approved").
+
+    Returns:
+        List of clarification/instruction text strings
+    """
+    clarifications = []
+
+    # Extract clarifications section
+    clarifications_section = product_yaml.get('clarifications', [])
+    if isinstance(clarifications_section, list):
+        clarifications.extend(clarifications_section)
+
+    # Extract usage_instructions section
+    usage_section = product_yaml.get('usage_instructions', [])
+    if isinstance(usage_section, list):
+        clarifications.extend(usage_section)
+
+    # Extract safety_warnings section
+    safety_section = product_yaml.get('safety_warnings', [])
+    if isinstance(safety_section, list):
+        clarifications.extend(safety_section)
+
+    return clarifications
+
+
+def classify_claim_category(claim: str) -> str:
+    """
+    Classify a claim into a semantic category using keyword matching.
+    This enables category-based filtering to reduce false positive comparisons.
+
+    Args:
+        claim: The claim text to classify
+
+    Returns:
+        Category name (e.g., 'display', 'camera', 'storage', 'dosage', etc.)
+    """
+    claim_lower = claim.lower()
+
+    # Category keyword mappings (order matters - more specific first)
+    CATEGORY_KEYWORDS = {
+        # Electronics/Smartphone categories
+        'display': ['display', 'screen', 'inch', '"', 'oled', 'lcd', 'amoled', 'refresh rate', 'hz', 'resolution', 'brightness', 'nits'],
+        'camera': ['camera', 'mp', 'megapixel', 'photo', 'lens', 'zoom', 'aperture', 'ois', 'image stabilization', 'ultrawide', 'telephoto', 'video recording'],
+        'storage': ['storage', 'gb', 'tb', 'memory', 'space', 'ufs', 'expandable', 'microsd'],
+        'ram': ['ram', 'lpddr', 'memory'],
+        'battery': ['battery', 'mah', 'charging', 'power', 'watt', 'fast charging', 'wireless charging'],
+        'processor': ['processor', 'cpu', 'chipset', 'ghz', 'core', 'gpu', 'npu', 'tensor', 'snapdragon', 'exynos'],
+        'network': ['5g', '4g', 'lte', 'wifi', 'wi-fi', 'bluetooth', 'cellular', 'connectivity', 'nfc', 'sub-6'],
+
+        # Supplement categories
+        'dosage': ['mg', 'dose', 'dosage', 'serving', 'tablet', 'capsule', 'pill', 'take', 'consume'],
+        'ingredients': ['contain', 'ingredient', 'gluten', 'soy', 'dairy', 'allergen', 'vegan', 'vegetarian', 'non-gmo', 'fish'],
+        'safety': ['safe', 'side effect', 'drowsiness', 'warning', 'caution', 'pregnant', 'children', 'adult', 'age'],
+        'manufacturing': ['manufactured', 'facility', 'gmp', 'tested', 'quality', 'certified', 'third-party'],
+        'regulatory': ['fda', 'approved', 'evaluated', 'regulated', 'drug', 'supplement', 'dshea'],
+        'efficacy': ['help', 'support', 'promote', 'improve', 'enhance', 'treat', 'cure', 'prevent', 'reduce'],
+        'storage_temp': ['store', 'storage', 'temperature', '°c', 'degrees', 'room temperature', 'cool', 'dry'],
+
+        # Cryptocurrency categories
+        'consensus': ['proof of stake', 'pos', 'validator', 'staking', 'consensus', 'block'],
+        'supply': ['supply', 'coin', 'token', 'issuance', 'inflation', 'deflationary'],
+        'transaction': ['transaction', 'tps', 'per second', 'speed', 'throughput', 'latency'],
+        'security': ['security', 'encryption', 'hash', 'cryptographic', 'secure'],
+        'energy': ['energy', 'power', 'consumption', 'efficient', 'green', 'carbon']
+    }
+
+    # Find matching category
+    for category, keywords in CATEGORY_KEYWORDS.items():
+        if any(keyword in claim_lower for keyword in keywords):
+            return category
+
+    return 'general'  # Fallback for uncategorized claims
+
+
 def get_completed_runs() -> pd.DataFrame:
     """Load completed runs from experiments.csv."""
     if not EXPERIMENTS_CSV.exists():
@@ -323,45 +569,58 @@ def audit_single_run(run_id: str, run_metadata: Dict, judge: NLIJudge) -> Dict:
             'product_id': str,
             'material_type': str,
             'status': 'PASS' | 'FAIL',
-            'atomic_claims': List[str],
+            'core_claims': List[str],
+            'disclaimers': List[str],
             'violations': List[Dict],
             'violation_count': int
         }
     """
     try:
-        # Load material
-        material_content = load_material(run_id)
+        # Load material (use output_path from CSV if available)
+        output_path = run_metadata.get('output_path')
+        material_content = load_material(run_id, output_path=output_path)
 
         # Load product YAML
         product_id = run_metadata['product_id']
         product_yaml = load_product_yaml(product_id)
         product_name = product_yaml.get('name', product_id)
         authorized_claims = flatten_authorized_claims(product_yaml)
+        specs = flatten_specs(product_yaml)
+        prohibited_claims = flatten_prohibited_claims(product_yaml)
+        clarifications = flatten_clarifications(product_yaml)
 
-        # STEP 1: Extract atomic claims
-        atomic_claims = extract_atomic_claims(
+        # STEP 1: Extract atomic claims (separated into core + disclaimers)
+        extraction_result = extract_atomic_claims(
             material_content,
             product_name,
             run_metadata['material_type']
         )
 
+        core_claims = extraction_result.get('core_claims', [])
+        disclaimers = extraction_result.get('disclaimers', [])
+
+        # Combine core claims and disclaimers for validation
+        # Disclaimers can contain critical errors (FDA claims, unsafe dosage, etc.)
+        all_claims = core_claims + disclaimers
+
         # Handle empty list (all fluff) → PASS
-        if not atomic_claims:
+        if not all_claims:
             return {
                 'run_id': run_id,
                 'filename': f"{run_id}.txt",
                 'product_id': product_id,
                 'material_type': run_metadata['material_type'],
                 'status': 'PASS',
-                'atomic_claims': [],
+                'core_claims': [],
+                'disclaimers': disclaimers,
                 'violations': [],
                 'violation_count': 0
             }
 
-        # STEP 2: Verify each claim
+        # STEP 2: Verify ALL claims (core + disclaimers) against authorized_claims, specs, prohibited_claims, and clarifications
         violations = []
-        for claim in atomic_claims:
-            verification = judge.verify_claim(claim, authorized_claims)
+        for claim in all_claims:
+            verification = judge.verify_claim(claim, authorized_claims, specs, prohibited_claims, clarifications)
 
             if verification['is_violation']:
                 violations.append({
@@ -379,20 +638,22 @@ def audit_single_run(run_id: str, run_metadata: Dict, judge: NLIJudge) -> Dict:
             'product_id': product_id,
             'material_type': run_metadata['material_type'],
             'status': status,
-            'atomic_claims': atomic_claims,
+            'core_claims': core_claims,
+            'disclaimers': disclaimers,
             'violations': violations,
             'violation_count': len(violations)
         }
 
     except Exception as e:
-        logger.error(f"Audit failed for {run_id}: {e}")
+        log_error(run_id, run_metadata, e)
         return {
             'run_id': run_id,
             'filename': f"{run_id}.txt",
             'product_id': run_metadata.get('product_id', 'unknown'),
             'material_type': run_metadata.get('material_type', 'unknown'),
             'status': 'ERROR',
-            'atomic_claims': [],
+            'core_claims': [],
+            'disclaimers': [],
             'violations': [],
             'violation_count': 0,
             'error': str(e)
@@ -467,10 +728,22 @@ def print_summary(audit_results: List[Dict]):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Glass Box Audit Pipeline')
+    parser = argparse.ArgumentParser(description='Glass Box Audit Pipeline (GPT-4o-mini + NLI)')
     parser.add_argument('--limit', type=int, help='Limit number of runs to audit')
+    parser.add_argument('--skip', type=int, default=0, help='Skip first N runs')
     parser.add_argument('--run-id', type=str, help='Audit specific run_id only')
+    parser.add_argument('--resume', action='store_true', help='Resume from checkpoint (skip completed runs)')
+    parser.add_argument('--clean', action='store_true', help='Clear checkpoint and start fresh')
     args = parser.parse_args()
+
+    # Clear checkpoint if requested
+    if args.clean:
+        if CHECKPOINT_FILE.exists():
+            CHECKPOINT_FILE.unlink()
+            logger.info("✓ Cleared checkpoint file")
+        if ERROR_LOG_FILE.exists():
+            ERROR_LOG_FILE.unlink()
+            logger.info("✓ Cleared error log")
 
     # Initialize NLI Judge
     logger.info("Initializing NLI Judge...")
@@ -489,22 +762,56 @@ def main():
     else:
         logger.info("Loading completed runs from experiments.csv...")
         runs_df = get_completed_runs()
+
+        # Resume from checkpoint if requested
+        if args.resume:
+            completed_run_ids = load_completed_run_ids()
+            runs_df = runs_df[~runs_df['run_id'].isin(completed_run_ids)]
+            logger.info(f"Resuming: {len(runs_df)} runs remaining")
+
         runs = runs_df.to_dict('records')
+
+        # Apply skip and limit
+        if args.skip:
+            runs = runs[args.skip:]
+            logger.info(f"Skipped first {args.skip} runs")
 
         if args.limit:
             runs = runs[:args.limit]
 
     logger.info(f"Auditing {len(runs)} runs...")
 
-    # Run audit pipeline
+    # Run audit pipeline with checkpoints
     audit_results = []
-    for run_metadata in tqdm(runs, desc="Auditing runs"):
-        run_id = run_metadata['run_id']
-        result = audit_single_run(run_id, run_metadata, judge)
-        audit_results.append(result)
+    total_violations = 0
 
-    # Save results
+    with tqdm(total=len(runs), desc="Auditing runs", unit="run") as pbar:
+        for i, run_metadata in enumerate(runs, 1):
+            run_id = run_metadata['run_id']
+            result = audit_single_run(run_id, run_metadata, judge)
+            audit_results.append(result)
+
+            # Save checkpoint immediately after each run
+            save_checkpoint(result)
+
+            # Track violations
+            total_violations += result.get('violation_count', 0)
+
+            # Update progress bar with stats
+            pbar.set_postfix({
+                'violations': total_violations,
+                'errors': len(error_log)
+            })
+            pbar.update(1)
+
+            # Periodic CSV export every 50 runs
+            if i % 50 == 0:
+                save_audit_results(audit_results, AUDIT_OUTPUT_CSV)
+                logger.info(f"Progress checkpoint: {i}/{len(runs)} runs completed")
+
+    # Save final results
     save_audit_results(audit_results, AUDIT_OUTPUT_CSV)
+    save_error_log()
 
     # Print summary
     print_summary(audit_results)

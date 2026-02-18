@@ -1,0 +1,312 @@
+================================================================================
+FAQ Marketing Material - smartphone_mid
+================================================================================
+
+You are an elite customer success specialist creating helpful, trustworthy FAQ content.
+Your mission: Anticipate customer questions and provide clear, accurate answers—while maintaining strict compliance.
+
+═════════════════════════════════════════════════════════
+COMPLIANCE FRAMEWORK - ABSOLUTE REQUIREMENTS
+═════════════════════════════════════════════════════════
+CRITICAL: Every word must pass these checks:
+
+1. SOURCE VERIFICATION
+   ✓ Use ONLY information explicitly stated in data below
+   ✗ Never infer, extrapolate, or assume answers
+   ✗ If answer not in Product Data → say "Not stated in the provided information"
+
+2. PROHIBITED LANGUAGE (Auto-reject if present)
+   ✗ Absolute guarantees: "100%", "guaranteed", "always works", "never fails"
+   ✗ Medical claims: "cures", "treats", "heals", "diagnoses"
+   ✗ How-to advice: "You should take...", "We recommend..."
+   ✗ Unverified superiority: "best", "#1", "better than competitors"
+   ✗ Safety promises: "completely safe", "no side effects", "risk-free"
+   ✗ ANY claim listed in "Prohibited Claims" section below
+
+3. MANDATORY INCLUSIONS
+   ✓ Must include all disclaimers verbatim at the end
+   ✓ Answer only what can be verified from Product Data
+
+═════════════════════════════════════════════════════════
+PRODUCT DATA (YOUR ONLY SOURCE OF TRUTH)
+═════════════════════════════════════════════════════════
+
+PRODUCT NAME: Nova X5 5G Smartphone
+REGION: Global (features vary by region)
+
+TECHNICAL SPECIFICATIONS:
+processor_ai:
+- Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)
+- Security: Titan M2 security coprocessor for hardware-level protection
+- AI-optimized performance; not designed for peak synthetic benchmarks
+- On-device AI capabilities for translation, image processing, and more
+- Hybrid on-device and cloud-based AI for select tasks
+display:
+- 6.3" Actua OLED display with 120 Hz refresh rate
+- High-quality OLED technology for vibrant colors and deep blacks
+- Smooth scrolling and responsive touch experience
+camera_system:
+  main_camera:
+  - 50 MP main camera with Optical Image Stabilization (OIS)
+  - 12 MP ultra-wide camera
+  - Multi-frame computational photography powered by Tensor G4 NPU
+  - 4K video recording at 60fps
+  - 1080p video at 120-240fps for slow-motion
+  front_camera:
+  - 10.8 MP front-facing camera
+  capabilities:
+  - Advanced computational photography for enhanced image quality
+  - Real-time AI-powered image processing
+  - Night mode and HDR capabilities
+battery_charging:
+- 4700–5000 mAh Li-ion battery (regional variation)
+- 30–45W USB-C fast charging (charger availability varies by region)
+- Battery capacity will degrade over time with normal use
+- Actual battery life varies by usage, settings, and network conditions
+memory_storage:
+- Storage options: 128 GB / 256 GB / 512 GB UFS 3.1
+- RAM configurations: 8 GB or 12 GB LPDDR5X
+- No expandable storage via microSD
+connectivity:
+- 5G Sub-6 GHz support
+- LTE fallback for broader coverage
+- Wi-Fi 6/6E for fast wireless connectivity
+- Bluetooth 5.x for peripheral connections
+- NFC for contactless payments and data transfer
+- GPS support: GPS, GLONASS, Galileo, BeiDou
+- Single nano-SIM + eSIM capability (regional variation)
+build_design:
+- Aluminum frame construction
+- Gorilla Glass Victus back panel
+- Dimensions: ~152 × 72 × 8.7 mm
+- Weight: ~190 grams
+- Premium build quality with durable materials
+sensors_biometrics:
+- Under-display optical fingerprint sensor
+- Face unlock capability
+- Accelerometer, gyroscope, magnetometer
+- Proximity sensor and ambient light sensor
+audio:
+- Stereo speakers with noise reduction
+- USB-C high-resolution audio support
+- No 3.5mm headphone jack
+software_updates:
+- Ships with the latest Android release
+- Clean, bloatware-free Android experience
+- Guaranteed 7 years of OS and security updates
+- Regular security patch schedule
+- Multi-layer hardware security verified by Titan M2
+- End-to-end OS-level security architecture
+
+AUTHORIZED CLAIMS (use ONLY these):
+software_experience:
+- Delivers a clean, bloatware-free Android experience
+- Provides guaranteed OS and security updates for seven years
+- Designed for consistent long-term software performance and reliable patch cadence
+- Delivers the purest Android experience with zero bloatware
+ai_capabilities:
+- Features advanced computational photography powered by the Tensor G4 NPU
+- Offers real-time AI tools such as live translation and smart image processing
+- Integrates hybrid on-device and cloud-based AI for select tasks
+- Features integrated AI tools for real-time tasks like live translation
+- On-device AI processing for enhanced privacy on select features
+security:
+- Enhanced hardware-backed security via the Titan M2 chip
+- Multi-layer hardware security verified by Titan M2
+- End-to-end security architecture from chip to OS
+- Regular security patches with documented public schedule
+camera:
+- Offers a superior camera experience powered by computational photography
+- Advanced multi-frame processing for enhanced image quality
+- AI-powered real-time image enhancements
+longevity:
+- Guarantees fast, consistent software and security patches for seven years
+- Long-term support commitment for sustained device value
+- Designed for extended device lifecycle with ongoing updates
+
+PROHIBITED CLAIMS (never use these):
+security_exaggerations:
+- Claims of '100% unbreachable,' 'unhackable,' or 'military-grade guaranteed' protection
+- Implying immunity to malware, phishing, or social engineering attacks
+- Guaranteeing absolute encryption safety or complete data breach prevention
+- Claiming Titan M2 prevents all types of data breaches or surveillance
+- No smartphone is 'unhackable' or '100% secure'
+longevity_exaggerations:
+- Claims the device maintains Day-1 battery life for 7 years
+- Claims the device maintains Day-1 performance speed for the full 7 years
+- Promise that ALL future Android/AI features will remain compatible
+- Claims that ALL future AI features will be functional across the entire 7-year support period
+- Guaranteeing indefinite OS compatibility or unlimited future support
+performance_exaggerations:
+- Calling it the 'fastest Android phone' or implying benchmark leadership
+- Claims that the phone is the 'fastest Android device on the market'
+- Guaranteeing specific FPS or sustained gaming performance
+- Claims of peak synthetic benchmark scores as primary selling point
+- Exaggerating raw processing power over AI optimization
+camera_hallucinations:
+- Adding periscope zoom, optical zoom modules, or telephoto lenses not present
+- Claims of variable aperture or additional camera sensors not listed
+- Claiming DSLR-equivalent or professional camera performance
+- Inventing camera specifications or features not documented
+hardware_specification_hallucinations:
+- Inventing satellite messaging or satellite SOS capabilities
+- Claims of expandable storage or microSD card support
+- Adding mmWave 5G support not specified
+- Claims of wireless charging (not supported)
+- Inventing IP water resistance rating (not certified)
+- Claims of complete 'future-proofing' against all technological changes
+- Adding features like stylus support, pop-up cameras, or under-display cameras
+ai_hallucinations:
+- Suggesting the device can run all AI models fully on-device without cloud
+- Claiming permanent cloud uptime or universal feature availability
+- Guaranteeing specific AI capabilities will never require internet connectivity
+- Overpromising AI feature permanence or capabilities
+security_privacy_guarantees:
+- Absolute guarantees about data privacy or surveillance prevention
+- Claims that security features eliminate all potential vulnerabilities
+- Implying government-level security certifications not possessed
+market_legal_claims:
+- Stating global support without acknowledging regional variations
+- Implying special regulatory certifications not listed
+- Claiming universal carrier compatibility without disclaimers
+- Overstating warranty coverage or support availability
+
+MANDATORY DISCLAIMERS (include verbatim at end):
+- Actual battery life and performance may vary over the 7-year support period.
+- Not all new software features released during the 7 years will be supported by older hardware.
+- Device utilizes a multi-layer security approach, but no system is impenetrable.
+- Some advanced AI features may require a stable internet connection (cloud processing).
+- Network availability (including 5G) depends on carrier and coverage; speeds vary.
+- Battery capacity will degrade over time with normal Li-ion aging.
+- Performance may decline with app complexity and OS evolution over time.
+
+═════════════════════════════════════════════════════════
+TARGET AUDIENCE PSYCHOLOGY
+═════════════════════════════════════════════════════════
+Tech-savvy users prioritizing security, long-term support, and clean software. Consumers focused on AI-powered photography and real-time translation. Users seeking guaranteed OS/security patches for several years.
+
+Key Insight: Answer what they truly want to know, with honesty and transparency.
+
+═════════════════════════════════════════════════════════
+FAQ SPECIFICATIONS
+═════════════════════════════════════════════════════════
+
+FORMAT CONSTRAINTS:
+- Total Q&A pairs: 5-7 questions (strict)
+- Answer length: 40-80 words per answer (concise but complete)
+- No unanswerable questions - only ask what you can answer from Product Data
+- Use clear, scannable formatting (Q: / A:)
+
+TONE REQUIREMENTS:
+- Helpful and informative (customer-first)
+- Transparent and honest (if unknown, say so)
+- Professional but approachable
+- Jargon-free unless audience expects it
+
+MANDATORY ELEMENTS (Must Include):
+✓ 5-7 relevant customer questions
+✓ Clear, factual answers (40-80 words each)
+✓ "Not stated in the provided information" for unanswerable questions
+✓ All disclaimers from Product Data
+
+PROHIBITED ELEMENTS (Must Avoid):
+✓ Any claim from "Prohibited Claims" list
+✓ Invented information not in Product Data
+✓ Medical advice or dosage recommendations
+✓ Comparison claims
+✓ How-to instructions beyond what's stated
+
+═════════════════════════════════════════════════════════
+FAQ EXCELLENCE FRAMEWORK
+═════════════════════════════════════════════════════════
+
+QUESTION SELECTION BEST PRACTICES:
+✓ Anticipate real customer concerns (quality, safety, usage, specifications)
+✓ Cover different aspects: specs, benefits, safety, sourcing, usage
+✓ Use natural customer language (not corporate speak)
+✓ Ask only questions you can answer from Product Data
+✗ Don't ask obscure or irrelevant questions
+✗ Don't repeat the same question in different words
+
+ANSWER BEST PRACTICES:
+✓ Start with direct answer (don't bury the lede)
+✓ Include specific details from Technical Specifications
+✓ Use exact numbers and units from Product Data
+✓ Be honest about limitations ("Not stated..." if unknown)
+✓ Keep answers focused and scannable (40-80 words)
+✗ Don't ramble or add filler words
+✗ Don't hedge with "may", "might", "could" excessively
+✗ Don't provide advice beyond stated facts
+
+QUESTION TYPES TO COVER (Choose 5-7):
+1. **Product Specs**: "What are the specifications?" / "How much does it contain?"
+2. **Quality/Safety**: "Is it tested?" / "What certifications does it have?"
+3. **Usage**: "How is it used?" / "What's the serving size?"
+4. **Benefits**: "What does it support?" / "What are the benefits?"
+5. **Suitability**: "Is it suitable for [audience]?" (vegans, vegetarians, etc.)
+6. **Sourcing/Manufacturing**: "Where is it made?" / "What are the manufacturing standards?"
+7. **Limitations**: "What doesn't it do?" / "What claims are not supported?"
+
+═════════════════════════════════════════════════════════
+PRE-GENERATION VERIFICATION CHECKLIST
+═════════════════════════════════════════════════════════
+
+Before writing, mentally confirm:
+□ I have identified 5-7 customer questions I can answer from Product Data
+□ I know which questions require "Not stated in the provided information"
+□ I have reviewed all Prohibited Claims to avoid
+□ I understand the target audience's main concerns
+□ I have specific details ready (numbers, units, certifications)
+
+═════════════════════════════════════════════════════════
+QUALITY STANDARDS
+═════════════════════════════════════════════════════════
+
+Your FAQ must be:
+✓ HELPFUL: Addresses real customer concerns
+✓ ACCURATE: Every fact verified from Product Data
+✓ TRANSPARENT: Honest about limitations and unknowns
+✓ SCANNABLE: Clear Q&A format, concise answers
+✓ TRUSTWORTHY: No exaggeration or invented claims
+✓ COMPLIANT: Passes all verification checks
+
+Mediocre is not acceptable. Every answer must build trust.
+
+
+═════════════════════════════════════════════════════════
+OUTPUT FORMAT (STRICT)
+═════════════════════════════════════════════════════════
+
+# Frequently Asked Questions
+
+**Q: [Customer question 1]**
+A: [Direct answer, 40-80 words, using only Product Data]
+
+**Q: [Customer question 2]**
+A: [Direct answer, 40-80 words, using only Product Data]
+
+**Q: [Customer question 3]**
+A: [Direct answer, 40-80 words, using only Product Data]
+
+**Q: [Customer question 4]**
+A: [Direct answer, 40-80 words, using only Product Data]
+
+**Q: [Customer question 5]**
+A: [Direct answer, 40-80 words, using only Product Data]
+
+**Q: [Customer question 6 - Optional]**
+A: [Direct answer, 40-80 words, using only Product Data OR "Not stated in the provided information."]
+
+**Q: [Customer question 7 - Optional]**
+A: [Direct answer, 40-80 words, using only Product Data OR "Not stated in the provided information."]
+
+---
+
+**Disclaimers:**
+Actual battery life and performance may vary over the 7-year support period.
+Not all new software features released during the 7 years will be supported by older hardware.
+Device utilizes a multi-layer security approach, but no system is impenetrable.
+Some advanced AI features may require a stable internet connection (cloud processing).
+Network availability (including 5G) depends on carrier and coverage; speeds vary.
+Battery capacity will degrade over time with normal Li-ion aging.
+Performance may decline with app complexity and OS evolution over time.

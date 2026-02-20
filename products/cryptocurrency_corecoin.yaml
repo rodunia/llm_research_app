@@ -179,6 +179,25 @@ prohibited_or_unsupported_claims:
   - Claims of hack-proof or 100% secure status
   - Private key recovery by developers or foundation
   - Censorship-proof, seizure-proof, or tax-exempt claims
+  - Automatic key recovery, backup, or sharding mechanisms
+  - Self-custody with third-party recovery options
+  - Passwordless account access or biometric-only security without private keys
+  market_operations:
+  - Regional or geographic trading restrictions or pauses
+  - Market circuit breakers or trading halts
+  - Trading hours, time-zone limitations, or maintenance windows affecting trading
+  - Centralized market-making or liquidity guarantees
+  - Manual intervention in trading or settlement processes
+  - Claims of controlled volatility or price stability mechanisms
+  - Scheduled downtime or regional service interruptions
+  governance_violations:
+  - Governance proposals auto-approve or auto-pass without voting
+  - No quorum requirements for protocol changes
+  - Centralized veto power or admin keys (unless explicitly disclosed in specs)
+  - Automatic execution of proposals without community vote
+  - Governance votes that bypass validator or stakeholder approval
+  - Token-weighted voting without minimum stake requirements
+  - Protocol changes without on-chain governance process
   economic_geopolitical:
   - Hedge against inflation, recession, or geopolitical instability
   - Replacement for fiat currency

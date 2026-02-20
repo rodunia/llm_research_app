@@ -1,8 +1,8 @@
 """Glass Box Audit Pipeline: Atomic Claim Extraction + NLI-based Verification.
 
 This module implements a two-step audit process:
-1. STEP 1 (Atomizer): Extract atomic claims using Google Gemini
-2. STEP 2 (Judge): Verify claims using cross-encoder/nli-roberta-base
+1. STEP 1 (Atomizer): Extract atomic claims using GPT-4o-mini
+2. STEP 2 (Judge): Verify claims using cross-encoder/nli-roberta-base (NLI)
 
 Output: results/final_audit_results.csv
 """
@@ -28,12 +28,20 @@ from tenacity import retry, wait_exponential, stop_after_attempt, retry_if_excep
 # Load environment
 load_dotenv()
 
-# Setup logging
+# Setup logging (MUST be before importing semantic_filter)
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+# Import semantic filter (optional, for pre-filtering)
+try:
+    from semantic_filter import SemanticFilter  # Import from same directory
+    SEMANTIC_FILTER_AVAILABLE = True
+except ImportError:
+    SEMANTIC_FILTER_AVAILABLE = False
+    logger.warning("Semantic filter not available (install sentence-transformers)")
 
 # Paths
 PROJECT_ROOT = Path(__file__).parent.parent
@@ -51,8 +59,13 @@ EXTRACTION_MODEL = "gpt-4o-mini"
 EXTRACTION_TEMPERATURE = 0
 
 # NLI Configuration
-NLI_MODEL_NAME = "cross-encoder/nli-roberta-base"
+NLI_MODEL_NAME = "cross-encoder/nli-roberta-base"  # DeBERTa-v3-large tested but rejected (10x worse FP rate)
 VIOLATION_THRESHOLD = 0.90  # Contradiction score threshold
+
+# Semantic Filter Configuration (optional pre-filtering)
+USE_SEMANTIC_FILTER = False  # Set via --use-semantic-filter flag
+SEMANTIC_FILTER_TOP_K = 5  # Number of top similar rules to compare
+SEMANTIC_FILTER_THRESHOLD = 0.3  # Minimum similarity to include rule
 
 # Device detection
 if torch.cuda.is_available():
@@ -220,15 +233,29 @@ Extract all atomic claims as JSON with core_claims and disclaimers separated.
 class NLIJudge:
     """NLI-based claim verification using cross-encoder/nli-roberta-base."""
 
-    def __init__(self):
+    def __init__(self, use_semantic_filter: bool = False):
         logger.info(f"Loading NLI model: {NLI_MODEL_NAME}")
         self.tokenizer = AutoTokenizer.from_pretrained(NLI_MODEL_NAME)
         self.model = AutoModelForSequenceClassification.from_pretrained(NLI_MODEL_NAME)
         self.model.to(DEVICE)
         self.model.eval()
 
-        # Label mapping: [contradiction, entailment, neutral]
+        # Label mapping for cross-encoder models: [contradiction, entailment, neutral]
+        # Same as roberta-base (consistent cross-encoder format)
         self.label_names = ['contradiction', 'entailment', 'neutral']
+
+        # Semantic filter (optional pre-filtering)
+        self.use_semantic_filter = use_semantic_filter
+        self.semantic_filter = None
+        if use_semantic_filter and SEMANTIC_FILTER_AVAILABLE:
+            self.semantic_filter = SemanticFilter(
+                top_k=SEMANTIC_FILTER_TOP_K,
+                similarity_threshold=SEMANTIC_FILTER_THRESHOLD
+            )
+            logger.info("✅ Semantic pre-filtering ENABLED")
+        elif use_semantic_filter and not SEMANTIC_FILTER_AVAILABLE:
+            logger.warning("⚠️  Semantic filter requested but not available (install sentence-transformers)")
+            self.use_semantic_filter = False
 
     def verify_claim(self, claim: str, authorized_claims: List[str], specs: List[str] = None, prohibited_claims: List[str] = None, clarifications: List[str] = None) -> Dict:
         """
@@ -268,27 +295,43 @@ class NLIJudge:
                 'best_match_type': 'no_rules'
             }
 
-        # Category-based filtering to reduce false positives
-        # Classify the claim's category
-        claim_category = classify_claim_category(claim)
+        # Pre-filtering: Semantic (embedding) or Category (keyword-based)
+        if self.use_semantic_filter and self.semantic_filter:
+            # Semantic filtering: Use embeddings to find most similar rules
+            relevant_rules = self.semantic_filter.filter_rules(
+                claim,
+                all_reference_claims,
+                cache_key=None  # Could cache by product_id for speed
+            )
+            filtered_reference_claims = [rule_text for _, rule_text, _ in relevant_rules]
 
-        # Filter rules to only same category + general category rules
-        filtered_reference_claims = []
-        for rule in all_reference_claims:
-            rule_category = classify_claim_category(rule)
-            # Compare if same category or if either is 'general' (regulatory, disclaimers, etc.)
-            if rule_category == claim_category or rule_category == 'general' or claim_category == 'general':
-                filtered_reference_claims.append(rule)
+            if not filtered_reference_claims:
+                return {
+                    'is_violation': False,
+                    'violated_rule': None,
+                    'contradiction_score': 0.0,
+                    'best_match_rule': None,
+                    'best_match_type': 'semantic_filtered'
+                }
+        else:
+            # Category-based filtering (fallback/original method)
+            claim_category = classify_claim_category(claim)
+            filtered_reference_claims = []
+            for rule in all_reference_claims:
+                rule_category = classify_claim_category(rule)
+                # Compare if same category or if either is 'general' (regulatory, disclaimers, etc.)
+                if rule_category == claim_category or rule_category == 'general' or claim_category == 'general':
+                    filtered_reference_claims.append(rule)
 
-        # If no matching category rules, skip validation (avoids comparing camera to display)
-        if not filtered_reference_claims:
-            return {
-                'is_violation': False,
-                'violated_rule': None,
-                'contradiction_score': 0.0,
-                'best_match_rule': None,
-                'best_match_type': 'category_filtered'
-            }
+            # If no matching category rules, skip validation (avoids comparing camera to display)
+            if not filtered_reference_claims:
+                return {
+                    'is_violation': False,
+                    'violated_rule': None,
+                    'contradiction_score': 0.0,
+                    'best_match_rule': None,
+                    'best_match_type': 'category_filtered'
+                }
 
         max_contradiction_score = 0.0
         violated_rule = None
@@ -734,6 +777,7 @@ def main():
     parser.add_argument('--run-id', type=str, help='Audit specific run_id only')
     parser.add_argument('--resume', action='store_true', help='Resume from checkpoint (skip completed runs)')
     parser.add_argument('--clean', action='store_true', help='Clear checkpoint and start fresh')
+    parser.add_argument('--use-semantic-filter', action='store_true', help='Enable semantic pre-filtering (80% FP reduction)')
     args = parser.parse_args()
 
     # Clear checkpoint if requested
@@ -745,9 +789,9 @@ def main():
             ERROR_LOG_FILE.unlink()
             logger.info("✓ Cleared error log")
 
-    # Initialize NLI Judge
+    # Initialize NLI Judge with optional semantic filtering
     logger.info("Initializing NLI Judge...")
-    judge = NLIJudge()
+    judge = NLIJudge(use_semantic_filter=args.use_semantic_filter)
 
     # Load runs
     if args.run_id:

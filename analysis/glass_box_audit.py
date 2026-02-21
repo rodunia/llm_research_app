@@ -130,32 +130,42 @@ def save_error_log():
 
 ATOMIZER_SYSTEM_PROMPT = """You are a forensic claim extraction system for marketing compliance audits.
 
-TASK: Extract EVERY verifiable fact, technical specification, and safety warning from the marketing material. SEPARATE disclaimers from core claims.
+TASK: Extract EVERY verifiable fact, technical specification, operational policy, restriction, and safety warning from the marketing material. SEPARATE disclaimers from core claims.
 
 EXTRACTION RULES:
 1. Split compound sentences into atomic facts
    - Example: "6.3 inch OLED display" → ["Screen is 6.3 inches", "Screen is OLED"]
    - Example: "Contains 3mg melatonin, non-habit-forming" → ["Contains 3mg melatonin", "Non-habit-forming"]
+   - Example: "24/7 trading with regional pauses during maintenance" → ["Trading is 24/7", "Regional trading pauses during maintenance"]
 
 2. Maintain original terminology (do not over-paraphrase)
    - Keep exact numbers, units, brand names, technical terms
+   - Preserve policy language exactly as stated
 
-3. Extract factual claims only:
+3. Extract ALL verifiable claims including:
    - Product features (e.g., "Has 128GB storage")
    - Technical specifications (e.g., "Powered by Snapdragon 888")
+   - Operational policies (e.g., "Trading pauses during maintenance", "Automatic key backup enabled")
+   - Restrictions and conditions (e.g., "Regional limitations", "Requires quorum for voting")
    - Safety warnings (e.g., "Consult physician before use")
    - Quantitative statements (e.g., "Provides 7 years of updates")
    - Comparative statements (e.g., "Faster than previous generation")
+   - Governance mechanisms (e.g., "Proposals auto-pass without quorum")
 
-4. SEPARATE disclaimers (hedging/legal statements):
+4. CRITICAL: Extract ALL parts of compound sentences
+   - If a sentence contains multiple distinct facts or policies, extract EACH one separately
+   - Do NOT omit secondary clauses, conditions, or exceptions
+   - Example: "Available 24/7 except during regional maintenance windows" → ["Available 24/7", "Except during regional maintenance windows"]
+
+5. SEPARATE disclaimers (hedging/legal statements):
    - Disclaimers include: "may vary", "depends on", "not guaranteed", "consult", "results may differ"
    - Disclaimers modify or hedge other claims (e.g., "Battery life may vary")
 
-5. Ignore subjective marketing fluff:
+6. Ignore subjective marketing fluff:
    - Do NOT extract: "stunning", "amazing", "revolutionary", "incredible"
    - Do NOT extract vague claims like: "enhances your experience", "transforms your life"
 
-6. If the material is entirely vague/subjective/fluff, return empty lists
+7. If the material is entirely vague/subjective/fluff, return empty lists
 
 OUTPUT FORMAT (strict JSON):
 {

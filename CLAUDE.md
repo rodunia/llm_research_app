@@ -127,8 +127,71 @@ pytest -q
 pytest -q --maxfail=1
 ```
 
+## Glass Box Audit System (v2.1)
+
+The project includes a compliance auditing pipeline for evaluating LLM-generated marketing materials.
+
+### Architecture
+- **Two-stage pipeline**: GPT-4o-mini extraction + RoBERTa-base NLI validation
+- **Location**: `analysis/glass_box_audit.py`
+- **Input**: Marketing materials in `outputs/` (referenced via `experiments.csv`)
+- **Output**: `results/final_audit_results.csv` with violations and confidence scores
+
+### Key Features
+- **Atomic claim extraction**: Extracts ALL verifiable facts, operational policies, restrictions (including ALL parts of compound sentences)
+- **NLI verification**: Cross-encoder model detects contradictions against product YAMLs
+- **100% pilot detection**: Validated on 30 files with intentional errors
+- **Semantic pre-filtering** (optional): 74% FP reduction via sentence embeddings
+
+### Running Glass Box Audit
+
+```bash
+# Audit a single file
+python3 analysis/glass_box_audit.py --run-id <run_id>
+
+# Audit with semantic filtering (recommended for production)
+python3 analysis/glass_box_audit.py --run-id <run_id> --use-semantic-filter
+
+# Batch audit (skip first N, limit to M files)
+python3 analysis/glass_box_audit.py --skip 100 --limit 50
+
+# Resume from checkpoint
+python3 analysis/glass_box_audit.py --resume
+```
+
+### Pilot Study Validation
+
+**Location**: `pilot_study/` contains 30 files with intentional errors for validation
+- **Detection rate**: 30/30 (100%) ✅
+- **Documentation**: `results/PILOT_STUDY_FINAL_100PCT.md`
+- **Reproducibility**: `REPRODUCIBILITY.md` - full guide for peer review
+
+**Key improvement (v2.1)**: Enhanced extraction prompt to capture operational policies and compound sentence clauses → 90% → 100% detection.
+
+### Analysis Scripts
+
+Located in `scripts/`:
+- `detection_analysis_robust.py`: Verify detection rates with fuzzy matching
+- `rerun_pilot_audits.sh`: Reproduce pilot study (30 files)
+- `add_pilot_to_experiments.py`: Add pilot files to experiments.csv
+
+### Product Specifications
+
+**Location**: `products/*.yaml`
+- Each product YAML contains: specs, authorized_claims, prohibited_claims, safety_warnings
+- Used by NLI judge to detect contradictions
+- Example: `products/cryptocurrency_corecoin.yaml` (most comprehensive)
+
 ## Git Workflow
 
 - Commit style: Concise, imperative, scoped (e.g., "feat: add prompt registry")
 - Before committing: Run linters/tests, update `requirements.txt` if dependencies changed
 - PRs: Include clear description, verification steps, document any `config.py` changes
+
+## Research Artifacts
+
+For reproducibility and peer review:
+- `REPRODUCIBILITY.md`: Complete guide for reproducing 100% detection
+- `ANALYSIS_SECURITY_CHECKLIST.md`: Research readiness checklist
+- `PROCESS_DETECTION_ANALYSIS.md`: Verification protocol (prevents false reporting)
+- `results/pilot_individual/*.csv`: All 30 audit results (tracked in git)

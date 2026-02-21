@@ -6,6 +6,7 @@ import socket
 from pathlib import Path
 from typing import Dict, Any, Optional
 import time
+from datetime import datetime
 
 import typer
 from rich.console import Console
@@ -17,6 +18,7 @@ from runner.engines.mistral_client import call_mistral
 from runner.engines.anthropic_client import call_anthropic
 from runner.utils import now_iso
 from runner.render import load_product_yaml, render_prompt
+from config import DEFAULT_MAX_TOKENS, DEFAULT_SEED, DEFAULT_TOP_P, DEFAULT_FREQUENCY_PENALTY, DEFAULT_PRESENCE_PENALTY
 from runner.job_store import (
     initialize_db,
     claim_jobs,
@@ -32,13 +34,27 @@ app = typer.Typer(help="Run LLM experiments and persist outputs")
 console = Console()
 
 
-def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
+def call_engine(
+    engine: str,
+    prompt: str,
+    temperature: float,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    seed: Optional[int] = DEFAULT_SEED,
+    top_p: Optional[float] = DEFAULT_TOP_P,
+    frequency_penalty: Optional[float] = DEFAULT_FREQUENCY_PENALTY,
+    presence_penalty: Optional[float] = DEFAULT_PRESENCE_PENALTY,
+) -> Dict[str, Any]:
     """Route to appropriate engine client.
 
     Args:
         engine: Engine name (openai, google, mistral, anthropic)
         prompt: Prompt text
         temperature: Sampling temperature
+        max_tokens: Maximum completion tokens
+        seed: Random seed for reproducibility (if supported)
+        top_p: Nucleus sampling parameter (if supported)
+        frequency_penalty: Repetition penalty (if supported)
+        presence_penalty: Token diversity penalty (if supported)
 
     Returns:
         Engine response dict
@@ -46,14 +62,25 @@ def call_engine(engine: str, prompt: str, temperature: float) -> Dict[str, Any]:
     Raises:
         ValueError: If engine is unknown
     """
+    # Build kwargs for engine clients
+    kwargs = {
+        "prompt": prompt,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        "seed": seed,
+        "top_p": top_p,
+        "frequency_penalty": frequency_penalty,
+        "presence_penalty": presence_penalty,
+    }
+
     if engine == "openai":
-        return call_openai(prompt=prompt, temperature=temperature)
+        return call_openai(**kwargs)
     elif engine == "google":
-        return call_google(prompt=prompt, temperature=temperature)
+        return call_google(**kwargs)
     elif engine == "mistral":
-        return call_mistral(prompt=prompt, temperature=temperature)
+        return call_mistral(**kwargs)
     elif engine == "anthropic":
-        return call_anthropic(prompt=prompt, temperature=temperature)
+        return call_anthropic(**kwargs)
     else:
         raise ValueError(f"Unknown engine: {engine}")
 
@@ -65,6 +92,12 @@ def run_single_job(
     engine: str,
     temperature: float,
     trap_flag: bool = False,
+    max_tokens: int = DEFAULT_MAX_TOKENS,
+    seed: Optional[int] = DEFAULT_SEED,
+    top_p: Optional[float] = DEFAULT_TOP_P,
+    frequency_penalty: Optional[float] = DEFAULT_FREQUENCY_PENALTY,
+    presence_penalty: Optional[float] = DEFAULT_PRESENCE_PENALTY,
+    session_id: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Execute a single experimental run.
 
@@ -75,6 +108,12 @@ def run_single_job(
         engine: LLM engine name
         temperature: Sampling temperature
         trap_flag: Whether this is a trap batch experiment
+        max_tokens: Maximum completion tokens
+        seed: Random seed for reproducibility
+        top_p: Nucleus sampling parameter
+        frequency_penalty: Repetition penalty
+        presence_penalty: Token diversity penalty
+        session_id: Session identifier for grouping runs
 
     Returns:
         Dict with execution metadata (only fields to update in CSV)
@@ -94,10 +133,35 @@ def run_single_job(
         trap_flag=trap_flag
     )
 
-    # Call engine
-    started_at = now_iso()
-    response = call_engine(engine=engine, prompt=prompt_text, temperature=temperature)
-    completed_at = now_iso()
+    # Save prompt text to file
+    prompts_dir = Path("outputs") / "prompts"
+    prompts_dir.mkdir(parents=True, exist_ok=True)
+    prompt_path = prompts_dir / f"{run_id}.txt"
+    prompt_path.write_text(prompt_text, encoding="utf-8")
+
+    # Call engine with all parameters
+    start_time = datetime.utcnow()
+    started_at = start_time.isoformat() + 'Z'
+
+    response = call_engine(
+        engine=engine,
+        prompt=prompt_text,
+        temperature=temperature,
+        max_tokens=max_tokens,
+        seed=seed,
+        top_p=top_p,
+        frequency_penalty=frequency_penalty,
+        presence_penalty=presence_penalty,
+    )
+
+    end_time = datetime.utcnow()
+    completed_at = end_time.isoformat() + 'Z'
+
+    # Calculate execution duration
+    execution_duration_sec = (end_time - start_time).total_seconds()
+
+    # Extract date from timestamp
+    date_of_run = start_time.strftime("%Y-%m-%d")
 
     # Persist output
     outputs_dir = Path("outputs")
@@ -105,12 +169,16 @@ def run_single_job(
     output_path = outputs_dir / f"{run_id}.txt"
     output_path.write_text(response["output_text"], encoding="utf-8")
 
-    # Return only fields that need updating in CSV
+    # Return all metadata fields that need updating in CSV
     result = {
         "status": "completed",
         "started_at": started_at,
         "completed_at": completed_at,
+        "date_of_run": date_of_run,
+        "execution_duration_sec": execution_duration_sec,
+        "session_id": session_id or "",
         "model": response.get("model", ""),
+        "model_version": response.get("model_version", ""),
         "prompt_tokens": response.get("prompt_tokens", 0),
         "completion_tokens": response.get("completion_tokens", 0),
         "total_tokens": response.get("total_tokens", 0),
@@ -323,14 +391,20 @@ def batch(
                 started_at = now_iso()
                 mark_running(run_id, started_at=started_at, session_id=session_id, db_path=db_path)
 
-                # Execute job
+                # Execute job with all parameters from CSV
                 result = run_single_job(
                     run_id=run_id,
                     product_id=job["product_id"],
                     material_type=job["material_type"],
                     engine=job["engine"],
-                    temperature=float(job["temperature_label"]),
-                    trap_flag=bool(job["trap_flag"]),
+                    temperature=float(job.get("temperature", job.get("temperature_label", 0.6))),
+                    trap_flag=bool(job.get("trap_flag", False)),
+                    max_tokens=int(job.get("max_tokens", DEFAULT_MAX_TOKENS)),
+                    seed=int(job["seed"]) if job.get("seed") and job["seed"] != "" else None,
+                    top_p=float(job["top_p"]) if job.get("top_p") and job["top_p"] != "" else None,
+                    frequency_penalty=float(job["frequency_penalty"]) if job.get("frequency_penalty") and job["frequency_penalty"] != "" else None,
+                    presence_penalty=float(job["presence_penalty"]) if job.get("presence_penalty") and job["presence_penalty"] != "" else None,
+                    session_id=session_id,
                 )
 
                 # Mark as completed

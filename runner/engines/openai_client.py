@@ -14,6 +14,10 @@ def call_openai(
     temperature: float,
     model: Optional[str] = None,
     max_tokens: int = 2048,
+    seed: Optional[int] = None,
+    top_p: Optional[float] = None,
+    frequency_penalty: Optional[float] = None,
+    presence_penalty: Optional[float] = None,
     timeout: int = 60,
     max_retries: int = 3,
 ) -> Dict[str, Any]:
@@ -24,6 +28,10 @@ def call_openai(
         temperature: Sampling temperature (0.0-2.0)
         model: Model identifier (default: from ENGINE_MODELS config)
         max_tokens: Maximum completion tokens
+        seed: Random seed for reproducibility (OpenAI beta feature)
+        top_p: Nucleus sampling parameter (0.0-1.0)
+        frequency_penalty: Repetition penalty (-2.0 to 2.0)
+        presence_penalty: Token diversity penalty (-2.0 to 2.0)
         timeout: Request timeout in seconds
         max_retries: Maximum retry attempts
 
@@ -35,6 +43,7 @@ def call_openai(
             - completion_tokens: Output token count
             - total_tokens: Total token count
             - model: Model used
+            - model_version: Model snapshot ID (same as model for OpenAI)
 
     Raises:
         APIError: If all retries fail
@@ -55,12 +64,25 @@ def call_openai(
 
     for attempt in range(max_retries):
         try:
-            response = client.chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=temperature,
-                max_completion_tokens=max_tokens,
-            )
+            # Build API parameters (only include non-None optional params)
+            params = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": temperature,
+                "max_completion_tokens": max_tokens,
+            }
+
+            # Add optional parameters if specified
+            if seed is not None:
+                params["seed"] = seed
+            if top_p is not None:
+                params["top_p"] = top_p
+            if frequency_penalty is not None:
+                params["frequency_penalty"] = frequency_penalty
+            if presence_penalty is not None:
+                params["presence_penalty"] = presence_penalty
+
+            response = client.chat.completions.create(**params)
 
             # Extract response data
             message = response.choices[0].message
@@ -73,6 +95,7 @@ def call_openai(
                 "completion_tokens": usage.completion_tokens,
                 "total_tokens": usage.total_tokens,
                 "model": response.model,
+                "model_version": response.model,  # OpenAI returns snapshot ID in model field
             }
 
         except RateLimitError as e:

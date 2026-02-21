@@ -6,7 +6,12 @@ import itertools
 
 import typer
 
-from config import PRODUCTS, MATERIALS, TIMES, TEMPS, REPS, ENGINES, REGION
+from config import (
+    PRODUCTS, MATERIALS, TIMES, TEMPS, REPS, ENGINES, REGION,
+    DEFAULT_MAX_TOKENS, DEFAULT_SEED, DEFAULT_TOP_P,
+    DEFAULT_FREQUENCY_PENALTY, DEFAULT_PRESENCE_PENALTY,
+    DEFAULT_ACCOUNT_ID
+)
 from runner.render import load_product_yaml, render_prompt
 from runner.utils import make_run_id, append_row
 
@@ -96,25 +101,58 @@ def generate_full_matrix(dry_run: bool = False, trap_flag: bool = False) -> None
         # Note: Output file will be created by run_job.py when experiment executes
         # No placeholder file is created - experiments.csv tracks pending vs completed
 
-        # Append metadata row to CSV
+        # Generate prompt_id (product_material_v1 format)
+        material_base = material.replace('.j2', '')
+        prompt_id = f"{product_id}_{material_base}_v1"
+
+        # Prompt text path (will be saved during execution)
+        prompt_text_path = f"outputs/prompts/{run_id}.txt"
+
+        # Append metadata row to CSV (complete schema - 31 columns)
         row = {
+            # Core Identifiers (4)
             "run_id": run_id,
             "product_id": product_id,
             "material_type": material,
             "engine": engine,
+
+            # Prompt Info (3)
+            "prompt_id": prompt_id,
+            "prompt_text_path": prompt_text_path,
+            "system_prompt": "",  # Will be populated if template uses system prompt
+
+            # Model Setup (8)
+            "model": "",  # Populated at runtime from API response
+            "model_version": "",  # Populated at runtime from API response
+            "temperature": temp,
+            "max_tokens": DEFAULT_MAX_TOKENS,
+            "seed": DEFAULT_SEED if DEFAULT_SEED is not None else "",
+            "top_p": DEFAULT_TOP_P if DEFAULT_TOP_P is not None else "",
+            "frequency_penalty": DEFAULT_FREQUENCY_PENALTY if DEFAULT_FREQUENCY_PENALTY is not None else "",
+            "presence_penalty": DEFAULT_PRESENCE_PENALTY if DEFAULT_PRESENCE_PENALTY is not None else "",
+
+            # Run Context (6)
+            "session_id": "",  # Populated at runtime
+            "account_id": DEFAULT_ACCOUNT_ID,
             "time_of_day_label": time_of_day,
-            "temperature_label": str(temp),
             "repetition_id": rep,
-            "trap_flag": trap_flag,
-            "output_path": str(output_path),
-            "status": "pending",
-            "started_at": "",
-            "completed_at": "",
-            "model": "",
+            "started_at": "",  # Populated at runtime
+            "completed_at": "",  # Populated at runtime
+
+            # Response Data (5)
             "prompt_tokens": 0,
             "completion_tokens": 0,
             "total_tokens": 0,
             "finish_reason": "",
+            "output_path": str(output_path),
+
+            # Computed/Derived (3)
+            "date_of_run": "",  # Populated at runtime
+            "execution_duration_sec": "",  # Populated at runtime
+            "status": "pending",
+
+            # Experimental Design (1)
+            "trap_flag": trap_flag,
         }
 
         append_row(row, path="results/experiments.csv")

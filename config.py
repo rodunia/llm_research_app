@@ -58,11 +58,26 @@ ENGINE_MODELS = {
 
 REGION = "US"
 
-# --- 2. USER ACCOUNTS ---
+# --- 2. METADATA AND REPRODUCIBILITY SETTINGS ---
+
+# Default values for metadata tracking (statistical validity)
+DEFAULT_MAX_TOKENS = 2000           # Max completion tokens
+DEFAULT_SEED = 12345                # Fixed seed for reproducibility
+DEFAULT_TOP_P = None                # Use API default (1.0), set to float to override
+DEFAULT_FREQUENCY_PENALTY = None    # Use API default (0.0), set to float to override
+DEFAULT_PRESENCE_PENALTY = None     # Use API default (0.0), set to float to override
+
+# Session tracking
+DEFAULT_SESSION_ID = "main_experiment"  # Can be overridden via CLI --session-id
+
+# --- 3. USER ACCOUNTS ---
 # Single user setup for current research
 USER_ACCOUNTS = [
     "researcher_primary",  # Single user for now
 ]
+
+# Default account for experiments
+DEFAULT_ACCOUNT_ID = USER_ACCOUNTS[0]
 
 # --- 3. LEGACY CONFIGURATIONS (ARCHIVED) ---
 # NOTE: MODEL_CONFIGURATIONS, STANDARDIZED_PROMPTS, and get_model_config()

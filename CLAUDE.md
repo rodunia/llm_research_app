@@ -6,6 +6,31 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is an LLM Research Application for conducting systematic experiments with multiple LLM providers (OpenAI, Google Gemini, Anthropic Claude, Mistral AI). The app provides automated batch processing for running product marketing material generation across different LLMs with controlled parameters, logging all results to CSV for analysis.
 
+## Research Context
+
+**Paper**: "Critical Risks and Reliability Challenges of Using ChatGPT for Marketing Content Generation"
+
+**Research Questions**:
+1. **People-pleasing bias**: Do LLMs generate overly positive marketing content that violates compliance rules?
+2. **Induced errors and hallucinations**: How frequently do LLMs introduce factual inaccuracies in marketing materials?
+3. **Temporal unreliability**: Do LLMs produce inconsistent outputs across different sessions and times of day?
+
+**Why marketing content?**: AI marketing has the highest legal and social risk for companies:
+- Incorrect medical claims (health supplements) → FDA violations
+- Misleading financial claims (cryptocurrency) → SEC/CFTC violations
+- False product specifications (consumer electronics) → FTC violations
+- Regulatory non-compliance across multiple domains
+
+**Experimental Design Rationale**:
+- **3 products** (smartphone, cryptocurrency, health supplement): Different regulatory domains to test cross-industry reliability
+- **Temperature variations** (0.2, 0.6, 1.0): Test deterministic vs creative outputs - does higher creativity increase hallucinations?
+- **Time-of-day runs** (morning/afternoon/evening × 3 days = 9 time slots): Measure temporal consistency across sessions
+- **Multiple engines** (OpenAI, Google, Anthropic, Mistral): Compare provider reliability and bias patterns
+- **3 replications**: Statistical validation of consistency within same conditions
+- **5 material types**: FAQ, digital ads, blog posts, social media, email - different content formats
+
+**Glass Box Audit Role**: Systematically detect and quantify induced errors and compliance violations across 1,620 generated marketing materials (3 products × 5 materials × 3 temps × 3 reps × 4 engines × 3 time slots).
+
 ## Architecture
 
 ### Configuration-Driven Design
@@ -142,6 +167,23 @@ The project includes a compliance auditing pipeline for evaluating LLM-generated
 - **NLI verification**: Cross-encoder model detects contradictions against product YAMLs
 - **100% pilot detection**: Validated on 30 files with intentional errors
 - **Semantic pre-filtering** (optional): 74% FP reduction via sentence embeddings
+
+### Model Choice Rationale
+
+**Why GPT-4o-mini for extraction?**
+- **Cost-effective**: ~$0.002/file vs $0.10/file for GPT-4 (50x cheaper)
+- **Sufficient performance**: Achieved 100% detection on 30-file pilot study
+- **Prompt > Model**: Key insight - 90% → 100% detection improvement came from prompt engineering (adding "extract ALL parts of compound sentences"), not from using larger models
+- **Not empirically validated**: No A/B testing against GPT-4, Claude, or Gemini for extraction task
+- **Temperature 0**: Deterministic extraction ensures reproducibility across all 1,620 analyses
+
+**Why RoBERTa-base for NLI validation?**
+- **Optimal tradeoff**: 125M params, fast inference (~75 sec/file)
+- **Empirically validated**: A/B tested against DeBERTa-v3-large (304M params)
+- **DeBERTa rejected**: 10x worse false positive rate despite larger size
+- **Key finding**: Architecture + prompt design > parameter scaling
+
+**Design philosophy**: Prioritize cost, speed, and reproducibility over theoretical "state-of-the-art" without empirical justification. The 100% detection validates this approach.
 
 ### Running Glass Box Audit
 

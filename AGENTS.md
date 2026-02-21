@@ -11,6 +11,33 @@ This file provides instructions for AI coding assistants (GitHub Copilot, Cursor
 2. Compliance auditing via two-stage pipeline (GPT-4o-mini extraction + RoBERTa NLI validation)
 3. 100% detection of compliance violations (validated on 30-file pilot study)
 
+## Research Context
+
+**Paper**: "Critical Risks and Reliability Challenges of Using ChatGPT for Marketing Content Generation"
+
+**Research Questions**:
+1. **People-pleasing bias**: Do LLMs generate overly positive marketing content that violates compliance rules?
+2. **Induced errors and hallucinations**: How frequently do LLMs introduce factual inaccuracies in marketing materials?
+3. **Temporal unreliability**: Do LLMs produce inconsistent outputs across different sessions and times of day?
+
+**Why marketing content?**: AI marketing has the highest legal and social risk for companies:
+- Incorrect medical claims (health supplements) → FDA violations
+- Misleading financial claims (cryptocurrency) → SEC/CFTC violations
+- False product specifications (consumer electronics) → FTC violations
+- Regulatory non-compliance across multiple domains
+
+**Experimental Design Rationale**:
+- **3 products** (smartphone, cryptocurrency, health supplement): Different regulatory domains to test cross-industry reliability
+- **Temperature variations** (0.2, 0.6, 1.0): Test deterministic vs creative outputs - does higher creativity increase hallucinations?
+- **Time-of-day runs** (morning/afternoon/evening × 3 days = 9 time slots): Measure temporal consistency across sessions
+- **Multiple engines** (OpenAI, Google, Anthropic, Mistral): Compare provider reliability and bias patterns
+- **3 replications**: Statistical validation of consistency within same conditions
+- **5 material types**: FAQ, digital ads, blog posts, social media, email - different content formats
+
+**Glass Box Audit Role**: Systematically detect and quantify induced errors and compliance violations across 1,620 generated marketing materials.
+
+**Key Achievement**: 100% detection rate (30/30 pilot files) via prompt engineering - demonstrates that architecture + prompt design > parameter scaling.
+
 ## Project Structure
 
 ```
@@ -103,8 +130,18 @@ python3 scripts/detection_analysis_robust.py
   - `ENGINE_MODELS`: Model mappings (e.g., openai → gpt-4o-mini)
   - `MATERIALS`: Jinja2 template names
   - `TEMPS`: Temperature values (0.2, 0.6, 1.0)
+  - `TIMES`: Time-of-day slots (morning, afternoon, evening)
+  - `REPS`: Number of replications (3)
 
 **Important**: All engine clients read models from `ENGINE_MODELS` - no hardcoded model names.
+
+**Experimental Design - Why These Values?**:
+- **TEMPS = [0.2, 0.6, 1.0]**: Tests hypothesis that higher creativity (temp=1.0) increases hallucinations vs deterministic (temp=0.2)
+- **TIMES = 9 slots** (3 times/day × 3 days): Tests temporal unreliability - do LLMs produce different outputs at different times?
+- **REPS = 3**: Statistical validation - ensures results are consistent within same conditions
+- **3 PRODUCTS**: Different regulatory domains (tech, finance, health) - tests cross-industry reliability
+- **4 ENGINES**: Provider comparison - identifies which LLMs have highest compliance risk
+- **Total matrix**: 1,620 runs = 3 products × 5 materials × 3 temps × 3 reps × 4 engines × 3 time slots
 
 ### Product YAMLs (products/*.yaml)
 - **Structure**:
@@ -135,6 +172,12 @@ python3 scripts/detection_analysis_robust.py
 - Cross-encoder NLI model (RoBERTa-base) detects contradictions
 - Uses semantic similarity pre-filtering when enabled
 - Returns violation + confidence score (threshold: 0.90)
+
+**Model Choice Rationale**:
+- **GPT-4o-mini for extraction**: Cost-effective (~$0.002/file), achieved 100% detection. Not A/B tested against GPT-4/Claude/Gemini but validated by results. Temperature 0 for reproducibility.
+- **RoBERTa-base for NLI**: Empirically validated - A/B tested against DeBERTa-v3-large (304M params), which had 10x worse FP rate.
+- **Key insight**: 90% → 100% detection via prompt engineering (not model scaling) - demonstrates architecture + prompt design > parameter count.
+- **Design philosophy**: Prioritize cost, speed, reproducibility over theoretical "state-of-the-art" without empirical justification.
 
 ### 2. Provider Clients (runner/engines/)
 

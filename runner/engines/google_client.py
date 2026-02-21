@@ -15,6 +15,10 @@ def call_google(
     temperature: float,
     model: Optional[str] = None,
     max_tokens: int = 2048,
+    seed: Optional[int] = None,
+    top_p: Optional[float] = None,
+    frequency_penalty: Optional[float] = None,
+    presence_penalty: Optional[float] = None,
     timeout: int = 60,
     max_retries: int = 3,
 ) -> Dict[str, Any]:
@@ -25,6 +29,10 @@ def call_google(
         temperature: Sampling temperature (0.0-2.0)
         model: Model identifier (default: from ENGINE_MODELS config)
         max_tokens: Maximum output tokens
+        seed: Random seed (NOT supported by Google - ignored)
+        top_p: Nucleus sampling parameter (supported)
+        frequency_penalty: Repetition penalty (NOT supported - ignored)
+        presence_penalty: Token diversity penalty (NOT supported - ignored)
         timeout: Request timeout in seconds
         max_retries: Maximum retry attempts
 
@@ -36,6 +44,7 @@ def call_google(
             - completion_tokens: Output token count (approximate)
             - total_tokens: Total token count
             - model: Model used
+            - model_version: Model identifier (same as model)
 
     Raises:
         Exception: If all retries fail
@@ -54,10 +63,18 @@ def call_google(
 
     genai.configure(api_key=api_key)
 
+    # Build generation config (only include supported parameters)
     generation_config = {
         "temperature": temperature,
         "max_output_tokens": max_tokens,
     }
+
+    # Add top_p if specified (Google supports this)
+    if top_p is not None:
+        generation_config["top_p"] = top_p
+
+    # Note: Google does NOT support seed, frequency_penalty, or presence_penalty
+    # These parameters are accepted but ignored for API compatibility
 
     # Set safety settings to be more permissive for marketing content
     safety_settings = {
@@ -152,6 +169,7 @@ Recommendations:
                 "completion_tokens": completion_tokens,
                 "total_tokens": prompt_tokens + completion_tokens,
                 "model": model,
+                "model_version": model,  # Google doesn't provide separate version info
             }
 
         except exceptions.ResourceExhausted as e:

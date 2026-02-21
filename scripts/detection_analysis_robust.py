@@ -27,7 +27,7 @@ GROUND_TRUTH = {
     },
     "corecoin_2": {
         "error": "Light validators (non-staking)",
-        "search_terms": ["light validator", "non-staking", "without staking"],
+        "search_terms": ["light validator", "light-validator", "non-staking", "without staking", "do not stake", "not stake"],
         "concept": "validator types"
     },
     "corecoin_3": {

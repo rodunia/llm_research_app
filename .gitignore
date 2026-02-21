@@ -32,10 +32,16 @@ outputs/prompts/*.txt
 *.csv
 !results/experiments.csv
 
+# EXCEPT: Allow pilot study results for reproducibility
+!results/pilot_individual/*.csv
+
 # Working files and generated data
 results/*.jsonl
 results/*.jsonl.old
 results/*.txt
+
+# EXCEPT: Allow final detection analysis for reproducibility
+!results/detection_analysis_final.txt
 analysis/*.json
 outputs/enhanced_prompts_test/
 tests/

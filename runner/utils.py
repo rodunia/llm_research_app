@@ -71,6 +71,47 @@ def append_row(row: dict, path: str = "results/results.csv") -> None:
         writer.writerow(row)
 
 
+def update_csv_row(run_id: str, updates: dict, path: str = "results/experiments.csv") -> bool:
+    """Update a row in CSV file by run_id.
+
+    Args:
+        run_id: Run ID to update
+        updates: Dictionary of field name -> new value
+        path: Path to CSV file
+
+    Returns:
+        True if row was found and updated, False otherwise
+    """
+    csv_path = Path(path)
+    if not csv_path.exists():
+        return False
+
+    # Read all rows
+    with open(csv_path, "r", newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        fieldnames = reader.fieldnames
+        rows = list(reader)
+
+    # Find and update the row
+    found = False
+    for row in rows:
+        if row.get("run_id") == run_id:
+            row.update(updates)
+            found = True
+            break
+
+    if not found:
+        return False
+
+    # Write back all rows
+    with open(csv_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    return True
+
+
 def get_git_hash() -> str:
     """Get current git commit hash.
 

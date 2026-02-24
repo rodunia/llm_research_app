@@ -294,7 +294,16 @@ class NLIJudge:
         if prohibited_claims:
             all_reference_claims.extend(prohibited_claims)
         if clarifications:
-            all_reference_claims.extend(clarifications)
+            # Handle clarifications (can be list or dict with nested lists)
+            if isinstance(clarifications, dict):
+                # Flatten nested dict: {category: [claims]} -> [claims]
+                for category_claims in clarifications.values():
+                    if isinstance(category_claims, list):
+                        all_reference_claims.extend(category_claims)
+            elif isinstance(clarifications, (list, tuple)):
+                all_reference_claims.extend(clarifications)
+            else:
+                logger.warning(f"Unexpected clarifications type: {type(clarifications)}")
 
         if not all_reference_claims:
             return {

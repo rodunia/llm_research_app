@@ -52,7 +52,7 @@ ENGINES = (
 ENGINE_MODELS = {
     "openai": "gpt-4o",  # Upgraded from gpt-4o-mini to full gpt-4o
     "google": "gemini-2.0-flash-exp",  # Using 2.0 experimental (more permissive)
-    "mistral": "mistral-small-latest",
+    "mistral": "mistral-large-2407",  # Large model (July 2024) - better quality for research
     "anthropic": "claude-3-opus-20240229",  # Claude 3 Opus (your API key tier)
 }
 

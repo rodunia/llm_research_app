@@ -658,8 +658,8 @@ def classify_claim_category(claim: str) -> str:
         # Electronics/Smartphone categories
         'display': ['display', 'screen', 'inch', '"', 'oled', 'lcd', 'amoled', 'refresh rate', 'hz', 'resolution', 'brightness', 'nits'],
         'camera': ['camera', 'mp', 'megapixel', 'photo', 'lens', 'zoom', 'aperture', 'ois', 'image stabilization', 'ultrawide', 'telephoto', 'video recording'],
-        'storage': ['storage', 'gb', 'tb', 'memory', 'space', 'ufs', 'expandable', 'microsd'],
-        'ram': ['ram', 'lpddr', 'memory'],
+        'ram': ['ram', 'lpddr'],  # Check RAM before storage (more specific)
+        'storage': ['storage', 'ufs', 'expandable', 'microsd'],  # Removed 'gb', 'memory' to avoid conflicts
         'battery': ['battery', 'mah', 'charging', 'power', 'watt', 'fast charging', 'wireless charging'],
         'processor': ['processor', 'cpu', 'chipset', 'ghz', 'core', 'gpu', 'npu', 'tensor', 'snapdragon', 'exynos'],
         'network': ['5g', '4g', 'lte', 'wifi', 'wi-fi', 'bluetooth', 'cellular', 'connectivity', 'nfc', 'sub-6'],

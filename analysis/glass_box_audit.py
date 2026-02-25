@@ -240,6 +240,65 @@ Extract all atomic claims as JSON with core_claims and disclaimers separated.
 
 # ==================== STEP 2: CLAIM VERIFICATION ====================
 
+# Numerical Contradiction Checking (Option B)
+def extract_numbers_with_units(text: str) -> List[Tuple[str, str]]:
+    """
+    Extract numbers with their units from text.
+
+    Returns:
+        List of (number, unit) tuples, e.g., [("16", "GB"), ("6.5", "inch")]
+    """
+    import re
+    # Pattern: number (with optional decimal) + optional space + unit
+    # Units: GB, MB, TB, inch, ", mAh, MP, Hz, W, mm, grams, etc.
+    pattern = r'(\d+(?:\.\d+)?)\s*(GB|MB|TB|inch|"|mAh|MP|Hz|W|mm|grams?|kg|℃|°C|C)\b'
+    matches = re.findall(pattern, text, re.IGNORECASE)
+    # Normalize units (e.g., "gram" → "grams", "C" → "℃")
+    normalized = []
+    for num, unit in matches:
+        unit_lower = unit.lower()
+        if unit_lower in ['gram', 'grams']:
+            unit_lower = 'grams'
+        elif unit_lower in ['c', '°c', '℃']:
+            unit_lower = '°c'
+        normalized.append((num, unit_lower))
+    return normalized
+
+
+def check_numerical_contradiction(claim: str, spec: str) -> Tuple[bool, str]:
+    """
+    Check if claim contains numerical values that contradict spec.
+
+    Args:
+        claim: Extracted claim (e.g., "Nova X5 has RAM configurations of 16 GB")
+        spec: Product spec (e.g., "RAM configurations: 8 GB or 12 GB LPDDR5X")
+
+    Returns:
+        (is_contradiction, explanation)
+        - is_contradiction: True if numerical mismatch found
+        - explanation: Human-readable reason
+    """
+    import re
+
+    claim_nums = extract_numbers_with_units(claim)
+    spec_nums = extract_numbers_with_units(spec)
+
+    if not claim_nums or not spec_nums:
+        return False, ""  # No numbers to compare
+
+    # Check each claim number against spec numbers with same unit
+    for claim_val, claim_unit in claim_nums:
+        # Find all spec numbers with matching unit
+        matching_spec_vals = [val for val, unit in spec_nums if unit == claim_unit]
+
+        if matching_spec_vals:
+            # If claim number not in spec's allowed values, it's a contradiction
+            if claim_val not in matching_spec_vals:
+                return True, f"Numerical mismatch: {claim_val} {claim_unit} not in spec values {matching_spec_vals} {claim_unit}"
+
+    return False, ""
+
+
 class NLIJudge:
     """NLI-based claim verification using cross-encoder/nli-roberta-base."""
 
@@ -287,6 +346,30 @@ class NLIJudge:
                 'best_match_type': str (entailment/neutral/contradiction)
             }
         """
+        # OPTION B: Pre-check for numerical contradictions (fast, rule-based)
+        # This catches cases like "16 GB RAM" vs "8 GB or 12 GB RAM" that NLI misses
+        # Category-aware: only check specs in the same category to avoid false matches
+        if specs:
+            # Classify claim category first
+            claim_category = classify_claim_category(claim)
+
+            for spec in specs:
+                # Classify spec category
+                spec_category = classify_claim_category(spec)
+
+                # Only check numerical contradiction if same category or spec is 'general'
+                if spec_category == claim_category or spec_category == 'general':
+                    is_contradiction, explanation = check_numerical_contradiction(claim, spec)
+                    if is_contradiction:
+                        logger.debug(f"Numerical contradiction detected: {explanation}")
+                        return {
+                            'is_violation': True,
+                            'violated_rule': spec,
+                            'contradiction_score': 1.0,  # Rule-based detection (perfect confidence)
+                            'best_match_rule': spec,
+                            'best_match_type': 'numerical_rule'
+                        }
+
         # Combine authorized claims, specs, prohibited claims, and clarifications for verification
         all_reference_claims = authorized_claims.copy() if authorized_claims else []
         if specs:
@@ -575,8 +658,8 @@ def classify_claim_category(claim: str) -> str:
         # Electronics/Smartphone categories
         'display': ['display', 'screen', 'inch', '"', 'oled', 'lcd', 'amoled', 'refresh rate', 'hz', 'resolution', 'brightness', 'nits'],
         'camera': ['camera', 'mp', 'megapixel', 'photo', 'lens', 'zoom', 'aperture', 'ois', 'image stabilization', 'ultrawide', 'telephoto', 'video recording'],
-        'storage': ['storage', 'gb', 'tb', 'memory', 'space', 'ufs', 'expandable', 'microsd'],
-        'ram': ['ram', 'lpddr', 'memory'],
+        'ram': ['ram', 'lpddr'],  # Check RAM before storage (more specific)
+        'storage': ['storage', 'ufs', 'expandable', 'microsd'],  # Removed 'gb', 'memory' to avoid conflicts
         'battery': ['battery', 'mah', 'charging', 'power', 'watt', 'fast charging', 'wireless charging'],
         'processor': ['processor', 'cpu', 'chipset', 'ghz', 'core', 'gpu', 'npu', 'tensor', 'snapdragon', 'exynos'],
         'network': ['5g', '4g', 'lte', 'wifi', 'wi-fi', 'bluetooth', 'cellular', 'connectivity', 'nfc', 'sub-6'],

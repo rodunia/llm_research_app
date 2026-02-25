@@ -348,18 +348,27 @@ class NLIJudge:
         """
         # OPTION B: Pre-check for numerical contradictions (fast, rule-based)
         # This catches cases like "16 GB RAM" vs "8 GB or 12 GB RAM" that NLI misses
+        # Category-aware: only check specs in the same category to avoid false matches
         if specs:
+            # Classify claim category first
+            claim_category = classify_claim_category(claim)
+
             for spec in specs:
-                is_contradiction, explanation = check_numerical_contradiction(claim, spec)
-                if is_contradiction:
-                    logger.debug(f"Numerical contradiction detected: {explanation}")
-                    return {
-                        'is_violation': True,
-                        'violated_rule': spec,
-                        'contradiction_score': 1.0,  # Rule-based detection (perfect confidence)
-                        'best_match_rule': spec,
-                        'best_match_type': 'numerical_rule'
-                    }
+                # Classify spec category
+                spec_category = classify_claim_category(spec)
+
+                # Only check numerical contradiction if same category or spec is 'general'
+                if spec_category == claim_category or spec_category == 'general':
+                    is_contradiction, explanation = check_numerical_contradiction(claim, spec)
+                    if is_contradiction:
+                        logger.debug(f"Numerical contradiction detected: {explanation}")
+                        return {
+                            'is_violation': True,
+                            'violated_rule': spec,
+                            'contradiction_score': 1.0,  # Rule-based detection (perfect confidence)
+                            'best_match_rule': spec,
+                            'best_match_type': 'numerical_rule'
+                        }
 
         # Combine authorized claims, specs, prohibited claims, and clarifications for verification
         all_reference_claims = authorized_claims.copy() if authorized_claims else []

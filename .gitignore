@@ -34,17 +34,44 @@ outputs/prompts/*.txt
 
 # EXCEPT: Allow pilot study results for reproducibility
 !results/pilot_individual/*.csv
+!results/pilot_individual_2026_run1/*.csv
+!results/pilot_individual_2026_run2/*.csv
+
+# Pilot study temporary results (don't track all runs)
+pilot_results/
+pilot_results_*/
+pilot_*.log
 
 # Working files and generated data
 results/*.jsonl
 results/*.jsonl.old
 results/*.txt
+results/*.json
 
 # EXCEPT: Allow final detection analysis for reproducibility
 !results/detection_analysis_final.txt
 analysis/*.json
 outputs/enhanced_prompts_test/
 tests/
+
+# Temporary analysis results
+results/gpt4o_baseline_run*/
+results/comparison_analysis/
+results/llm_direct_*/
+results/glassbox_vs_gpt4o_freeform/
+
+# Log files
+*.log
+glass_box_run.log
+
+# Binary documentation files (convert to markdown instead)
+*.docx
+
+# Temporary shell scripts
+check_*.sh
+monitor_*.sh
+wait_for_*.sh
+test_critical_files.sh
 
 # Utility and test scripts
 run_*.sh

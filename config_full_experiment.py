@@ -3,11 +3,11 @@
 # All experimental parameters, prompts, models, and users are defined here.
 
 # --- 1. EXPERIMENT CONSTANTS ---
-# PILOT CONFIGURATION (2026-03-07):
-# - 3 products × 2 materials × 1 time × 1 temp × 3 reps × 3 engines = 54 runs
-# - Testing full pipeline: generation → randomization → analysis
-# - Reduced scope for validation before full experiment
-# - TO RESTORE FULL CONFIG: Use config_full_experiment.py
+# Current Setup (2025-01-15):
+# - 3 products × 3 materials × 3 temps × 3 runs/day × 3 engines = 243 runs per day
+# - Single user (no multi-user for now)
+# - Materials: FAQ, Digital Ads, Blog Post Promos only
+# - Runs 3 times per day (morning, afternoon, evening)
 
 PRODUCTS = (
     "smartphone_mid",
@@ -21,27 +21,25 @@ PRODUCTS = (
 MATERIALS = (
     "faq.j2",
     "digital_ad.j2",
-    # PILOT: Using only 2 materials
-    # "blog_post_promo.j2",
+    "blog_post_promo.j2",
+    # Excluded from current usage:
     # "organic_social_posts.j2",
     # "spec_document_facts_only.j2",
 )
 
 TIMES = (
     "morning",
-    # PILOT: Using only 1 time slot
-    # "afternoon",
-    # "evening",
+    "afternoon",
+    "evening",
 )
 
 TEMPS = (
-    # PILOT: Using only 1 temperature
-    # 0.2,  # low - more deterministic
+    0.2,  # low - more deterministic
     0.6,  # medium - balanced
-    # 1.0,  # high - more creative
+    1.0,  # high - more creative
 )
 
-REPS = (1, 2, 3)  # Three replications for reliability
+REPS = (1, 2, 3)  # Three runs per day (morning/afternoon/evening)
 
 ENGINES = (
     "openai",
@@ -53,7 +51,7 @@ ENGINES = (
 # Engine-to-model mapping (used by runner/engines/)
 ENGINE_MODELS = {
     "openai": "gpt-4o",  # Upgraded from gpt-4o-mini to full gpt-4o
-    "google": "models/gemini-1.5-flash-latest",  # Latest stable (API v1beta format)
+    "google": "gemini-2.0-flash-exp",  # Using 2.0 experimental (more permissive)
     "mistral": "mistral-large-2407",  # Large model (July 2024) - better quality for research
     "anthropic": "claude-3-opus-20240229",  # Claude 3 Opus (your API key tier)
 }

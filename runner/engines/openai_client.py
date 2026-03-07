@@ -7,6 +7,10 @@ from typing import Dict, Any, Optional
 from openai import OpenAI, APIError, APITimeoutError, RateLimitError
 
 from config import ENGINE_MODELS
+from logging_config import setup_logging
+
+# Setup module logger
+logger = setup_logging(__name__, console=False)  # Log to files only (avoid console spam)
 
 
 def call_openai(
@@ -62,8 +66,13 @@ def call_openai(
 
     client = OpenAI(api_key=api_key, timeout=timeout)
 
+    # Log API call parameters
+    logger.info(f"API call: model={model}, temp={temperature}, max_tokens={max_tokens}, seed={seed}")
+
     for attempt in range(max_retries):
         try:
+            logger.debug(f"Attempt {attempt+1}/{max_retries}")
+
             # Build API parameters (only include non-None optional params)
             params = {
                 "model": model,
@@ -88,6 +97,13 @@ def call_openai(
             message = response.choices[0].message
             usage = response.usage
 
+            # Log successful response
+            logger.info(
+                f"Success: {usage.total_tokens} tokens "
+                f"(prompt={usage.prompt_tokens}, completion={usage.completion_tokens}), "
+                f"finish_reason={response.choices[0].finish_reason}"
+            )
+
             return {
                 "output_text": message.content or "",
                 "finish_reason": response.choices[0].finish_reason,
@@ -99,19 +115,28 @@ def call_openai(
             }
 
         except RateLimitError as e:
+            wait_time = 2 ** attempt  # Exponential backoff
+            logger.warning(
+                f"Rate limit hit (attempt {attempt+1}/{max_retries}), "
+                f"retrying in {wait_time}s: {e}"
+            )
             if attempt < max_retries - 1:
-                wait_time = 2 ** attempt  # Exponential backoff
                 time.sleep(wait_time)
                 continue
+            logger.error("Max retries exceeded for rate limit")
             raise
 
         except APITimeoutError as e:
+            logger.warning(f"API timeout (attempt {attempt+1}/{max_retries}): {e}")
             if attempt < max_retries - 1:
                 continue
+            logger.error("Max retries exceeded for timeout")
             raise
 
         except APIError as e:
             # Non-retryable errors
+            logger.error(f"API error (non-retryable): {e}")
             raise
 
+    logger.error("Max retries exceeded")
     raise APIError("Max retries exceeded")

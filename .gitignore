@@ -64,6 +64,9 @@ results/glassbox_vs_gpt4o_freeform/
 *.log
 glass_box_run.log
 
+# Centralized logging (excluded from repo - local only)
+logs/
+
 # Binary documentation files (convert to markdown instead)
 *.docx
 

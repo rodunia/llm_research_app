@@ -1,0 +1,263 @@
+# Ground Truth for NLI Verification - Nova X5 5G Smartphone
+# Optimized for factual contradiction checking (NOT for LLM generation)
+# Use smartphone_mid.yaml for LLM generation
+
+product_id: smartphone_mid
+name: Nova X5 5G Smartphone
+
+# ============================================================================
+# FACTUAL SPECIFICATIONS (Check for CONTRADICTION)
+# These are HARD FACTS that marketing claims should NOT contradict
+# ============================================================================
+
+factual_specs:
+
+  # Display specifications
+  display:
+    - "Display size is 6.3 inches"
+    - "Display is NOT 6.5 inches"
+    - "Display is NOT 6.7 inches"
+    - "Display is OLED technology"
+    - "Display has 120 Hz refresh rate"
+    - "Display is Actua OLED"
+
+  # Camera specifications
+  camera:
+    - "Main camera is 50 MP"
+    - "Main camera has Optical Image Stabilization (OIS)"
+    - "Ultra-wide camera is 12 MP"
+    - "Front camera is 10.8 MP"
+    - "Main camera is NOT 48 MP"
+    - "Main camera is NOT 64 MP"
+    - "Main camera is NOT 108 MP"
+    - "Supports 4K video at 60fps"
+    - "Supports 1080p slow-motion at 120-240fps"
+    - "Has night mode capabilities"
+    - "Has HDR capabilities"
+
+  # Processor and chipset
+  processor:
+    - "Uses Tensor G4 chipset"
+    - "Has Neural Processing Unit (NPU)"
+    - "Has Titan M2 security coprocessor"
+    - "AI-optimized for computational photography"
+
+  # Memory and storage
+  memory_storage:
+    - "Storage options are 128 GB, 256 GB, or 512 GB"
+    - "Storage is UFS 3.1 type"
+    - "RAM options are 8 GB or 12 GB"
+    - "RAM is LPDDR5X type"
+    - "Does NOT support expandable storage"
+    - "Does NOT support microSD cards"
+    - "No expandable storage via microSD"
+    - "Storage is NOT 1 TB"
+    - "RAM is NOT 16 GB"
+
+  # Battery and charging
+  battery:
+    - "Battery capacity is 4700-5000 mAh (varies by region)"
+    - "Supports 30-45W USB-C fast charging"
+    - "Charger availability varies by region"
+    - "Does NOT support wireless charging"
+    - "No wireless charging capability"
+    - "Battery capacity will degrade over time"
+
+  # Connectivity
+  connectivity:
+    - "Supports 5G Sub-6 GHz"
+    - "Supports LTE fallback"
+    - "Supports Wi-Fi 6/6E"
+    - "Supports Bluetooth 5.x"
+    - "Has NFC for contactless payments"
+    - "Supports GPS, GLONASS, Galileo, BeiDou"
+    - "Single nano-SIM + eSIM capability (regional variation)"
+    - "Does NOT support Wi-Fi 7"
+    - "Does NOT support mmWave 5G"
+
+  # Build and design
+  build:
+    - "Aluminum frame construction"
+    - "Gorilla Glass Victus back panel"
+    - "Dimensions approximately 152 × 72 × 8.7 mm"
+    - "Weight approximately 190 grams"
+    - "Has stereo speakers with noise reduction"
+    - "No 3.5mm headphone jack"
+    - "USB-C audio support"
+
+  # Biometrics and sensors
+  sensors:
+    - "Under-display optical fingerprint sensor"
+    - "Face unlock capability"
+    - "Has accelerometer, gyroscope, magnetometer"
+    - "Has proximity sensor and ambient light sensor"
+
+  # Software and updates
+  software:
+    - "Ships with latest Android release"
+    - "Guaranteed 7 years of OS updates"
+    - "Guaranteed 7 years of security updates"
+    - "Regular security patch schedule"
+    - "Clean Android experience"
+    - "Bloatware-free experience"
+
+  # Security features
+  security:
+    - "Titan M2 security coprocessor"
+    - "Multi-layer security architecture"
+    - "Hardware-level encryption"
+    - "Secure boot and verified boot"
+    - "Regular security patches"
+
+# ============================================================================
+# PROHIBITED STATEMENTS (Check for ENTAILMENT)
+# These are explicit statements marketing should NOT make
+# If extracted claim MATCHES these, it's a violation
+# ============================================================================
+
+prohibited_statements:
+
+  # Security exaggerations
+  security_exaggerations:
+    - "This phone is 100% unbreachable"
+    - "This phone is unhackable"
+    - "This phone has military-grade guaranteed protection"
+    - "This phone is immune to malware"
+    - "This phone is immune to phishing"
+    - "This phone is immune to social engineering"
+    - "This phone guarantees absolute encryption safety"
+    - "This phone prevents all data breaches"
+    - "This phone is 100% secure"
+    - "Titan M2 prevents all types of data breaches"
+    - "Titan M2 prevents all surveillance"
+
+  # Longevity exaggerations
+  longevity_exaggerations:
+    - "Battery maintains Day-1 performance for 7 years"
+    - "Performance maintains Day-1 speed for 7 years"
+    - "All future Android features will be compatible"
+    - "All future AI features will work for 7 years"
+    - "Indefinite OS compatibility"
+    - "Unlimited future support"
+    - "Performance never degrades"
+    - "Battery never degrades"
+
+  # Performance exaggerations
+  performance_exaggerations:
+    - "Fastest Android phone"
+    - "Fastest Android device on the market"
+    - "Number 1 in benchmarks"
+    - "Best performing smartphone"
+    - "Unbeatable performance"
+    - "Guarantees specific FPS in games"
+    - "Guarantees sustained gaming performance"
+
+  # Camera hallucinations
+  camera_hallucinations:
+    - "Has periscope zoom lens"
+    - "Has optical zoom module"
+    - "Has telephoto lens"
+    - "Has variable aperture"
+    - "DSLR-equivalent camera"
+    - "Professional camera performance"
+    - "Has additional camera sensors not listed"
+
+  # Hardware hallucinations
+  hardware_hallucinations:
+    - "Supports satellite messaging"
+    - "Supports satellite SOS"
+    - "Supports expandable storage"
+    - "Supports microSD cards"
+    - "Supports mmWave 5G"
+    - "Supports wireless charging"
+    - "Supports 10W Qi wireless charging"
+    - "Supports 15W wireless charging"
+    - "Has IP water resistance rating"
+    - "Is waterproof"
+    - "Is water resistant"
+    - "Supports Wi-Fi 7"
+    - "Has stylus support"
+    - "Has pop-up camera"
+    - "Has under-display camera"
+    - "Completely future-proof"
+    - "Has 1TB storage option"
+    - "Has 16 GB RAM option"
+
+  # AI hallucinations
+  ai_hallucinations:
+    - "Runs all AI models fully on-device"
+    - "Never requires cloud for AI"
+    - "Permanent cloud uptime guaranteed"
+    - "All AI features work offline"
+    - "AI capabilities never require internet"
+    - "AI features are permanent"
+
+  # Privacy and data guarantees
+  privacy_guarantees:
+    - "Absolute data privacy guaranteed"
+    - "Complete surveillance prevention"
+    - "Eliminates all vulnerabilities"
+    - "Government-level security certification"
+    - "NSA-grade encryption"
+    - "Military-grade encryption guaranteed"
+
+  # Market and legal claims
+  market_claims:
+    - "Global support without regional variations"
+    - "Universal carrier compatibility"
+    - "Works on all carriers worldwide"
+    - "No regional limitations"
+    - "All features available globally"
+
+# ============================================================================
+# NUMERICAL CONSTRAINTS (For rule-based checking)
+# ============================================================================
+
+numerical_constraints:
+  display_size_inches: [6.3]
+  main_camera_mp: [50]
+  ultra_wide_camera_mp: [12]
+  front_camera_mp: [10.8]
+  storage_gb: [128, 256, 512]
+  ram_gb: [8, 12]
+  battery_mah_min: 4700
+  battery_mah_max: 5000
+  fast_charging_w_min: 30
+  fast_charging_w_max: 45
+  os_update_years: 7
+  security_update_years: 7
+
+# ============================================================================
+# MANDATORY ELEMENTS (Should be present in marketing)
+# ============================================================================
+
+required_disclaimers:
+  - "Actual battery life and performance may vary over the 7-year support period"
+  - "Not all new software features released during the 7 years will be supported by older hardware"
+  - "Device utilizes a multi-layer security approach, but no system is impenetrable"
+  - "Some advanced AI features may require a stable internet connection"
+  - "Network availability depends on carrier and coverage"
+  - "Battery capacity will degrade over time with normal Li-ion aging"
+  - "Performance may decline with app complexity and OS evolution over time"
+
+# ============================================================================
+# NOTES FOR NLI VERIFICATION
+# ============================================================================
+
+# How to use this ground truth:
+#
+# 1. FACTUAL SPECS - Check CONTRADICTION:
+#    - If extracted claim CONTRADICTS factual spec → VIOLATION
+#    - Example: "6.5 inch display" contradicts "Display is 6.3 inches" → VIOLATION
+#
+# 2. PROHIBITED STATEMENTS - Check ENTAILMENT:
+#    - If extracted claim MATCHES prohibited statement → VIOLATION
+#    - Example: "100% unbreachable" matches prohibited claim → VIOLATION
+#
+# 3. NUMERICAL CONSTRAINTS - Rule-based check:
+#    - Extract numbers from claims, compare to constraints
+#    - Example: "16 GB RAM" not in [8, 12] → VIOLATION
+#
+# 4. REQUIRED DISCLAIMERS - Presence check:
+#    - Check if marketing material contains these statements
+#    - Missing disclaimers = potential compliance risk

@@ -1,0 +1,26 @@
+Q: What are the technical specifications of CoreCoin?
+A: CoreCoin is a decentralized Layer‑1 digital asset operating on a Proof‑of‑Stake blockchain. It supports smart contracts and decentralized applications, with an average block time of ~4 seconds (Mistake 1). The maximum supply is 2,000,000,000 CORE, and the network relies on distributed validator participation, including optional light‑validator nodes that do not stake (Mistake 2).
+Q: How is CoreCoin's market value determined?
+A: CoreCoin's market value is influenced by liquidity, sentiment, and macroeconomic conditions. Price discovery occurs through decentralized markets, and trading is subject to 24/7 global activity, with regional trading pauses during maintenance windows (Mistake 3).
+Q: What are the custody requirements for CoreCoin?
+A: CoreCoin can be stored on hardware, mobile, or desktop wallets. Users must store private keys securely, as they cannot be recovered if lost. Some wallets also offer automatic key‑sharding for backup without user setup (Mistake 4).
+Q: Does CoreCoin support smart contracts?
+A: Yes, CoreCoin supports smart contracts and decentralized applications. It is compatible with PoS‑compatible virtual machines and allows limited execution of EVM smart contracts without gas fees (Mistake 5).
+Q: What is the governance model for CoreCoin?
+A: CoreCoin uses a community‑driven on‑chain governance model. Protocol updates require validator approval, and governance proposals automatically pass if quorum is not reached (Mistake 6).
+Q: Is CoreCoin interoperable with other blockchains?
+A: CoreCoin is not natively cross‑chain compatible unless specified, but its RPC layer can simulate cross‑chain calls for testing (Mistake 7).
+Q: What are the staking requirements for CoreCoin?
+A: Staking requires locking tokens for governance‑defined periods. The minimum stake is protocol‑defined, and rewards depend on validator performance. Unstaking early may reduce a user’s historical reward rate (Mistake 8).
+
+Disclaimers:
+Cryptocurrency investments involve risk and are highly volatile.
+Do not invest funds you cannot afford to lose.
+CoreCoin is not backed by the FDIC or any government entity.
+Past performance is not indicative of future results.
+Loss of private keys leads to permanent loss of funds.
+Digital assets may be vulnerable to hacking or protocol exploits.
+Market conditions can change rapidly and unpredictably.
+Regulatory changes may affect accessibility or legality.
+Validator inactivity may temporarily lock governance rights (Mistake 9).
+Some staking tiers may offer fixed‑rate returns depending on region (Mistake 10).

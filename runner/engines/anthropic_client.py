@@ -6,8 +6,12 @@ from typing import Dict, Any, Optional
 
 import anthropic
 from anthropic import APIError, APITimeoutError, RateLimitError
+from dotenv import load_dotenv
 
 from config import ENGINE_MODELS
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def call_anthropic(

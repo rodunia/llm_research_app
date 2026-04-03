@@ -1,6 +1,7 @@
 """Simple CSV-based job runner for executing LLM experiments."""
 
 import csv
+import hashlib
 from pathlib import Path
 from typing import Dict, Any, Optional, List
 import time
@@ -65,6 +66,7 @@ def run_single_job(
     frequency_penalty: Optional[float] = DEFAULT_FREQUENCY_PENALTY,
     presence_penalty: Optional[float] = DEFAULT_PRESENCE_PENALTY,
     session_id: Optional[str] = None,
+    scheduled_datetime: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Execute a single experimental run and return metadata."""
 
@@ -85,9 +87,22 @@ def run_single_job(
     prompt_path = prompts_dir / f"{run_id}.txt"
     prompt_path.write_text(prompt_text, encoding="utf-8")
 
+    # Compute prompt hash (SHA-256, first 16 chars)
+    prompt_hash = hashlib.sha256(prompt_text.encode('utf-8')).hexdigest()[:16]
+
     # Call engine
     start_time = datetime.utcnow()
     started_at = start_time.isoformat() + 'Z'
+
+    # Compute scheduled vs actual delay (if scheduled_datetime provided)
+    scheduled_vs_actual_delay_sec = 0.0
+    if scheduled_datetime:
+        try:
+            scheduled_dt = datetime.fromisoformat(scheduled_datetime.replace('Z', '+00:00'))
+            scheduled_vs_actual_delay_sec = (start_time - scheduled_dt).total_seconds()
+        except (ValueError, AttributeError):
+            # If parsing fails, leave as 0.0
+            scheduled_vs_actual_delay_sec = 0.0
 
     response = call_engine(
         engine=engine,
@@ -125,6 +140,13 @@ def run_single_job(
         "completion_tokens": response.get("completion_tokens", 0),
         "total_tokens": response.get("total_tokens", 0),
         "finish_reason": response.get("finish_reason", ""),
+        # NEW: 5 metadata fields
+        "retry_count": response.get("retry_count", 0),
+        "error_type": response.get("error_type", "none"),
+        "content_filter_triggered": response.get("content_filter_triggered", False),
+        "api_latency_ms": response.get("api_latency_ms", 0),
+        "prompt_hash": prompt_hash,
+        "scheduled_vs_actual_delay_sec": scheduled_vs_actual_delay_sec,
     }
 
 
@@ -161,6 +183,88 @@ def read_pending_jobs(
                 break
 
     return pending_jobs
+
+
+def read_job_by_run_id(
+    run_id: str,
+    csv_path: str = "results/experiments.csv",
+) -> Optional[Dict[str, Any]]:
+    """Read a single job row from CSV by run_id."""
+    if not Path(csv_path).exists():
+        return None
+
+    with open(csv_path, "r", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            if row.get("run_id") == run_id:
+                return row
+
+    return None
+
+
+def execute_job_record(
+    job: Dict[str, Any],
+    csv_path: str,
+    session_id: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Execute a single job row and persist status updates."""
+    run_id = job["run_id"]
+    result = run_single_job(
+        run_id=run_id,
+        product_id=job["product_id"],
+        material_type=job["material_type"],
+        engine=job["engine"],
+        temperature=float(job.get("temperature", job.get("temperature_label", 0.6))),
+        trap_flag=bool(job.get("trap_flag") == "True" or job.get("trap_flag") is True),
+        max_tokens=int(job.get("max_tokens", DEFAULT_MAX_TOKENS)),
+        seed=int(job["seed"]) if job.get("seed") and job["seed"] != "" else None,
+        top_p=float(job["top_p"]) if job.get("top_p") and job["top_p"] != "" else None,
+        frequency_penalty=float(job["frequency_penalty"]) if job.get("frequency_penalty") and job["frequency_penalty"] != "" else None,
+        presence_penalty=float(job["presence_penalty"]) if job.get("presence_penalty") and job["presence_penalty"] != "" else None,
+        session_id=session_id,
+        scheduled_datetime=job.get("scheduled_datetime", None),
+    )
+    update_csv_row(run_id, result, csv_path)
+    return result
+
+
+@app.command()
+def single(
+    run_id: str = typer.Option(..., "--run-id", help="Run ID from experiments.csv"),
+    csv_path: str = typer.Option(
+        "results/experiments.csv", help="Path to experiments CSV"
+    ),
+    session_id: Optional[str] = typer.Option(
+        None, "--session-id", help="Session identifier for provenance"
+    ),
+) -> None:
+    """Execute one run by run_id."""
+    job = read_job_by_run_id(run_id=run_id, csv_path=csv_path)
+    if job is None:
+        console.print(f"[red]Run ID not found: {run_id}[/red]")
+        raise typer.Exit(1)
+
+    if job.get("status") != "pending":
+        console.print(
+            f"[yellow]Run {run_id[:12]} is not pending (status={job.get('status')}).[/yellow]"
+        )
+        return
+
+    try:
+        result = execute_job_record(job=job, csv_path=csv_path, session_id=session_id)
+    except Exception as e:
+        console.print(f"[red]✗ Failed {run_id[:12]}: {e}[/red]")
+        update_csv_row(run_id, {
+            "status": "failed",
+            "finish_reason": "error",
+            "completed_at": datetime.utcnow().isoformat() + 'Z'
+        }, csv_path)
+        raise typer.Exit(1)
+
+    console.print(f"[green]✓ Completed {run_id[:12]}[/green]")
+    console.print(f"Model: {result.get('model', '')}")
+    console.print(f"Tokens: {result.get('total_tokens', 0)}")
+    console.print(f"Finish reason: {result.get('finish_reason', '')}")
 
 
 @app.command()
@@ -234,23 +338,7 @@ def batch(
 
             try:
                 # Execute job
-                result = run_single_job(
-                    run_id=run_id,
-                    product_id=job["product_id"],
-                    material_type=job["material_type"],
-                    engine=job["engine"],
-                    temperature=float(job.get("temperature", job.get("temperature_label", 0.6))),
-                    trap_flag=bool(job.get("trap_flag") == "True" or job.get("trap_flag") == True),
-                    max_tokens=int(job.get("max_tokens", DEFAULT_MAX_TOKENS)),
-                    seed=int(job["seed"]) if job.get("seed") and job["seed"] != "" else None,
-                    top_p=float(job["top_p"]) if job.get("top_p") and job["top_p"] != "" else None,
-                    frequency_penalty=float(job["frequency_penalty"]) if job.get("frequency_penalty") and job["frequency_penalty"] != "" else None,
-                    presence_penalty=float(job["presence_penalty"]) if job.get("presence_penalty") and job["presence_penalty"] != "" else None,
-                    session_id=session_id,
-                )
-
-                # Update CSV
-                update_csv_row(run_id, result, csv_path)
+                execute_job_record(job=job, csv_path=csv_path, session_id=session_id)
                 completed += 1
 
             except Exception as e:

@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/Users/dorotajaguscik/PycharmProjects/llm_research_app/analysis/glass_box_audit.py", line 20, in <module>
+    import torch
+ModuleNotFoundError: No module named 'torch'

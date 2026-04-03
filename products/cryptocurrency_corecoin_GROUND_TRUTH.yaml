@@ -1,0 +1,350 @@
+# Ground Truth for NLI Verification - CoreCoin (CORE)
+# Optimized for factual contradiction checking (NOT for LLM generation)
+# Use cryptocurrency_corecoin.yaml for LLM generation
+
+product_id: cryptocurrency_corecoin
+name: CoreCoin (CORE)
+
+# ============================================================================
+# FACTUAL SPECIFICATIONS (Check for CONTRADICTION)
+# These are HARD FACTS that marketing claims should NOT contradict
+# ============================================================================
+
+factual_specs:
+
+  # Fundamental characteristics
+  fundamentals:
+    - "CoreCoin is a decentralized Layer-1 digital asset"
+    - "Operates on a Proof-of-Stake (PoS) blockchain"
+    - "Digital-only asset requiring compatible wallet software"
+    - "Exists only in digital form"
+    - "NOT a physical coin"
+    - "NOT a certificate"
+    - "NOT a bearer instrument"
+    - "Provides peer-to-peer value transfer"
+    - "Supports smart contracts"
+    - "Supports decentralized applications"
+
+  # Technical architecture
+  technical:
+    - "Average block time is approximately 5 seconds"
+    - "Block time is NOT 4 seconds"
+    - "Block time is NOT 3 seconds"
+    - "Block time varies with network load"
+    - "Maximum supply is 2,000,000,000 CORE"
+    - "Finality target is around 2 blocks (~10 seconds) under normal conditions"
+    - "Uses PoS-compatible Virtual Machine"
+    - "Cryptographic signatures for transaction validation"
+    - "Uses ECDSA or Ed25519 signature scheme"
+    - "Uses SHA-3 or equivalent hashing algorithm"
+
+  # Interoperability
+  interoperability:
+    - "NOT natively cross-chain compatible unless explicitly specified"
+    - "RPC does NOT simulate cross-chain calls"
+    - "Cross-chain features require explicit implementation"
+
+  # Network features
+  network:
+    - "Transactions recorded on public, tamper-resistant ledger"
+    - "On-chain activity permanently recorded"
+    - "On-chain activity viewable through public block explorers"
+    - "Network relies on distributed validator participation"
+    - "Network security maintained by distributed validators"
+    - "Node count may vary over time"
+    - "Validator distribution may vary over time"
+    - "Software clients are open-source"
+
+  # Staking details
+  staking:
+    - "Staking requires locking tokens for protocol-defined periods"
+    - "Staking rewards are variable"
+    - "Staking rewards are NOT guaranteed"
+    - "Staking rewards are NOT fixed-rate"
+    - "Staking rewards depend on network conditions"
+    - "Staking rewards depend on validator performance"
+    - "Staking allows users to support network security"
+    - "Minimum stake threshold applies"
+    - "Lockup periods are governance-defined"
+    - "Staking rewards are NOT region-based"
+    - "Staking rewards are NOT fixed-rate tiers"
+    - "Light validators MUST stake (do NOT operate without staking)"
+    - "Unstaking does NOT reduce historical reward calculations"
+    - "Validator inactivity does NOT lock governance voting rights"
+
+  # Fee structure
+  fees:
+    - "Base fee + variable priority fee model"
+    - "Gas fees fluctuate based on block space demand"
+    - "Gas fees are market-driven"
+    - "Transaction fees paid in CORE"
+    - "DApp interactions require on-chain gas fees"
+    - "Smart contract execution requires gas fees"
+    - "NOT gas-free transactions"
+    - "NOT zero-fee transactions"
+    - "NOT fixed-fee transactions"
+
+  # Custody and security
+  custody:
+    - "Can be stored on hardware wallets"
+    - "Can be stored on mobile wallets"
+    - "Can be stored on desktop clients"
+    - "Wallet compatibility varies by software"
+    - "Private keys cannot be recovered if lost"
+    - "Custody responsibility lies with user"
+    - "Users must securely store private keys"
+    - "Self-custody model with no third-party key recovery"
+    - "No customer support for lost keys or failed transactions"
+    - "No automatic key recovery mechanisms"
+    - "No automatic key backup"
+    - "No automatic key-sharding"
+
+  # Governance
+  governance:
+    - "Protocol updates require community or validator approval"
+    - "On-chain governance votes publicly recorded"
+    - "Governance participation depends on wallet integration"
+    - "Governance participation depends on token ownership"
+    - "Open-source governance enables community oversight"
+    - "Governance proposals require quorum thresholds"
+    - "Proposals do NOT auto-pass without voting"
+    - "Protocol changes require on-chain governance process"
+
+  # Market characteristics
+  market:
+    - "Market value is highly volatile"
+    - "Market value influenced by liquidity"
+    - "Market value influenced by market sentiment"
+    - "Market value influenced by macroeconomic conditions"
+    - "Price discovery occurs through decentralized mechanisms"
+    - "Liquidity varies by exchange"
+    - "Liquidity varies by market conditions"
+    - "Trading operates 24/7 globally"
+    - "No regional trading pauses"
+    - "No maintenance windows"
+    - "No scheduled downtime"
+    - "No trading hours or time-zone limitations"
+
+  # Developer ecosystem
+  development:
+    - "Open-source codebase available for public review"
+    - "SDK available (language support varies)"
+    - "Public and private RPC nodes available"
+    - "Documentation version-controlled and publicly maintained"
+
+  # Regulatory status
+  regulatory:
+    - "Classification varies by jurisdiction"
+    - "NOT legal tender"
+    - "NOT FDIC-insured"
+    - "NOT a bank account"
+    - "NOT a deposit"
+    - "NOT an insured investment account"
+    - "NOT SIPC-insured"
+    - "CoreCoin is not backed by the FDIC or any government entity"
+    - "Users responsible for compliance with local laws"
+    - "Availability may vary by jurisdiction"
+
+# ============================================================================
+# PROHIBITED STATEMENTS (Check for ENTAILMENT)
+# These are explicit statements marketing should NOT make
+# If extracted claim MATCHES these, it's a violation
+# ============================================================================
+
+prohibited_statements:
+
+  # Investment guarantees
+  investment_guarantees:
+    - "Guaranteed profit"
+    - "Guaranteed yields"
+    - "Guaranteed interest"
+    - "Guaranteed returns"
+    - "Risk-free investment"
+    - "Stable value"
+    - "Guaranteed growth"
+    - "Fixed staking returns"
+    - "Guaranteed staking yields"
+    - "Inevitable adoption"
+    - "Inevitable value appreciation"
+    - "Price will increase"
+    - "Value will go up"
+
+  # Regulatory authority claims
+  regulatory_claims:
+    - "SEC approved"
+    - "MiCA approved"
+    - "FCA approved"
+    - "Central bank approved"
+    - "FDIC insured"
+    - "SIPC insured"
+    - "Government insured"
+    - "Government backed"
+    - "Regulated by SEC"
+    - "Approved by regulators"
+
+  # Hype and urgency
+  hype_urgency:
+    - "Don't miss out"
+    - "Moonshot opportunity"
+    - "Limited-time opportunity"
+    - "FOMO"
+    - "Last chance"
+    - "Get in now"
+    - "Pump"
+    - "Moon"
+    - "To the moon"
+    - "Limited supply bonus"
+    - "Early bird special"
+
+  # Comparisons to traditional finance
+  finance_comparisons:
+    - "Like a stock"
+    - "Like a bond"
+    - "Like a bank account"
+    - "Like insurance"
+    - "Like a savings account"
+    - "Like a CD"
+    - "Better than stocks"
+    - "Better than bonds"
+    - "Functions as traditional currency"
+    - "Replaces fiat currency"
+    - "Safe as a bank account"
+
+  # Technical hallucinations
+  technical_hallucinations:
+    - "Zero-gas transactions"
+    - "Gas-free execution"
+    - "Fixed-fee transactions"
+    - "Quantum resistant"
+    - "Quantum proof"
+    - "Unbreakable security"
+    - "Hack-proof"
+    - "100% secure"
+    - "Private key recovery by developers"
+    - "Private key recovery by foundation"
+    - "Automatic key recovery"
+    - "Automatic key backup"
+    - "Automatic key-sharding"
+    - "Third-party key recovery"
+    - "Censorship-proof"
+    - "Seizure-proof"
+    - "Tax-exempt"
+    - "Instantaneous finality"
+    - "Cross-chain compatible"
+    - "Native cross-chain bridges"
+    - "RPC simulates cross-chain calls"
+
+  # Market operation hallucinations
+  market_hallucinations:
+    - "Regional trading restrictions"
+    - "Geographic trading pauses"
+    - "Market circuit breakers"
+    - "Trading halts"
+    - "Trading hours"
+    - "Time-zone limitations"
+    - "Maintenance windows for trading"
+    - "Centralized market-making"
+    - "Liquidity guarantees"
+    - "Manual intervention in trading"
+    - "Controlled volatility"
+    - "Price stability mechanisms"
+    - "Scheduled downtime"
+    - "Regional service interruptions"
+
+  # Governance violations
+  governance_violations:
+    - "Governance proposals auto-approve"
+    - "Governance proposals auto-pass without voting"
+    - "No quorum requirements"
+    - "Centralized veto power"
+    - "Admin keys control protocol"
+    - "Automatic execution without vote"
+    - "Votes bypass validator approval"
+    - "Protocol changes without governance"
+
+  # Economic and geopolitical claims
+  economic_claims:
+    - "Hedge against inflation"
+    - "Hedge against recession"
+    - "Hedge against geopolitical instability"
+    - "Replacement for fiat currency"
+    - "Protection from government monetary policy"
+    - "Safe haven asset"
+    - "Inflation-proof"
+    - "Recession-proof"
+
+  # Staking violations
+  staking_violations:
+    - "Light validators don't need to stake"
+    - "Light validators operate without staking"
+    - "Unstaking reduces historical rewards"
+    - "Unstaking affects past reward calculations"
+    - "Validator inactivity locks governance rights"
+    - "Region-based staking rewards"
+    - "Fixed-rate staking tiers"
+    - "Guaranteed staking APY"
+
+  # Endorsement claims
+  endorsement_claims:
+    - "Recommended by experts"
+    - "Investment by major institutions"
+    - "Celebrity endorsed"
+    - "Government endorsed"
+    - "Regulator endorsed"
+    - "Financial institution endorsed"
+
+  # Absolute safety claims
+  safety_claims:
+    - "Completely safe"
+    - "Risk-free"
+    - "No risk of loss"
+    - "Protected from hacking"
+    - "Immune to exploits"
+    - "Guaranteed security"
+    - "100% safe"
+
+# ============================================================================
+# NUMERICAL CONSTRAINTS (For rule-based checking)
+# ============================================================================
+
+numerical_constraints:
+  block_time_seconds: 5  # Approximate
+  max_supply: 2000000000
+  finality_blocks: 2
+  finality_seconds: 10  # Approximate
+
+# ============================================================================
+# MANDATORY ELEMENTS (Should be present in marketing)
+# ============================================================================
+
+required_disclaimers:
+  - "Cryptocurrency investments involve risk and are highly volatile"
+  - "Do not invest funds you cannot afford to lose"
+  - "CoreCoin is not backed by the FDIC or any government entity"
+  - "Past performance is not indicative of future results"
+  - "Loss of private keys leads to permanent loss of funds"
+  - "Digital assets may be vulnerable to hacking or protocol exploits"
+  - "Market conditions can change rapidly and unpredictably"
+  - "Regulatory changes may affect accessibility or legality"
+
+# ============================================================================
+# NOTES FOR NLI VERIFICATION
+# ============================================================================
+
+# How to use this ground truth:
+#
+# 1. FACTUAL SPECS - Check CONTRADICTION:
+#    - If extracted claim CONTRADICTS factual spec → VIOLATION
+#    - Example: "Block time is 4 seconds" contradicts "Block time is ~5 seconds" → VIOLATION
+#
+# 2. PROHIBITED STATEMENTS - Check ENTAILMENT:
+#    - If extracted claim MATCHES prohibited statement → VIOLATION
+#    - Example: "Guaranteed returns" matches prohibited claim → VIOLATION
+#
+# 3. NUMERICAL CONSTRAINTS - Rule-based check:
+#    - Extract numbers from claims, compare to constraints
+#    - Example: "Max supply 3 billion" not equal to 2 billion → VIOLATION
+#
+# 4. REQUIRED DISCLAIMERS - Presence check:
+#    - Check if marketing material contains these statements
+#    - Missing disclaimers = potential compliance risk

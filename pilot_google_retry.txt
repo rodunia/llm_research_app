@@ -1,0 +1,68 @@
+Reading pending jobs from results/experiments.csv...
+Found 18 pending jobs
+
+/Users/dorotajaguscik/PycharmProjects/llm_research_app/runner/run_job.py:89: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start_time = datetime.utcnow()
+✗ Failed 773388ab54f0: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+/Users/dorotajaguscik/PycharmProjects/llm_research_app/runner/run_job.py:262: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "completed_at": datetime.utcnow().isoformat() + 'Z'
+✗ Failed a1d3c3158a4c: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 29297ec9abee: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 81ca7ff110f9: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 1c673208f3de: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 864b52f3e25b: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed b3edac5522bc: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 9bdf1ff84e42: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 978f80107234: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed dd3c0999ac40: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed e779b6655035: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed acc7fae49ed2: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed d9c9f713414c: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed a009db2ab723: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed d33472c50159: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 81de9d3042a3: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed de7803020c8d: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+✗ Failed 0b78a3beb2ed: 404 models/gemini-1.5-flash is not found for API version 
+v1beta, or is not supported for generateContent. Call ListModels to see the list
+of available models and their supported methods.
+Run 18/18 | google | supplement_melatonin | 0b78a3beb2ed ━ 100% • 18/18 • … • 0…
+
+Execution Summary
+✓ Completed: 0
+✗ Failed: 18
+⏱ Total time: 93.4s (5.2s per run)
+📊 Success rate: 0.0%

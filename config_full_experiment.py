@@ -58,6 +58,12 @@ ENGINE_MODELS = {
 
 REGION = "US"
 
+# Randomization / scheduling controls
+MATRIX_RANDOMIZATION_SEED = 42
+ENABLE_TRUE_TEMPORAL_SCHEDULING = True
+TEMPORAL_WINDOW_HOURS = 72.0
+EXPERIMENT_START_ISO = ""  # Set before generating a true temporal matrix
+
 # --- 2. METADATA AND REPRODUCIBILITY SETTINGS ---
 
 # Default values for metadata tracking (statistical validity)

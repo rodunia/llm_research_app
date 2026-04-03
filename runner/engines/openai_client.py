@@ -5,9 +5,13 @@ import time
 from typing import Dict, Any, Optional
 
 from openai import OpenAI, APIError, APITimeoutError, RateLimitError
+from dotenv import load_dotenv
 
 from config import ENGINE_MODELS
 from logging_config import setup_logging
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Setup module logger
 logger = setup_logging(__name__, console=False)  # Log to files only (avoid console spam)
@@ -48,6 +52,10 @@ def call_openai(
             - total_tokens: Total token count
             - model: Model used
             - model_version: Model snapshot ID (same as model for OpenAI)
+            - retry_count: Number of retry attempts (0 = success on first try)
+            - error_type: Error classification (none, rate_limit, timeout, api_error)
+            - content_filter_triggered: Boolean, True if safety filter blocked output
+            - api_latency_ms: Milliseconds from request to response
 
     Raises:
         APIError: If all retries fail
@@ -68,6 +76,10 @@ def call_openai(
 
     # Log API call parameters
     logger.info(f"API call: model={model}, temp={temperature}, max_tokens={max_tokens}, seed={seed}")
+
+    # Track retry metadata
+    retry_count = 0
+    error_type = "none"
 
     for attempt in range(max_retries):
         try:
@@ -91,17 +103,26 @@ def call_openai(
             if presence_penalty is not None:
                 params["presence_penalty"] = presence_penalty
 
+            # Measure API latency
+            api_start = time.time()
             response = client.chat.completions.create(**params)
+            api_latency_ms = int((time.time() - api_start) * 1000)
 
             # Extract response data
             message = response.choices[0].message
             usage = response.usage
 
+            # Check if content filter was triggered
+            content_filter_triggered = (
+                response.choices[0].finish_reason == "content_filter"
+            )
+
             # Log successful response
             logger.info(
                 f"Success: {usage.total_tokens} tokens "
                 f"(prompt={usage.prompt_tokens}, completion={usage.completion_tokens}), "
-                f"finish_reason={response.choices[0].finish_reason}"
+                f"finish_reason={response.choices[0].finish_reason}, "
+                f"retries={retry_count}, latency={api_latency_ms}ms"
             )
 
             return {
@@ -112,9 +133,16 @@ def call_openai(
                 "total_tokens": usage.total_tokens,
                 "model": response.model,
                 "model_version": response.model,  # OpenAI returns snapshot ID in model field
+                # NEW: 3 metadata fields
+                "retry_count": retry_count,
+                "error_type": error_type,
+                "content_filter_triggered": content_filter_triggered,
+                "api_latency_ms": api_latency_ms,
             }
 
         except RateLimitError as e:
+            retry_count += 1
+            error_type = "rate_limit"
             wait_time = 2 ** attempt  # Exponential backoff
             logger.warning(
                 f"Rate limit hit (attempt {attempt+1}/{max_retries}), "
@@ -127,6 +155,8 @@ def call_openai(
             raise
 
         except APITimeoutError as e:
+            retry_count += 1
+            error_type = "timeout"
             logger.warning(f"API timeout (attempt {attempt+1}/{max_retries}): {e}")
             if attempt < max_retries - 1:
                 continue
@@ -134,6 +164,8 @@ def call_openai(
             raise
 
         except APIError as e:
+            retry_count += 1
+            error_type = "api_error"
             # Non-retryable errors
             logger.error(f"API error (non-retryable): {e}")
             raise

@@ -59,10 +59,21 @@ def append_row(row: dict, path: str = "results/results.csv") -> None:
     csv_path.parent.mkdir(parents=True, exist_ok=True)
 
     file_exists = csv_path.exists()
-    mode = "a" if file_exists else "w"
+    fieldnames = list(row.keys())
 
+    if file_exists:
+        with open(csv_path, "r", newline="", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            existing_header = next(reader, None)
+
+        if existing_header != fieldnames:
+            raise ValueError(
+                f"CSV header mismatch for {csv_path}. "
+                "Delete/regenerate the matrix instead of appending incompatible rows."
+            )
+
+    mode = "a" if file_exists else "w"
     with open(csv_path, mode=mode, newline="", encoding="utf-8") as f:
-        fieldnames = list(row.keys())
         writer = csv.DictWriter(f, fieldnames=fieldnames)
 
         if not file_exists:
@@ -203,3 +214,53 @@ def write_manifest(
         json.dump(manifest, f, indent=2, ensure_ascii=False)
 
     return manifest_file
+
+
+def build_config_snapshot(
+    *,
+    products: tuple,
+    materials: tuple,
+    times: tuple,
+    temps: tuple,
+    reps: tuple,
+    engines: tuple,
+    region: str,
+    extra: Optional[Dict[str, Any]] = None,
+) -> Dict[str, Any]:
+    """Build a serializable config snapshot for reproducibility checks."""
+    snapshot = {
+        "products": list(products),
+        "materials": list(materials),
+        "times": list(times),
+        "temps": list(temps),
+        "reps": list(reps),
+        "engines": list(engines),
+        "region": region,
+    }
+    if extra:
+        snapshot.update(extra)
+    return snapshot
+
+
+def compute_config_fingerprint(config_snapshot: Dict[str, Any]) -> str:
+    """Compute a stable fingerprint for an experiment configuration snapshot."""
+    canonical = canonical_json(config_snapshot)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def write_json_file(data: Dict[str, Any], path: str) -> Path:
+    """Write a JSON file with consistent formatting."""
+    json_path = Path(path)
+    json_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(json_path, "w", encoding="utf-8") as f:
+        json.dump(data, f, indent=2, ensure_ascii=False, sort_keys=True)
+    return json_path
+
+
+def read_json_file(path: str) -> Optional[Dict[str, Any]]:
+    """Read a JSON file if present, otherwise return None."""
+    json_path = Path(path)
+    if not json_path.exists():
+        return None
+    with open(json_path, "r", encoding="utf-8") as f:
+        return json.load(f)

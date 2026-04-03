@@ -17,7 +17,7 @@ This file provides instructions for AI coding assistants (GitHub Copilot, Cursor
 
 **Research Questions**:
 1. **People-pleasing bias**: Do LLMs generate overly positive marketing content that violates compliance rules?
-2. **Induced errors and hallucinations**: How frequently do LLMs introduce factual inaccuracies in marketing materials?
+2. **Error detection and factual accuracy**: How frequently do LLMs spontaneously generate factual inaccuracies and compliance violations in marketing materials?
 3. **Temporal unreliability**: Do LLMs produce inconsistent outputs across different sessions and times of day?
 
 **Why marketing content?**: AI marketing has the highest legal and social risk for companies:
@@ -29,12 +29,12 @@ This file provides instructions for AI coding assistants (GitHub Copilot, Cursor
 **Experimental Design Rationale**:
 - **3 products** (smartphone, cryptocurrency, health supplement): Different regulatory domains to test cross-industry reliability
 - **Temperature variations** (0.2, 0.6, 1.0): Test deterministic vs creative outputs - does higher creativity increase hallucinations?
-- **Time-of-day runs** (morning/afternoon/evening × 3 days = 9 time slots): Measure temporal consistency across sessions
-- **Multiple engines** (OpenAI, Google, Anthropic, Mistral): Compare provider reliability and bias patterns
+- **Time-of-day conditions** (morning/afternoon/evening) executed across 7-day window: Measure temporal consistency across sessions
+- **Multiple engines** (OpenAI, Google, Mistral): Compare provider reliability and bias patterns
 - **3 replications**: Statistical validation of consistency within same conditions
-- **5 material types**: FAQ, digital ads, blog posts, social media, email - different content formats
+- **3 material types**: FAQ, digital ads, blog posts - different content formats
 
-**Glass Box Audit Role**: Systematically detect and quantify induced errors and compliance violations across 1,620 generated marketing materials.
+**Glass Box Audit Role**: Systematically detect and quantify naturally occurring errors and compliance violations across 1,620 generated marketing materials (3 products × 3 materials × 3 temps × 3 reps × 3 engines × 3 time-of-day conditions).
 
 **Key Achievement**: 100% detection rate (30/30 pilot files) via prompt engineering - demonstrates that architecture + prompt design > parameter scaling.
 
@@ -45,7 +45,7 @@ llm_research_app/
 ├── config.py                  # Central configuration (models, products, experiments)
 ├── orchestrator.py            # Master workflow CLI (run, analyze, status)
 ├── runner/                    # Batch LLM generation
-│   ├── engines/              # Provider-specific clients (openai, google, mistral, anthropic)
+│   ├── engines/              # Provider-specific clients (openai, google, mistral)
 │   ├── run_job.py            # Execute LLM jobs
 │   └── generate_matrix.py   # Create experimental matrix
 ├── analysis/                  # Compliance auditing
@@ -137,11 +137,11 @@ python3 scripts/detection_analysis_robust.py
 
 **Experimental Design - Why These Values?**:
 - **TEMPS = [0.2, 0.6, 1.0]**: Tests hypothesis that higher creativity (temp=1.0) increases hallucinations vs deterministic (temp=0.2)
-- **TIMES = 9 slots** (3 times/day × 3 days): Tests temporal unreliability - do LLMs produce different outputs at different times?
+- **TIME-OF-DAY CONDITIONS = 3** (morning, afternoon, evening): Tests temporal unreliability - do LLMs produce different outputs at different times?
 - **REPS = 3**: Statistical validation - ensures results are consistent within same conditions
 - **3 PRODUCTS**: Different regulatory domains (tech, finance, health) - tests cross-industry reliability
-- **4 ENGINES**: Provider comparison - identifies which LLMs have highest compliance risk
-- **Total matrix**: 1,620 runs = 3 products × 5 materials × 3 temps × 3 reps × 4 engines × 3 time slots
+- **3 ENGINES**: Provider comparison (OpenAI, Google, Mistral) - identifies which LLMs have highest compliance risk
+- **Total matrix**: 1,620 runs = 3 products × 3 materials × 3 temps × 3 reps × 3 engines × 3 time-of-day conditions
 
 ### Product YAMLs (products/*.yaml)
 - **Structure**:
@@ -274,7 +274,7 @@ def generate(prompt: str, temperature: float, max_tokens: int) -> dict:
 - **Naming**: `test_*.py` files, `test_*` functions
 
 ### Critical Tests
-1. **Provider integration**: All 4 engines return normalized response
+1. **Provider integration**: All 3 engines (OpenAI, Google, Mistral) return normalized response
 2. **Claim extraction**: Prompt extracts compound sentences correctly
 3. **NLI validation**: Detects contradictions at 90%+ threshold
 4. **Detection analysis**: Fuzzy matching catches all variations

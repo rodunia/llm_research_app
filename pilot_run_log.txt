@@ -1,0 +1,122 @@
+Reading pending jobs from results/experiments.csv...
+Found 54 pending jobs
+
+/Users/dorotajaguscik/PycharmProjects/llm_research_app/runner/run_job.py:89: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  start_time = datetime.utcnow()
+✗ Failed 5fcded963930: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+/Users/dorotajaguscik/PycharmProjects/llm_research_app/runner/run_job.py:262: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+  "completed_at": datetime.utcnow().isoformat() + 'Z'
+✗ Failed 019f30b8d66e: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 08177fb77f06: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 98d8f982ecd3: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 773388ab54f0: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 0de86e7c56d8: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed a1d3c3158a4c: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 29297ec9abee: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 81ca7ff110f9: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed a9a1239dcdfb: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 09669fd69a34: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 1922a21ea20e: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed fba756517451: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 1c673208f3de: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 3c7e05408658: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed a762f44424fa: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed b23d880941e1: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed d1cbc32e634d: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 864b52f3e25b: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 6bae2342662b: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed b3edac5522bc: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed c2cc8dd3bc57: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 9bdf1ff84e42: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 9a1e045eb6d6: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed e756053fd44d: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 289825b43255: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 978f80107234: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed dd3c0999ac40: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed d4ac727d57ac: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 66854586dd14: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed e779b6655035: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed fbd161c27165: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed ca4a377ed6e4: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 1bb1752866a7: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed f17db74d1453: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed ec435e49aff8: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed acc7fae49ed2: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 3831dd1db536: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 7412e7e4a3e8: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed ccbd59478e3f: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed ce59be0c75c2: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed d9c9f713414c: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed f10ecd2bcf42: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed a009db2ab723: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed d33472c50159: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 62e153351330: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 5c020500f1b3: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 8abc67788909: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 5dc639e19377: OPENAI_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 28e59a56a7b5: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 9492213bef2d: MISTRAL_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 81de9d3042a3: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed de7803020c8d: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+✗ Failed 0b78a3beb2ed: GOOGLE_API_KEY environment variable not set. Add it to 
+your .env file or set it in your environment.
+Run 54/54 | google | supplement_melatonin | 0b78a3beb2ed ━ 100% • 54/54 • … • 0…
+
+Execution Summary
+✓ Completed: 0
+✗ Failed: 54
+⏱ Total time: 1.0s (0.0s per run)
+📊 Success rate: 0.0%

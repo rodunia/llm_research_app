@@ -6,8 +6,12 @@ from typing import Dict, Any, Optional
 
 import google.generativeai as genai
 from google.api_core import exceptions
+from dotenv import load_dotenv
 
 from config import ENGINE_MODELS
+
+# Load environment variables from .env file
+load_dotenv()
 
 
 def call_google(
@@ -45,6 +49,10 @@ def call_google(
             - total_tokens: Total token count
             - model: Model used
             - model_version: Model identifier (same as model)
+            - retry_count: Number of retry attempts (0 = success on first try)
+            - error_type: Error classification (none, rate_limit, timeout, api_error)
+            - content_filter_triggered: Boolean, True if safety filter blocked output
+            - api_latency_ms: Milliseconds from request to response
 
     Raises:
         Exception: If all retries fail
@@ -90,11 +98,18 @@ def call_google(
         safety_settings=safety_settings
     )
 
+    # Track retry metadata
+    retry_count = 0
+    error_type = "none"
+
     for attempt in range(max_retries):
         try:
+            # Measure API latency
+            api_start = time.time()
             response = gemini_model.generate_content(
                 prompt, request_options={"timeout": timeout}
             )
+            api_latency_ms = int((time.time() - api_start) * 1000)
 
             # Check response structure
             finish_reason = "UNKNOWN"
@@ -153,6 +168,14 @@ Recommendations:
                 else:
                     output_text = f"[No output - finish_reason: {finish_reason}]"
 
+            # Check if content was filtered by safety settings
+            content_filter_triggered = (
+                finish_reason_int in [2, 3, 4] or  # SAFETY, RECITATION, OTHER
+                finish_reason in ['SAFETY', 'RECITATION', 'OTHER'] or
+                not output_text or
+                output_text.startswith("[BLOCKED")
+            )
+
             # Manual token counting (Google doesn't provide usage in response)
             prompt_tokens = gemini_model.count_tokens(prompt).total_tokens
             completion_tokens = 0
@@ -170,9 +193,16 @@ Recommendations:
                 "total_tokens": prompt_tokens + completion_tokens,
                 "model": model,
                 "model_version": model,  # Google doesn't provide separate version info
+                # NEW: 4 metadata fields
+                "retry_count": retry_count,
+                "error_type": error_type,
+                "content_filter_triggered": content_filter_triggered,
+                "api_latency_ms": api_latency_ms,
             }
 
         except exceptions.ResourceExhausted as e:
+            retry_count += 1
+            error_type = "rate_limit"
             # Rate limit
             if attempt < max_retries - 1:
                 wait_time = 2**attempt
@@ -181,12 +211,16 @@ Recommendations:
             raise
 
         except exceptions.DeadlineExceeded as e:
+            retry_count += 1
+            error_type = "timeout"
             # Timeout
             if attempt < max_retries - 1:
                 continue
             raise
 
         except Exception as e:
+            retry_count += 1
+            error_type = "api_error"
             # Non-retryable errors
             raise
 

@@ -1,0 +1,33 @@
+**Q: What are the key specifications of the Nova X5 5G Smartphone?**  
+A: The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.5" Actua OLED display with 120 Hz refresh rate, and a camera system with a 50 MP main camera. It offers storage options of 128 GB, 256 GB, or 512 GB, and RAM configurations of 8 GB or 12 GB. It supports 5G Sub-6 GHz and Wi-Fi 6/6E.
+
+**Q: Does the Nova X5 support wireless charging?**  
+A: Not stated in the provided information.
+
+**Q: What security features does the Nova X5 offer?**  
+A: The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS. It also offers regular security patches with a documented public schedule, ensuring ongoing protection.
+
+**Q: How does the Nova X5 handle AI tasks?**  
+A: The Nova X5 features advanced computational photography powered by the Tensor G4 NPU and offers real-time AI tools such as live translation and smart image processing. It integrates hybrid on-device and cloud-based AI for select tasks, enhancing privacy and performance.
+
+**Q: What is the battery capacity and charging capability of the Nova X5?**  
+A: The Nova X5 has a battery capacity ranging from 4700–5000 mAh, depending on the region. It supports 30–45W USB-C fast charging, though charger availability may vary by region. Battery capacity will degrade over time with normal use.
+
+**Q: Does the Nova X5 have expandable storage options?**  
+A: The Nova X5 does not support expandable storage via microSD. It offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1.
+
+**Q: What is the software experience like on the Nova X5?**  
+A: The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years. It is designed for consistent long-term software performance and a reliable patch cadence, providing a pure Android experience.
+
+---
+
+**Disclaimers:**  
+Actual battery life and performance may vary over the 7-year support period.  
+Not all new software features released during the 7 years will be supported by older hardware.  
+Device utilizes a multi-layer security approach, but no system is impenetrable.  
+Some advanced AI features may require a stable internet connection (cloud processing).  
+Network availability (including 5G) depends on carrier and coverage; speeds vary.  
+Battery capacity will degrade over time with normal Li-ion aging.  
+Performance may decline with app complexity and OS evolution over time.
+
+

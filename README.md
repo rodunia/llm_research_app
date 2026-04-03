@@ -90,13 +90,13 @@ python orchestrator.py sample
 The application automatically generates all combinations:
 
 - **3 products**: `smartphone_mid`, `cryptocurrency_corecoin`, `supplement_melatonin`
-- **5 materials**: digital_ad, organic_social_posts, faq, spec_document_facts_only, blog_post_promo
-- **3 times**: morning, afternoon, evening
+- **3 materials**: faq.j2, digital_ad.j2, blog_post_promo.j2
+- **3 time-of-day conditions**: morning, afternoon, evening
 - **3 temperatures**: 0.2, 0.6, 1.0
-- **3 repetitions**: 1, 2, 3 (representing different days)
+- **3 repetitions**: 1, 2, 3
 - **3 engines**: openai, google, mistral
 
-**Total**: 1,215 runs (scales to 2,025 with 5 products)
+**Total**: 1,620 runs (3 × 3 × 3 × 3 × 3 × 3)
 
 ### 2. Prompt Rendering
 

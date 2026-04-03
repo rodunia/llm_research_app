@@ -4,13 +4,9 @@ This document defines the frozen experimental matrix for the LLM research pipeli
 
 ## Matrix Dimensions
 
-### Current Scale (Phase 1)
-- **Total runs**: 1,215
-- **Formula**: 3 products × 5 materials × 3 engines × 3 temperatures × 3 times × 3 repetitions
-
-### Future Scale (Phase 2)
-- **Total runs**: 2,025
-- **Formula**: 5 products × 5 materials × 3 engines × 3 temperatures × 3 times × 3 repetitions
+### Current Scale (Canonical Study)
+- **Total runs**: 1,620
+- **Formula**: 3 products × 3 materials × 3 engines × 3 temperatures × 3 replications × 3 time-of-day conditions
 
 ---
 
@@ -349,9 +345,9 @@ pytz                # Timezone support
 
 ## Version History
 
-- **2025-10-09**: Updated to 3 engines (3 products, 3 engines, 1,215 runs) - Anthropic disabled
-- **2025-10-08**: Initial freeze (3 products, 4 engines, 1,620 runs)
-- **Future**: Expand to 5 products (2,025 runs)
+- **2026-03-26**: Canonical design finalized (3 products, 3 materials, 3 engines, 1,620 runs with time-of-day factor)
+- **2025-10-09**: Updated to 3 engines - Anthropic disabled
+- **2025-10-08**: Initial freeze
 
 ---
 

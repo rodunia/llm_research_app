@@ -181,8 +181,8 @@ for run_id in experimental_matrix:
 
 **Option 2: Stratified random** (more structured)
 ```python
-# Assign each run to one of 9 time slots
-# Then add random jitter within slot
+# Assign each run to one of 3 time-of-day conditions (morning/afternoon/evening)
+# Then randomize execution across 7-day window with jitter
 
 TIME_SLOTS = [
     ("morning_day1", 6, 12),   # Day 1: 6am-12pm

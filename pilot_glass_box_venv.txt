@@ -1,0 +1,62 @@
+/Users/dorotajaguscik/PycharmProjects/llm_research_app/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-03-07 13:59:09,705 - INFO - Using MPS (Apple Silicon)
+2026-03-07 13:59:09,706 - INFO - Initializing NLI Judge...
+2026-03-07 13:59:09,706 - INFO - Loading NLI model: cross-encoder/nli-roberta-base
+2026-03-07 13:59:14,657 - INFO - Loading completed runs from experiments.csv...
+2026-03-07 13:59:14,670 - INFO - Auditing 36 runs...
+Auditing runs:   0%|          | 0/36 [00:00<?, ?run/s]2026-03-07 13:59:28,212 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:   0%|          | 0/36 [01:00<?, ?run/s, violations=36, errors=0]Auditing runs:   3%|▎         | 1/36 [01:00<35:18, 60.52s/run, violations=36, errors=0]2026-03-07 14:00:31,657 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:   3%|▎         | 1/36 [02:05<35:18, 60.52s/run, violations=74, errors=0]Auditing runs:   6%|▌         | 2/36 [02:05<35:44, 63.07s/run, violations=74, errors=0]2026-03-07 14:01:29,518 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:   6%|▌         | 2/36 [02:58<35:44, 63.07s/run, violations=96, errors=0]Auditing runs:   8%|▊         | 3/36 [02:58<32:05, 58.35s/run, violations=96, errors=0]2026-03-07 14:02:17,355 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:   8%|▊         | 3/36 [03:20<32:05, 58.35s/run, violations=107, errors=0]Auditing runs:  11%|█         | 4/36 [03:20<23:27, 43.99s/run, violations=107, errors=0]2026-03-07 14:02:38,823 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  11%|█         | 4/36 [03:37<23:27, 43.99s/run, violations=117, errors=0]Auditing runs:  14%|█▍        | 5/36 [03:37<17:47, 34.45s/run, violations=117, errors=0]2026-03-07 14:02:56,374 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  14%|█▍        | 5/36 [03:59<17:47, 34.45s/run, violations=128, errors=0]Auditing runs:  17%|█▋        | 6/36 [03:59<15:02, 30.09s/run, violations=128, errors=0]2026-03-07 14:03:18,993 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  17%|█▋        | 6/36 [04:21<15:02, 30.09s/run, violations=139, errors=0]Auditing runs:  19%|█▉        | 7/36 [04:21<13:21, 27.64s/run, violations=139, errors=0]2026-03-07 14:03:46,907 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  19%|█▉        | 7/36 [05:11<13:21, 27.64s/run, violations=167, errors=0]Auditing runs:  22%|██▏       | 8/36 [05:11<16:11, 34.71s/run, violations=167, errors=0]2026-03-07 14:04:32,160 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  22%|██▏       | 8/36 [05:40<16:11, 34.71s/run, violations=181, errors=0]Auditing runs:  25%|██▌       | 9/36 [05:40<14:47, 32.85s/run, violations=181, errors=0]2026-03-07 14:04:58,445 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  25%|██▌       | 9/36 [06:02<14:47, 32.85s/run, violations=192, errors=0]Auditing runs:  28%|██▊       | 10/36 [06:02<12:45, 29.44s/run, violations=192, errors=0]2026-03-07 14:05:28,255 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  28%|██▊       | 10/36 [07:00<12:45, 29.44s/run, violations=231, errors=0]Auditing runs:  31%|███       | 11/36 [07:00<15:59, 38.37s/run, violations=231, errors=0]2026-03-07 14:06:26,280 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  31%|███       | 11/36 [07:58<15:59, 38.37s/run, violations=267, errors=0]Auditing runs:  33%|███▎      | 12/36 [07:58<17:37, 44.08s/run, violations=267, errors=0]2026-03-07 14:07:15,894 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  33%|███▎      | 12/36 [08:15<17:37, 44.08s/run, violations=278, errors=0]Auditing runs:  36%|███▌      | 13/36 [08:15<13:48, 36.01s/run, violations=278, errors=0]2026-03-07 14:07:33,768 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  36%|███▌      | 13/36 [08:35<13:48, 36.01s/run, violations=287, errors=0]Auditing runs:  39%|███▉      | 14/36 [08:35<11:22, 31.05s/run, violations=287, errors=0]2026-03-07 14:08:04,513 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  39%|███▉      | 14/36 [09:37<11:22, 31.05s/run, violations=323, errors=0]Auditing runs:  42%|████▏     | 15/36 [09:37<14:09, 40.43s/run, violations=323, errors=0]2026-03-07 14:09:02,575 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  42%|████▏     | 15/36 [10:28<14:09, 40.43s/run, violations=351, errors=0]Auditing runs:  44%|████▍     | 16/36 [10:28<14:32, 43.64s/run, violations=351, errors=0]2026-03-07 14:09:53,324 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  44%|████▍     | 16/36 [11:25<14:32, 43.64s/run, violations=391, errors=0]Auditing runs:  47%|████▋     | 17/36 [11:25<15:07, 47.75s/run, violations=391, errors=0]2026-03-07 14:10:52,852 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  47%|████▋     | 17/36 [12:19<15:07, 47.75s/run, violations=426, errors=0]Auditing runs:  50%|█████     | 18/36 [12:19<14:50, 49.45s/run, violations=426, errors=0]2026-03-07 14:11:44,319 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  50%|█████     | 18/36 [13:34<14:50, 49.45s/run, violations=471, errors=0]Auditing runs:  53%|█████▎    | 19/36 [13:34<16:15, 57.39s/run, violations=471, errors=0]2026-03-07 14:12:52,702 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  53%|█████▎    | 19/36 [13:58<16:15, 57.39s/run, violations=484, errors=0]Auditing runs:  56%|█████▌    | 20/36 [13:58<12:36, 47.26s/run, violations=484, errors=0]2026-03-07 14:13:21,387 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  56%|█████▌    | 20/36 [14:49<12:36, 47.26s/run, violations=515, errors=0]Auditing runs:  58%|█████▊    | 21/36 [14:49<12:06, 48.45s/run, violations=515, errors=0]2026-03-07 14:14:07,232 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  58%|█████▊    | 21/36 [15:16<12:06, 48.45s/run, violations=528, errors=0]Auditing runs:  61%|██████    | 22/36 [15:16<09:45, 41.82s/run, violations=528, errors=0]2026-03-07 14:14:38,301 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  61%|██████    | 22/36 [16:04<09:45, 41.82s/run, violations=549, errors=0]Auditing runs:  64%|██████▍   | 23/36 [16:04<09:27, 43.67s/run, violations=549, errors=0]2026-03-07 14:15:22,077 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  64%|██████▍   | 23/36 [16:26<09:27, 43.67s/run, violations=560, errors=0]Auditing runs:  67%|██████▋   | 24/36 [16:26<07:28, 37.36s/run, violations=560, errors=0]2026-03-07 14:15:44,605 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  67%|██████▋   | 24/36 [16:43<07:28, 37.36s/run, violations=569, errors=0]Auditing runs:  69%|██████▉   | 25/36 [16:43<05:41, 31.04s/run, violations=569, errors=0]2026-03-07 14:16:09,258 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  69%|██████▉   | 25/36 [17:43<05:41, 31.04s/run, violations=606, errors=0]Auditing runs:  72%|███████▏  | 26/36 [17:43<06:38, 39.82s/run, violations=606, errors=0]2026-03-07 14:17:01,094 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  72%|███████▏  | 26/36 [18:00<06:38, 39.82s/run, violations=616, errors=0]Auditing runs:  75%|███████▌  | 27/36 [18:00<04:57, 33.06s/run, violations=616, errors=0]2026-03-07 14:17:29,152 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  75%|███████▌  | 27/36 [18:55<04:57, 33.06s/run, violations=660, errors=0]Auditing runs:  78%|███████▊  | 28/36 [18:55<05:16, 39.62s/run, violations=660, errors=0]2026-03-07 14:18:12,840 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  78%|███████▊  | 28/36 [19:16<05:16, 39.62s/run, violations=670, errors=0]Auditing runs:  81%|████████  | 29/36 [19:16<03:57, 33.99s/run, violations=670, errors=0]2026-03-07 14:18:41,465 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  81%|████████  | 29/36 [20:05<03:57, 33.99s/run, violations=707, errors=0]Auditing runs:  83%|████████▎ | 30/36 [20:05<03:50, 38.41s/run, violations=707, errors=0]2026-03-07 14:19:31,644 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  83%|████████▎ | 30/36 [20:50<03:50, 38.41s/run, violations=741, errors=0]Auditing runs:  86%|████████▌ | 31/36 [20:50<03:21, 40.40s/run, violations=741, errors=0]2026-03-07 14:20:16,693 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  86%|████████▌ | 31/36 [21:28<03:21, 40.40s/run, violations=771, errors=0]Auditing runs:  89%|████████▉ | 32/36 [21:28<02:38, 39.63s/run, violations=771, errors=0]2026-03-07 14:20:47,159 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  89%|████████▉ | 32/36 [21:50<02:38, 39.63s/run, violations=783, errors=0]Auditing runs:  92%|█████████▏| 33/36 [21:50<01:43, 34.58s/run, violations=783, errors=0]2026-03-07 14:21:09,794 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  92%|█████████▏| 33/36 [22:09<01:43, 34.58s/run, violations=794, errors=0]Auditing runs:  94%|█████████▍| 34/36 [22:09<00:59, 29.93s/run, violations=794, errors=0]2026-03-07 14:21:28,595 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  94%|█████████▍| 34/36 [22:30<00:59, 29.93s/run, violations=805, errors=0]Auditing runs:  97%|█████████▋| 35/36 [22:30<00:27, 27.08s/run, violations=805, errors=0]2026-03-07 14:21:48,633 - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Auditing runs:  97%|█████████▋| 35/36 [22:49<00:27, 27.08s/run, violations=814, errors=0]Auditing runs: 100%|██████████| 36/36 [22:49<00:00, 24.69s/run, violations=814, errors=0]Auditing runs: 100%|██████████| 36/36 [22:49<00:00, 38.04s/run, violations=814, errors=0]
+2026-03-07 14:22:04,140 - INFO - Saved audit results to /Users/dorotajaguscik/PycharmProjects/llm_research_app/results/final_audit_results.csv
+
+======================================================================
+GLASS BOX AUDIT PIPELINE - SUMMARY
+======================================================================
+Total runs audited:     36
+  ✓ PASS:               0 (0.0%)
+  ✗ FAIL:               36 (100.0%)
+  ! ERROR:              0 (0.0%)
+
+Total violations:       814
+======================================================================
+
+Breakdown by Product:
+  supplement_melatonin             0 PASS /  12 FAIL /  12 total
+  cryptocurrency_corecoin          0 PASS /  12 FAIL /  12 total
+  smartphone_mid                   0 PASS /  12 FAIL /  12 total
+======================================================================

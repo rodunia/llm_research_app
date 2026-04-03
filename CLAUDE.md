@@ -12,7 +12,7 @@ This is an LLM Research Application for conducting systematic experiments with m
 
 **Research Questions**:
 1. **People-pleasing bias**: Do LLMs generate overly positive marketing content that violates compliance rules?
-2. **Induced errors and hallucinations**: How frequently do LLMs introduce factual inaccuracies in marketing materials?
+2. **Error detection and factual accuracy**: How frequently do LLMs spontaneously generate factual inaccuracies and compliance violations in marketing materials?
 3. **Temporal unreliability**: Do LLMs produce inconsistent outputs across different sessions and times of day?
 
 **Why marketing content?**: AI marketing has the highest legal and social risk for companies:
@@ -24,12 +24,12 @@ This is an LLM Research Application for conducting systematic experiments with m
 **Experimental Design Rationale**:
 - **3 products** (smartphone, cryptocurrency, health supplement): Different regulatory domains to test cross-industry reliability
 - **Temperature variations** (0.2, 0.6, 1.0): Test deterministic vs creative outputs - does higher creativity increase hallucinations?
-- **Time-of-day runs** (morning/afternoon/evening × 3 days = 9 time slots): Measure temporal consistency across sessions
-- **Multiple engines** (OpenAI, Google, Anthropic, Mistral): Compare provider reliability and bias patterns
+- **Time-of-day conditions** (morning/afternoon/evening) executed across 7-day window: Measure temporal consistency across sessions
+- **Multiple engines** (OpenAI, Google, Mistral): Compare provider reliability and bias patterns
 - **3 replications**: Statistical validation of consistency within same conditions
-- **5 material types**: FAQ, digital ads, blog posts, social media, email - different content formats
+- **3 material types**: FAQ, digital ads, blog posts - different content formats
 
-**Glass Box Audit Role**: Systematically detect and quantify induced errors and compliance violations across 1,620 generated marketing materials (3 products × 5 materials × 3 temps × 3 reps × 4 engines × 3 time slots).
+**Glass Box Audit Role**: Systematically detect and quantify naturally occurring errors and compliance violations across 1,620 generated marketing materials (3 products × 3 materials × 3 temps × 3 reps × 3 engines × 3 time-of-day conditions).
 
 ## Architecture
 
@@ -138,7 +138,7 @@ MISTRAL_API_KEY=your_key_here
 - **CSV-first storage**: `results/experiments.csv` is single source of truth
   - Easy to analyze in Excel/Google Sheets
   - Tracks status (pending/completed), timestamps, tokens, models
-- **Experimental matrix**: Currently 1,620 runs (3 products × 5 materials × 3 temps × 3 reps × 4 engines)
+- **Experimental matrix**: 1,620 runs (3 products × 3 materials × 3 temps × 3 reps × 3 engines × 3 time-of-day conditions)
 - **Security**: Never commit `.env`, credentials, or raw datasets
 
 ## Testing

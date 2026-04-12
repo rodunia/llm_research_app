@@ -90,7 +90,7 @@ EXTRA_RUNS = 1620 % NUM_DAYS  # 3 extra runs to distribute
 # We'll handle this dynamically in the loop
 
 # Start date for scheduling
-START_DATE = datetime(2026, 3, 17)  # Monday, March 17, 2026
+START_DATE = datetime(2026, 4, 12)  # Saturday, April 12, 2026
 
 # Output paths
 OUTPUT_CSV = Path("results/experiments.csv")  # Direct experiments.csv for orchestrator

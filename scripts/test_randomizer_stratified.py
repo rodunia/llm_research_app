@@ -930,8 +930,14 @@ def print_summary_stats(results: List[Dict]):
 
 # ==================== MAIN ====================
 
-def main(seed: int = RANDOM_SEED):
+def main(seed: int = RANDOM_SEED, start_date: datetime = None):
     """Run stratified randomizer."""
+    global START_DATE
+    if start_date is None:
+        start_date = START_DATE
+    else:
+        START_DATE = start_date  # Update global variable
+
     print("=" * 70)
     print("STRATIFIED RANDOMIZER TEST (1,620 RUNS)")
     print("=" * 70)
@@ -943,6 +949,7 @@ def main(seed: int = RANDOM_SEED):
     print(f"  Days: {NUM_DAYS} (full week)")
     print(f"  Runs per day: {RUNS_PER_DAY}")
     print(f"  Random seed: {seed}")
+    print(f"  Start date: {start_date.strftime('%Y-%m-%d')}")
 
     # Generate stratified matrix
     runs = create_stratified_matrix(seed=seed)
@@ -977,6 +984,17 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Stratified randomizer test")
     parser.add_argument('--seed', type=int, default=RANDOM_SEED, help='Random seed')
+    parser.add_argument('--start-date', type=str, default=None, help='Start date in YYYY-MM-DD format (default: 2026-04-12)')
     args = parser.parse_args()
 
-    main(seed=args.seed)
+    # Parse start date if provided
+    start_date = START_DATE
+    if args.start_date:
+        from datetime import datetime
+        try:
+            start_date = datetime.strptime(args.start_date, '%Y-%m-%d')
+        except ValueError:
+            print(f"Error: Invalid date format '{args.start_date}'. Use YYYY-MM-DD")
+            sys.exit(1)
+
+    main(seed=args.seed, start_date=start_date)

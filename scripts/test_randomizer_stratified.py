@@ -732,7 +732,11 @@ def save_results_to_csv(results: List[Dict], output_path: Path):
         'date_of_run', 'execution_duration_sec', 'status',
 
         # Experimental Design (4)
-        'trap_flag', 'matrix_randomization_seed', 'matrix_randomization_mode', 'config_fingerprint'
+        'trap_flag', 'matrix_randomization_seed', 'matrix_randomization_mode', 'config_fingerprint',
+
+        # Stage 1 Metadata (6) - populated at runtime during LLM generation
+        'content_filter_triggered', 'prompt_hash', 'retry_count', 'error_type',
+        'scheduled_vs_actual_delay_sec', 'api_latency_ms'
     ]
 
     from config import DEFAULT_MAX_TOKENS, DEFAULT_SEED, DEFAULT_TOP_P
@@ -793,7 +797,15 @@ def save_results_to_csv(results: List[Dict], output_path: Path):
             'trap_flag': False,
             'matrix_randomization_seed': RANDOM_SEED,
             'matrix_randomization_mode': 'stratified_7day_balanced',
-            'config_fingerprint': ''  # Can be computed if needed
+            'config_fingerprint': '',  # Can be computed if needed
+
+            # Stage 1 Metadata (populated at runtime)
+            'content_filter_triggered': False,
+            'prompt_hash': '',
+            'retry_count': 0,
+            'error_type': 'none',
+            'scheduled_vs_actual_delay_sec': 0.0,
+            'api_latency_ms': 0
         }
         csv_rows.append(csv_row)
 

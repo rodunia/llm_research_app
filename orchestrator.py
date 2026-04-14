@@ -789,7 +789,12 @@ def temporal(
             session_id,
         ]
         if not run_command(cmd, f"Executing scheduled run {next_job['run_id'][:12]}"):
-            raise typer.Exit(1)
+            # Log failure but continue execution (don't kill entire experiment)
+            console.print(
+                f"[yellow]⚠ Run {next_job['run_id'][:12]} failed, continuing to next run[/yellow]"
+            )
+            # Failed run is already marked as status='failed' in CSV by run_job.py
+            # Temporal will skip it on next loop iteration
 
 
 def run_scheduled_job(time_of_day: str) -> None:

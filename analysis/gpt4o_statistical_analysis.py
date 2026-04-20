@@ -28,6 +28,7 @@ ENGINE_STATS_CSV = RESULTS_DIR / "engine_stats.csv"
 TEMP_STATS_CSV = RESULTS_DIR / "temperature_stats.csv"
 PRODUCT_STATS_CSV = RESULTS_DIR / "product_stats.csv"
 TIME_STATS_CSV = RESULTS_DIR / "time_of_day_stats.csv"
+DAY_OF_WEEK_STATS_CSV = RESULTS_DIR / "day_of_week_stats.csv"
 MATERIAL_STATS_CSV = RESULTS_DIR / "material_type_stats.csv"
 STATISTICAL_TESTS_TXT = RESULTS_DIR / "statistical_tests.txt"
 
@@ -39,6 +40,16 @@ def load_data():
 
     # Load audit results
     audit_df = pd.read_csv(AUDIT_CSV)
+
+    # Load experiments.csv for day-of-week data
+    if EXPERIMENTS_CSV.exists():
+        experiments_df = pd.read_csv(EXPERIMENTS_CSV)
+        # Merge to add scheduled_day_of_week
+        audit_df = audit_df.merge(
+            experiments_df[['run_id', 'scheduled_day_of_week']],
+            on='run_id',
+            how='left'
+        )
 
     # Deduplicate by run_id (keep first row per run for compliance status)
     runs_df = audit_df.drop_duplicates(subset='run_id', keep='first')
@@ -151,6 +162,35 @@ def calculate_material_type_stats(runs_df):
     return material_stats.reset_index()
 
 
+def calculate_day_of_week_stats(runs_df):
+    """Calculate violation rates by day of week."""
+    if 'scheduled_day_of_week' not in runs_df.columns:
+        print("⚠ Warning: scheduled_day_of_week not found in data")
+        return pd.DataFrame()
+
+    # Order days properly
+    day_order = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+    runs_df['scheduled_day_of_week'] = pd.Categorical(
+        runs_df['scheduled_day_of_week'],
+        categories=day_order,
+        ordered=True
+    )
+
+    day_stats = runs_df.groupby('scheduled_day_of_week', observed=False).agg({
+        'run_id': 'count',
+        'compliant': lambda x: (x == False).sum(),
+        'violation_count': ['sum', 'mean', 'std']
+    }).round(2)
+
+    day_stats.columns = ['total_runs', 'non_compliant_runs', 'total_violations',
+                         'avg_violations', 'std_violations']
+    day_stats['non_compliant_pct'] = (
+        day_stats['non_compliant_runs'] / day_stats['total_runs'] * 100
+    ).round(1)
+
+    return day_stats.reset_index()
+
+
 def calculate_severity_breakdown(audit_df):
     """Calculate severity distribution."""
     # Count violations by severity (excluding compliant materials with severity=NONE)
@@ -243,11 +283,23 @@ def run_statistical_tests(runs_df):
         'result': 'SIGNIFICANT (p < 0.001)' if p_value < 0.001 else f'p = {p_value:.4f}'
     })
 
+    # Day-of-week effect (7-day temporal drift)
+    if 'scheduled_day_of_week' in runs_df.columns:
+        contingency_day = pd.crosstab(runs_df['scheduled_day_of_week'], runs_df['compliant'])
+        chi2, p_value, dof, _ = stats.chi2_contingency(contingency_day)
+        results.append({
+            'test': 'RQ3: Day-of-week effect on compliance (7-day drift)',
+            'method': 'Chi-square test',
+            'statistic': f'χ² = {chi2:.3f} (df={dof})',
+            'p_value': f'{p_value:.4e}',
+            'result': 'SIGNIFICANT (p < 0.001)' if p_value < 0.001 else f'p = {p_value:.4f}'
+        })
+
     return pd.DataFrame(results)
 
 
 def generate_summary_report(overall, engine_stats, temp_stats, product_stats,
-                           time_stats, severity_counts, test_results):
+                           time_stats, day_stats, severity_counts, test_results):
     """Generate comprehensive text summary."""
     report = []
     report.append("=" * 80)
@@ -309,6 +361,16 @@ def generate_summary_report(overall, engine_stats, temp_stats, product_stats,
                      f"avg {row['avg_violations']:.2f} violations)")
     report.append("")
 
+    # Day of week comparison
+    if not day_stats.empty:
+        report.append("VIOLATION RATE BY DAY OF WEEK (7-DAY TEMPORAL DRIFT)")
+        report.append("-" * 80)
+        for _, row in day_stats.iterrows():
+            report.append(f"  {row['scheduled_day_of_week']:<15} {row['non_compliant_pct']:>6.1f}% "
+                         f"({row['non_compliant_runs']}/{row['total_runs']} runs, "
+                         f"avg {row['avg_violations']:.2f} violations)")
+        report.append("")
+
     # Statistical tests
     report.append("STATISTICAL HYPOTHESIS TESTS")
     report.append("-" * 80)
@@ -329,6 +391,11 @@ def generate_summary_report(overall, engine_stats, temp_stats, product_stats,
 
 def main():
     parser = argparse.ArgumentParser(description='Statistical analysis of GPT-4o audit results')
+    parser.add_argument(
+        '--day-of-week-only',
+        action='store_true',
+        help='Only calculate and display day-of-week analysis'
+    )
     args = parser.parse_args()
 
     print("=" * 80)
@@ -342,6 +409,39 @@ def main():
     print(f"✓ Loaded {len(runs_df)} runs ({len(audit_df)} total rows)")
     print()
 
+    # Day-of-week only mode
+    if args.day_of_week_only:
+        print("Running day-of-week analysis only...")
+        print()
+        day_stats = calculate_day_of_week_stats(runs_df)
+
+        if day_stats.empty:
+            print("⚠ No day-of-week data available")
+            return
+
+        print("VIOLATION RATE BY DAY OF WEEK (7-DAY TEMPORAL DRIFT)")
+        print("=" * 80)
+        for _, row in day_stats.iterrows():
+            print(f"  {row['scheduled_day_of_week']:<15} {row['non_compliant_pct']:>6.1f}% "
+                  f"({int(row['non_compliant_runs'])}/{int(row['total_runs'])} runs, "
+                  f"avg {row['avg_violations']:.2f} violations)")
+        print()
+
+        # Chi-square test
+        from scipy import stats as sp_stats
+        contingency = pd.crosstab(runs_df['scheduled_day_of_week'], runs_df['compliant'])
+        chi2, p_value, dof, _ = sp_stats.chi2_contingency(contingency)
+        print("Statistical Test:")
+        print(f"  Chi-square: χ² = {chi2:.3f} (df={dof})")
+        print(f"  P-value: {p_value:.4f}")
+        print(f"  Result: {'SIGNIFICANT (p < 0.05)' if p_value < 0.05 else 'NOT SIGNIFICANT'}")
+        print()
+
+        # Save
+        day_stats.to_csv(DAY_OF_WEEK_STATS_CSV, index=False)
+        print(f"✓ Saved to {DAY_OF_WEEK_STATS_CSV}")
+        return
+
     # Calculate statistics
     print("Calculating statistics...")
     overall = calculate_overall_stats(runs_df)
@@ -349,6 +449,7 @@ def main():
     temp_stats = calculate_temperature_stats(runs_df)
     product_stats = calculate_product_stats(runs_df)
     time_stats = calculate_time_of_day_stats(runs_df)
+    day_stats = calculate_day_of_week_stats(runs_df)
     material_stats = calculate_material_type_stats(runs_df)
     severity_counts = calculate_severity_breakdown(audit_df)
     print("✓ Statistics calculated")
@@ -364,7 +465,7 @@ def main():
     print("Generating summary report...")
     summary = generate_summary_report(
         overall, engine_stats, temp_stats, product_stats,
-        time_stats, severity_counts, test_results
+        time_stats, day_stats, severity_counts, test_results
     )
 
     # Save outputs
@@ -384,6 +485,10 @@ def main():
 
     time_stats.to_csv(TIME_STATS_CSV, index=False)
     print(f"✓ Time-of-day stats: {TIME_STATS_CSV}")
+
+    if not day_stats.empty:
+        day_stats.to_csv(DAY_OF_WEEK_STATS_CSV, index=False)
+        print(f"✓ Day-of-week stats: {DAY_OF_WEEK_STATS_CSV}")
 
     material_stats.to_csv(MATERIAL_STATS_CSV, index=False)
     print(f"✓ Material type stats: {MATERIAL_STATS_CSV}")

@@ -306,6 +306,7 @@ def audit_all_materials(resume: bool = True, limit: int = None):
         result['temperature'] = exp.get('temperature', 'unknown')
         result['material_type'] = exp.get('material_type', 'unknown')
         result['time_of_day_label'] = exp.get('time_of_day_label', 'unknown')
+        result['material_text'] = material_text  # Include full text for human review
 
         # Log result
         compliant = result.get('compliant')
@@ -404,6 +405,7 @@ def export_to_csv():
         overall_severity = result.get('overall_severity', 'NONE')
 
         violations = result.get('violations', [])
+        material_text = result.get('material_text', '')
 
         if not violations:
             # Still include compliant runs
@@ -422,7 +424,8 @@ def export_to_csv():
                 'severity': '',
                 'rule_violated': '',
                 'reasoning': '',
-                'suggested_fix': ''
+                'suggested_fix': '',
+                'material_text': material_text  # Full text for human review
             })
         else:
             for v in violations:
@@ -441,7 +444,8 @@ def export_to_csv():
                     'severity': v.get('severity', ''),
                     'rule_violated': v.get('rule_violated', ''),
                     'reasoning': v.get('reasoning', ''),
-                    'suggested_fix': v.get('suggested_fix', '')
+                    'suggested_fix': v.get('suggested_fix', ''),
+                    'material_text': material_text  # Full text for human review
                 })
 
     # Write CSV
@@ -450,7 +454,7 @@ def export_to_csv():
             fieldnames = ['run_id', 'product_id', 'engine', 'temperature', 'material_type',
                          'time_of_day', 'compliant', 'violation_count', 'overall_severity',
                          'claim_text', 'violation_type', 'severity', 'rule_violated',
-                         'reasoning', 'suggested_fix']
+                         'reasoning', 'suggested_fix', 'material_text']
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             writer.writerows(csv_rows)

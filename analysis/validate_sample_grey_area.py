@@ -20,13 +20,39 @@ SUMMARY_OUTPUT_PATH = RESULTS_DIR / "grey_area_sample_summary.txt"
 
 
 def load_audit_results() -> List[Dict]:
-    """Load all violations from glass box audit."""
+    """Load all violations from glass box audit merged with experiment metadata."""
     if not AUDIT_RESULTS_PATH.exists():
         raise FileNotFoundError(f"Audit results not found: {AUDIT_RESULTS_PATH}")
 
+    # Load audit results
+    audit_results = []
     with open(AUDIT_RESULTS_PATH) as f:
         reader = csv.DictReader(f)
-        return list(reader)
+        audit_results = list(reader)
+
+    # Load experiments.csv for engine/temperature metadata
+    experiments_path = RESULTS_DIR / "experiments.csv"
+    if not experiments_path.exists():
+        print("⚠ experiments.csv not found, using audit data only")
+        return audit_results
+
+    experiments = {}
+    with open(experiments_path) as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            experiments[row['run_id']] = row
+
+    # Merge audit results with experiment metadata
+    merged_results = []
+    for audit_row in audit_results:
+        run_id = audit_row['run_id']
+        if run_id in experiments:
+            # Add engine and temperature from experiments.csv
+            audit_row['engine'] = experiments[run_id].get('engine', 'unknown')
+            audit_row['temperature'] = experiments[run_id].get('temperature', 'unknown')
+        merged_results.append(audit_row)
+
+    return merged_results
 
 
 def validate_sample(sample_size: int = 100, seed: int = 42) -> List[Dict]:
@@ -66,16 +92,17 @@ def validate_sample(sample_size: int = 100, seed: int = 42) -> List[Dict]:
 
         try:
             result = judge_claim_grey_area(
-                claim=row['claim_text'],
+                claim=row['Extracted_Claim'],
                 product_id=row['product_id']
             )
 
             # Merge with original audit data
             result['run_id'] = row['run_id']
-            result['engine'] = row['engine']
-            result['temperature'] = row['temperature']
             result['product_id'] = row['product_id']
-            result['nli_contradiction_score'] = row['contradiction_score']
+            result['engine'] = row.get('engine', 'unknown')
+            result['temperature'] = row.get('temperature', 'unknown')
+            result['nli_confidence'] = row['Confidence_Score']
+            result['violated_rule'] = row['Violated_Rule']
 
             results.append(result)
 
@@ -88,7 +115,7 @@ def validate_sample(sample_size: int = 100, seed: int = 42) -> List[Dict]:
             print(f"  ✗ ERROR: {e}")
             results.append({
                 'run_id': row['run_id'],
-                'claim': row['claim_text'],
+                'claim': row['Extracted_Claim'],
                 'verdict': 'ERROR',
                 'severity': 'NONE',
                 'reasoning': str(e),

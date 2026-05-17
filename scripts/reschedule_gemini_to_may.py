@@ -18,11 +18,11 @@ from datetime import datetime, timedelta
 EXPERIMENTS_CSV = Path("results/experiments.csv")
 BACKUP_CSV = Path("results/experiments_backup_before_may_reschedule.csv")
 
-# Date mapping: March 17-23 → May 19-25
-# Monday March 17 → Monday May 19
-# Tuesday March 18 → Tuesday May 20
+# Date mapping: March 17-23 → May 18-24
+# Monday March 17 → Sunday May 18
+# Tuesday March 18 → Monday May 19
 # etc.
-DATE_SHIFT_DAYS = 63  # Number of days between March 17 and May 19
+DATE_SHIFT_DAYS = 62  # Number of days between March 17 and May 18
 
 
 def parse_scheduled_datetime(dt_str):
@@ -106,7 +106,7 @@ def main():
         print("[DRY RUN MODE - No changes will be made]")
         print()
 
-    print("Rescheduling from March 17-23 → May 19-25 (same weekdays/times)")
+    print("Rescheduling from March 17-23 → May 18-24 (shifted by 62 days)")
     print()
     print("Sample updates (first 5):")
     print()

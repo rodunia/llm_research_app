@@ -218,9 +218,25 @@ Recommendations:
                 continue
             raise
 
+        except exceptions.InvalidArgument as e:
+            retry_count += 1
+            # Check if it's a token limit error
+            error_msg = str(e).lower()
+            if "token" in error_msg or "length" in error_msg or "context" in error_msg:
+                error_type = "token_limit"
+            else:
+                error_type = "invalid_argument"
+            # Non-retryable error
+            raise
+
         except Exception as e:
             retry_count += 1
-            error_type = "api_error"
+            # Check if generic error mentions tokens
+            error_msg = str(e).lower()
+            if "token" in error_msg or "length" in error_msg or "context" in error_msg:
+                error_type = "token_limit"
+            else:
+                error_type = "api_error"
             # Non-retryable errors
             raise
 

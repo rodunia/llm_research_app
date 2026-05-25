@@ -21,7 +21,7 @@ def call_openai(
     prompt: str,
     temperature: float,
     model: Optional[str] = None,
-    max_tokens: int = 2048,
+    max_tokens: Optional[int] = None,
     seed: Optional[int] = None,
     top_p: Optional[float] = None,
     frequency_penalty: Optional[float] = None,
@@ -90,8 +90,11 @@ def call_openai(
                 "model": model,
                 "messages": [{"role": "user", "content": prompt}],
                 "temperature": temperature,
-                "max_completion_tokens": max_tokens,
             }
+
+            # Only add max_tokens if specified
+            if max_tokens is not None:
+                params["max_completion_tokens"] = max_tokens
 
             # Add optional parameters if specified
             if seed is not None:

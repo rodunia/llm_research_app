@@ -18,7 +18,7 @@ def call_google(
     prompt: str,
     temperature: float,
     model: Optional[str] = None,
-    max_tokens: int = 2048,
+    max_tokens: Optional[int] = None,
     seed: Optional[int] = None,
     top_p: Optional[float] = None,
     frequency_penalty: Optional[float] = None,
@@ -74,8 +74,11 @@ def call_google(
     # Build generation config (only include supported parameters)
     generation_config = {
         "temperature": temperature,
-        "max_output_tokens": max_tokens,
     }
+
+    # Only add max_tokens if specified
+    if max_tokens is not None:
+        generation_config["max_output_tokens"] = max_tokens
 
     # Add top_p if specified (Google supports this)
     if top_p is not None:

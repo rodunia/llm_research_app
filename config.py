@@ -102,7 +102,7 @@ EXPERIMENT_START_ISO = ""  # Example: "2026-04-03T00:00:00+00:00"
 # --- 2. METADATA AND REPRODUCIBILITY SETTINGS ---
 
 # Default values for metadata tracking (statistical validity)
-DEFAULT_MAX_TOKENS = None           # No limit - let each API use its own maximum (OpenAI: 16384, Gemini: 8192)
+DEFAULT_MAX_TOKENS = 10000          # Safe limit for all engines (OpenAI: 16384, Gemini: 8192 caps)
 DEFAULT_SEED = 12345                # Fixed seed for reproducibility
 DEFAULT_TOP_P = None                # Use API default (1.0), set to float to override
 DEFAULT_FREQUENCY_PENALTY = None    # Use API default (0.0), set to float to override

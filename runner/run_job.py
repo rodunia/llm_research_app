@@ -216,7 +216,7 @@ def execute_job_record(
         engine=job["engine"],
         temperature=float(job.get("temperature", job.get("temperature_label", 0.6))),
         trap_flag=bool(job.get("trap_flag") == "True" or job.get("trap_flag") is True),
-        max_tokens=int(job.get("max_tokens", DEFAULT_MAX_TOKENS)),
+        max_tokens=int(job["max_tokens"]) if job.get("max_tokens") and job["max_tokens"] != "" else DEFAULT_MAX_TOKENS,
         seed=int(job["seed"]) if job.get("seed") and job["seed"] != "" else None,
         top_p=float(job["top_p"]) if job.get("top_p") and job["top_p"] != "" else None,
         frequency_penalty=float(job["frequency_penalty"]) if job.get("frequency_penalty") and job["frequency_penalty"] != "" else None,

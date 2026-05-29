@@ -23,7 +23,7 @@ def call_google(
     top_p: Optional[float] = None,
     frequency_penalty: Optional[float] = None,
     presence_penalty: Optional[float] = None,
-    timeout: int = 180,
+    timeout: int = 300,
     max_retries: int = 3,
 ) -> Dict[str, Any]:
     """Call Google Gemini API with retry logic.
@@ -37,7 +37,7 @@ def call_google(
         top_p: Nucleus sampling parameter (supported)
         frequency_penalty: Repetition penalty (NOT supported - ignored)
         presence_penalty: Token diversity penalty (NOT supported - ignored)
-        timeout: Request timeout in seconds (default 180 for 10K token generations)
+        timeout: Request timeout in seconds (default 300 for 10K token generations)
         max_retries: Maximum retry attempts
 
     Returns:

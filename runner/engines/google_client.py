@@ -23,7 +23,7 @@ def call_google(
     top_p: Optional[float] = None,
     frequency_penalty: Optional[float] = None,
     presence_penalty: Optional[float] = None,
-    timeout: int = 60,
+    timeout: int = 180,
     max_retries: int = 3,
 ) -> Dict[str, Any]:
     """Call Google Gemini API with retry logic.
@@ -37,7 +37,7 @@ def call_google(
         top_p: Nucleus sampling parameter (supported)
         frequency_penalty: Repetition penalty (NOT supported - ignored)
         presence_penalty: Token diversity penalty (NOT supported - ignored)
-        timeout: Request timeout in seconds
+        timeout: Request timeout in seconds (default 180 for 10K token generations)
         max_retries: Maximum retry attempts
 
     Returns:
@@ -77,8 +77,9 @@ def call_google(
     }
 
     # Only add max_tokens if specified
+    # Gemini Flash max is 8192, cap at that limit
     if max_tokens is not None:
-        generation_config["max_output_tokens"] = max_tokens
+        generation_config["max_output_tokens"] = min(max_tokens, 8192)
 
     # Add top_p if specified (Google supports this)
     if top_p is not None:
@@ -180,13 +181,20 @@ Recommendations:
             )
 
             # Manual token counting (Google doesn't provide usage in response)
-            prompt_tokens = gemini_model.count_tokens(prompt).total_tokens
+            # Estimate tokens if count_tokens hangs (21KB prompts can timeout)
+            try:
+                prompt_tokens = gemini_model.count_tokens(prompt).total_tokens
+            except:
+                # Fallback: rough estimate (1 token ≈ 4 chars)
+                prompt_tokens = len(prompt) // 4
+
             completion_tokens = 0
             if output_text and not output_text.startswith("[Content blocked"):
                 try:
                     completion_tokens = gemini_model.count_tokens(output_text).total_tokens
                 except:
-                    completion_tokens = 0
+                    # Fallback estimate
+                    completion_tokens = len(output_text) // 4
 
             return {
                 "output_text": output_text,

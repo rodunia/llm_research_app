@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "RoBERTa NLI Validation Output Schema",
+  "description": "Schema for RoBERTa NLI validation of extracted claims against product context",
+  "type": "object",
+  "required": [
+    "run_id",
+    "claim_id",
+    "claim_text",
+    "premise_text",
+    "premise_source",
+    "nli_label",
+    "nli_score",
+    "top_premises"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "description": "Material/run identifier"
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "Claim identifier within material"
+    },
+    "claim_text": {
+      "type": "string",
+      "description": "Exact claim text being validated"
+    },
+    "premise_text": {
+      "type": "string",
+      "description": "Best matching premise from product context"
+    },
+    "premise_source": {
+      "type": "string",
+      "enum": ["authorized_claims", "prohibited_claims", "specs", "mandatory_disclosures", "clarifications"],
+      "description": "Section of product YAML where premise was found"
+    },
+    "nli_label": {
+      "type": "string",
+      "enum": ["ENTAILMENT", "NEUTRAL", "CONTRADICTION"],
+      "description": "NLI verdict for best premise"
+    },
+    "nli_score": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Confidence score for NLI label"
+    },
+    "top_premises": {
+      "type": "array",
+      "description": "Top 3 candidate premises with scores",
+      "minItems": 1,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["premise_text", "premise_source", "nli_label", "nli_score"],
+        "properties": {
+          "premise_text": {
+            "type": "string"
+          },
+          "premise_source": {
+            "type": "string",
+            "enum": ["authorized_claims", "prohibited_claims", "specs", "mandatory_disclosures", "clarifications"]
+          },
+          "nli_label": {
+            "type": "string",
+            "enum": ["ENTAILMENT", "NEUTRAL", "CONTRADICTION"]
+          },
+          "nli_score": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0
+          }
+        }
+      }
+    },
+    "model": {
+      "type": "string",
+      "description": "RoBERTa model used (e.g., roberta-large-mnli)"
+    },
+    "validation_timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When validation was performed"
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Material Input Schema",
+  "description": "Schema for marketing material inputs to the compliance analysis pipeline",
+  "type": "object",
+  "required": ["run_id", "product_id", "material_type", "material_text", "output_path"],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$",
+      "description": "SHA-1 hash identifying the experimental run"
+    },
+    "product_id": {
+      "type": "string",
+      "enum": ["supplement_melatonin", "smartphone_mid", "cryptocurrency_corecoin"],
+      "description": "Product identifier matching YAML filename"
+    },
+    "product_name": {
+      "type": "string",
+      "description": "Human-readable product name from YAML"
+    },
+    "product_type": {
+      "type": "string",
+      "description": "Product category (e.g., dietary supplement, consumer electronics, cryptocurrency)"
+    },
+    "regulatory_domain": {
+      "type": "string",
+      "description": "Regulatory classification (e.g., FDA/DSHEA, FTC, SEC/CFTC)"
+    },
+    "material_type": {
+      "type": "string",
+      "enum": ["faq.j2", "digital_ad.j2", "organic_social_posts.j2", "blog_post_promo.j2"],
+      "description": "Template type used for generation"
+    },
+    "generator_model": {
+      "type": "string",
+      "description": "LLM model used to generate material (e.g., gpt-4o-mini, gemini-1.5-flash)"
+    },
+    "generator_engine": {
+      "type": "string",
+      "enum": ["openai", "google", "mistral", "anthropic"],
+      "description": "Engine/provider that generated the material"
+    },
+    "temperature": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 2.0,
+      "description": "Sampling temperature used during generation"
+    },
+    "material_text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Full text of the marketing material to be analyzed"
+    },
+    "output_path": {
+      "type": "string",
+      "pattern": "^outputs/[a-f0-9]{40}\\.txt$",
+      "description": "Path to output file"
+    },
+    "product_yaml_path": {
+      "type": "string",
+      "pattern": "^products/[a-z_]+\\.yaml$",
+      "description": "Path to product specification YAML"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of material generation"
+    }
+  }
+}

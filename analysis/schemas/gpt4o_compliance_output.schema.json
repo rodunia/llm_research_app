@@ -1,0 +1,240 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GPT-4o Compliance Output Schema",
+  "description": "Schema for GPT-4o compliance evaluation outputs with extracted claims and findings",
+  "type": "object",
+  "required": [
+    "material_id",
+    "product",
+    "regulatory_domain",
+    "overall_status",
+    "compliant",
+    "finding_count",
+    "overall_severity",
+    "requires_human_review",
+    "extracted_claims",
+    "findings",
+    "summary",
+    "limitations"
+  ],
+  "properties": {
+    "material_id": {
+      "type": "string",
+      "description": "Run ID matching experiments.csv"
+    },
+    "product": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "regulatory_domain": {
+      "type": "string",
+      "description": "Regulatory classification"
+    },
+    "overall_status": {
+      "type": "string",
+      "enum": ["NO_FINDINGS", "LOW_RISK_LANGUAGE", "REVIEW_RECOMMENDED", "LIKELY_VIOLATION", "CLEAR_VIOLATION"],
+      "description": "Highest-severity finding status"
+    },
+    "compliant": {
+      "type": "boolean",
+      "description": "Whether material is compliant (false if LIKELY_VIOLATION or CLEAR_VIOLATION)"
+    },
+    "finding_count": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of compliance findings"
+    },
+    "overall_severity": {
+      "type": "string",
+      "enum": ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Highest severity among findings"
+    },
+    "requires_human_review": {
+      "type": "boolean",
+      "description": "Whether material requires human review"
+    },
+    "extracted_claims": {
+      "type": "array",
+      "description": "All verifiable claims extracted from material (including compliant claims)",
+      "items": {
+        "type": "object",
+        "required": ["claim_id", "claim_text", "claim_type", "is_verifiable", "risk_domain", "support_status"],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "description": "Unique claim identifier within this material"
+          },
+          "claim_text": {
+            "type": "string",
+            "description": "Exact claim text from material"
+          },
+          "claim_type": {
+            "type": "string",
+            "enum": ["benefit", "feature", "safety", "performance", "financial", "regulatory", "other"],
+            "description": "Type of claim"
+          },
+          "is_verifiable": {
+            "type": "boolean",
+            "description": "Whether claim can be verified against product context"
+          },
+          "risk_domain": {
+            "type": "string",
+            "enum": ["supplement", "electronics", "crypto", "general"],
+            "description": "Product risk domain"
+          },
+          "support_status": {
+            "type": "string",
+            "enum": ["SUPPORTED", "SUPPORTED_WITH_QUALIFICATION", "UNSUPPORTED", "CONTRADICTED", "INSUFFICIENT_EVIDENCE"],
+            "description": "Whether claim is supported by product context"
+          },
+          "evidence_from_context": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source_section", "matched_text"],
+              "properties": {
+                "source_section": {
+                  "type": "string",
+                  "enum": ["authorized_claims", "prohibited_claims", "specs", "mandatory_disclosures", "clarifications"]
+                },
+                "matched_text": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "findings": {
+      "type": "array",
+      "description": "Compliance-relevant issues only",
+      "items": {
+        "type": "object",
+        "required": [
+          "claim_id",
+          "claim_text",
+          "finding_status",
+          "finding_type",
+          "support_status",
+          "severity",
+          "evidence_from_marketing_text",
+          "evidence_from_context",
+          "reasoning_short",
+          "confidence",
+          "false_positive_risk",
+          "requires_human_review"
+        ],
+        "properties": {
+          "claim_id": {
+            "type": "string",
+            "description": "Links to extracted_claims[] by claim_id"
+          },
+          "claim_text": {
+            "type": "string",
+            "description": "Exact text from material"
+          },
+          "finding_status": {
+            "type": "string",
+            "enum": ["LOW_RISK_LANGUAGE", "REVIEW_RECOMMENDED", "LIKELY_VIOLATION", "CLEAR_VIOLATION"]
+          },
+          "finding_type": {
+            "type": "string",
+            "enum": [
+              "disease_claim",
+              "absolute_language",
+              "misleading_omission",
+              "factual_error",
+              "prohibited_claim",
+              "implied_claim",
+              "regulatory_boundary",
+              "unsupported_overclaim",
+              "false_regulatory_approval",
+              "risk_free_or_guaranteed_return",
+              "other"
+            ]
+          },
+          "support_status": {
+            "type": "string",
+            "enum": ["SUPPORTED", "SUPPORTED_WITH_QUALIFICATION", "UNSUPPORTED", "CONTRADICTED", "INSUFFICIENT_EVIDENCE"]
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
+          },
+          "evidence_from_marketing_text": {
+            "type": "string",
+            "description": "Exact offending wording"
+          },
+          "evidence_from_context": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["source_section", "matched_text"],
+              "properties": {
+                "source_section": {
+                  "type": "string",
+                  "enum": ["prohibited_claims", "authorized_claims", "specs", "mandatory_disclosures", "clarifications"]
+                },
+                "matched_text": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "specific_rule_or_boundary": {
+            "type": ["string", "null"],
+            "description": "Exact rule from context"
+          },
+          "reasoning_short": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Brief explanation (max 3 sentences)"
+          },
+          "recommended_fix": {
+            "type": ["string", "null"],
+            "description": "Suggested compliant alternative"
+          },
+          "regulatory_citation": {
+            "type": ["string", "null"],
+            "description": "Only if provided in context"
+          },
+          "confidence": {
+            "type": "number",
+            "minimum": 0.0,
+            "maximum": 1.0,
+            "description": "GPT-4o confidence in finding"
+          },
+          "false_positive_risk": {
+            "type": "string",
+            "enum": ["LOW", "MEDIUM", "HIGH"],
+            "description": "Risk that this is a false positive"
+          },
+          "requires_human_review": {
+            "type": "boolean"
+          },
+          "human_review_reason": {
+            "type": ["string", "null"],
+            "description": "Why human review is needed"
+          }
+        }
+      }
+    },
+    "summary": {
+      "type": "string",
+      "description": "Brief overall compliance assessment"
+    },
+    "limitations": {
+      "type": "string",
+      "description": "Note on missing context or uncertainty"
+    },
+    "model": {
+      "type": "string",
+      "description": "Model used (e.g., gpt-4o)"
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Sampling temperature (should be 0 for reproducibility)"
+    }
+  }
+}

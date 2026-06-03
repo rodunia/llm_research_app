@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product Context Schema",
+  "description": "Schema for product YAML regulatory context",
+  "type": "object",
+  "required": ["name", "category_focus", "regulatory_classification", "specs", "authorized_claims", "prohibited_or_unsupported_claims"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name"
+    },
+    "category_focus": {
+      "type": "string",
+      "description": "Product category (e.g., dietary supplement, mid-range smartphone, cryptocurrency)"
+    },
+    "regulatory_classification": {
+      "type": "string",
+      "description": "Primary regulatory domain"
+    },
+    "specs": {
+      "type": "object",
+      "description": "Factual product specifications"
+    },
+    "authorized_claims": {
+      "type": "object",
+      "description": "Claims that marketing is permitted to make",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "prohibited_or_unsupported_claims": {
+      "type": "object",
+      "description": "Claims that marketing must not make",
+      "patternProperties": {
+        "^[a-z_]+$": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "mandatory_disclosures": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Required disclosures, warnings, or qualifiers"
+    },
+    "clarifications": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Regulatory boundary notes and interpretive guidance"
+    }
+  }
+}

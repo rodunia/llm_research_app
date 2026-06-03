@@ -1,0 +1,114 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Claude Review Output Schema",
+  "description": "Schema for Claude's selective anti-false-positive review",
+  "type": "object",
+  "required": [
+    "material_id",
+    "claim_id",
+    "claude_verdict",
+    "claude_severity",
+    "agreement_with_gpt4o",
+    "gpt4o_overflagging_risk",
+    "gpt4o_underflagging_risk",
+    "roberta_consistency",
+    "support_status_review",
+    "severity_adjustment",
+    "reasoning_short",
+    "recommended_final_routing",
+    "requires_human_review"
+  ],
+  "properties": {
+    "material_id": {
+      "type": "string",
+      "description": "Run ID"
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "Claim identifier"
+    },
+    "claude_verdict": {
+      "type": "string",
+      "enum": ["NO_FINDING", "LOW_RISK_LANGUAGE", "REVIEW_RECOMMENDED", "LIKELY_VIOLATION", "CLEAR_VIOLATION"],
+      "description": "Claude's independent verdict"
+    },
+    "claude_severity": {
+      "type": "string",
+      "enum": ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Claude's severity assessment"
+    },
+    "agreement_with_gpt4o": {
+      "type": "string",
+      "enum": ["AGREE", "PARTIAL_AGREEMENT", "DISAGREE"],
+      "description": "Level of agreement with GPT-4o"
+    },
+    "gpt4o_overflagging_risk": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Risk that GPT-4o over-flagged this finding"
+    },
+    "gpt4o_underflagging_risk": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH"],
+      "description": "Risk that GPT-4o under-flagged this finding"
+    },
+    "roberta_consistency": {
+      "type": "string",
+      "enum": ["CONSISTENT", "PARTIALLY_CONSISTENT", "INCONSISTENT", "NOT_APPLICABLE"],
+      "description": "Whether Claude's assessment aligns with RoBERTa NLI"
+    },
+    "support_status_review": {
+      "type": "string",
+      "enum": ["SUPPORTED", "SUPPORTED_WITH_QUALIFICATION", "UNSUPPORTED", "CONTRADICTED", "INSUFFICIENT_EVIDENCE"],
+      "description": "Claude's independent support status assessment"
+    },
+    "severity_adjustment": {
+      "type": "object",
+      "required": ["gpt4o_original_severity", "claude_recommended_severity", "adjustment_direction"],
+      "properties": {
+        "gpt4o_original_severity": {
+          "type": "string",
+          "enum": ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+        },
+        "claude_recommended_severity": {
+          "type": "string",
+          "enum": ["NONE", "LOW", "MEDIUM", "HIGH", "CRITICAL"]
+        },
+        "adjustment_direction": {
+          "type": "string",
+          "enum": ["NO_CHANGE", "DOWNGRADE", "UPGRADE"]
+        }
+      }
+    },
+    "reasoning_short": {
+      "type": "string",
+      "maxLength": 500,
+      "description": "Claude's reasoning (max 3 sentences)"
+    },
+    "recommended_final_routing": {
+      "type": "string",
+      "enum": ["AUTO_PASS", "LOW_RISK_LOGGED", "HUMAN_REVIEW", "PRIORITY_HUMAN_REVIEW"],
+      "description": "Claude's routing recommendation"
+    },
+    "requires_human_review": {
+      "type": "boolean",
+      "description": "Whether human review is still needed after Claude's review"
+    },
+    "human_review_reason": {
+      "type": ["string", "null"],
+      "description": "Why human review is needed"
+    },
+    "model": {
+      "type": "string",
+      "description": "Claude model used"
+    },
+    "temperature": {
+      "type": "number",
+      "description": "Sampling temperature"
+    },
+    "review_timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Human Coding Export Columns",
+  "description": "Column definitions for Excel export to human coders",
+  "type": "object",
+  "properties": {
+    "columns": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "type", "description", "source"],
+        "properties": {
+          "name": {"type": "string"},
+          "type": {"type": "string", "enum": ["string", "integer", "number", "boolean", "text"]},
+          "description": {"type": "string"},
+          "source": {"type": "string", "enum": ["metadata", "gpt4o", "roberta", "claude", "human_input"]},
+          "editable": {"type": "boolean", "default": false}
+        }
+      }
+    }
+  },
+  "required": ["columns"],
+  "columns": [
+    {"name": "run_id", "type": "string", "description": "Material identifier", "source": "metadata"},
+    {"name": "claim_id", "type": "string", "description": "Claim identifier", "source": "metadata"},
+    {"name": "product_id", "type": "string", "description": "Product identifier", "source": "metadata"},
+    {"name": "product_type", "type": "string", "description": "Product category", "source": "metadata"},
+    {"name": "regulatory_domain", "type": "string", "description": "Regulatory classification", "source": "metadata"},
+    {"name": "material_type", "type": "string", "description": "Template type", "source": "metadata"},
+    {"name": "generator_model", "type": "string", "description": "LLM model used", "source": "metadata"},
+    {"name": "temperature", "type": "number", "description": "Sampling temperature", "source": "metadata"},
+    {"name": "material_text", "type": "text", "description": "Full marketing material text", "source": "metadata"},
+    {"name": "claim_text", "type": "text", "description": "Extracted claim text", "source": "gpt4o"},
+    {"name": "gpt4o_overall_status", "type": "string", "description": "GPT-4o overall status", "source": "gpt4o"},
+    {"name": "gpt4o_finding_status", "type": "string", "description": "GPT-4o finding status", "source": "gpt4o"},
+    {"name": "gpt4o_support_status", "type": "string", "description": "GPT-4o support status", "source": "gpt4o"},
+    {"name": "gpt4o_severity", "type": "string", "description": "GPT-4o severity", "source": "gpt4o"},
+    {"name": "gpt4o_finding_type", "type": "string", "description": "GPT-4o finding type", "source": "gpt4o"},
+    {"name": "gpt4o_confidence", "type": "number", "description": "GPT-4o confidence (0-1)", "source": "gpt4o"},
+    {"name": "gpt4o_false_positive_risk", "type": "string", "description": "GPT-4o false positive risk", "source": "gpt4o"},
+    {"name": "gpt4o_reasoning", "type": "text", "description": "GPT-4o reasoning", "source": "gpt4o"},
+    {"name": "gpt4o_evidence_from_context", "type": "text", "description": "GPT-4o evidence from product context", "source": "gpt4o"},
+    {"name": "gpt4o_recommended_fix", "type": "text", "description": "GPT-4o recommended fix", "source": "gpt4o"},
+    {"name": "roberta_label", "type": "string", "description": "RoBERTa NLI label", "source": "roberta"},
+    {"name": "roberta_score", "type": "number", "description": "RoBERTa confidence score", "source": "roberta"},
+    {"name": "roberta_premise_text", "type": "text", "description": "Best matching premise", "source": "roberta"},
+    {"name": "roberta_premise_source", "type": "string", "description": "Premise source section", "source": "roberta"},
+    {"name": "claude_verdict", "type": "string", "description": "Claude verdict (if run)", "source": "claude"},
+    {"name": "claude_severity", "type": "string", "description": "Claude severity (if run)", "source": "claude"},
+    {"name": "claude_agreement_with_gpt4o", "type": "string", "description": "Claude agreement with GPT-4o", "source": "claude"},
+    {"name": "claude_overflagging_risk", "type": "string", "description": "Claude overflagging risk assessment", "source": "claude"},
+    {"name": "claude_reasoning", "type": "text", "description": "Claude reasoning", "source": "claude"},
+    {"name": "queue_category", "type": "string", "description": "Routing category", "source": "metadata"},
+    {"name": "routing_decision", "type": "string", "description": "Why routed to human review", "source": "metadata"},
+    {"name": "human_verdict", "type": "string", "description": "Human coder verdict", "source": "human_input", "editable": true},
+    {"name": "human_severity", "type": "string", "description": "Human severity assessment", "source": "human_input", "editable": true},
+    {"name": "human_support_status", "type": "string", "description": "Human support status assessment", "source": "human_input", "editable": true},
+    {"name": "human_false_positive", "type": "boolean", "description": "Is this a false positive?", "source": "human_input", "editable": true},
+    {"name": "human_false_negative", "type": "boolean", "description": "Is this a false negative?", "source": "human_input", "editable": true},
+    {"name": "human_notes", "type": "text", "description": "Human coder notes", "source": "human_input", "editable": true},
+    {"name": "adjudicated_final_label", "type": "string", "description": "Final adjudicated label after human review", "source": "human_input", "editable": true}
+  ]
+}

@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Human Review Queue Schema",
+  "description": "Schema for routing cases to human coding",
+  "type": "object",
+  "required": [
+    "run_id",
+    "claim_id",
+    "queue_category",
+    "routing_priority",
+    "routing_reason"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "description": "Material identifier"
+    },
+    "claim_id": {
+      "type": "string",
+      "description": "Claim identifier within material"
+    },
+    "queue_category": {
+      "type": "array",
+      "description": "All applicable queue categories (may belong to multiple)",
+      "items": {
+        "type": "string",
+        "enum": [
+          "priority_high_critical",
+          "priority_clear_violation",
+          "priority_likely_violation",
+          "priority_gpt4o_roberta_disagreement",
+          "priority_roberta_contradiction",
+          "priority_insufficient_evidence_medium_plus",
+          "priority_high_risk_product",
+          "human_review_recommended",
+          "human_review_medium_severity",
+          "human_review_false_positive_risk",
+          "human_review_model_disagreement",
+          "audit_sample_auto_pass",
+          "audit_sample_low_risk",
+          "audit_sample_review_recommended"
+        ]
+      },
+      "minItems": 1
+    },
+    "routing_priority": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3,
+      "description": "1=priority review, 2=human review, 3=audit sample"
+    },
+    "routing_reason": {
+      "type": "string",
+      "description": "Explanation for routing decision"
+    },
+    "stratification": {
+      "type": "object",
+      "description": "Stratification factors for audit sampling",
+      "properties": {
+        "product_id": {"type": "string"},
+        "material_type": {"type": "string"},
+        "generator_engine": {"type": "string"},
+        "temperature_bucket": {"type": "string"}
+      }
+    },
+    "gpt4o_summary": {
+      "type": "object",
+      "description": "Summary of GPT-4o assessment",
+      "properties": {
+        "overall_status": {"type": "string"},
+        "finding_status": {"type": "string"},
+        "severity": {"type": "string"},
+        "confidence": {"type": "number"},
+        "false_positive_risk": {"type": "string"}
+      }
+    },
+    "roberta_summary": {
+      "type": "object",
+      "description": "Summary of RoBERTa assessment",
+      "properties": {
+        "nli_label": {"type": "string"},
+        "nli_score": {"type": "number"},
+        "premise_source": {"type": "string"}
+      }
+    },
+    "claude_summary": {
+      "type": ["object", "null"],
+      "description": "Summary of Claude assessment (if run)",
+      "properties": {
+        "claude_verdict": {"type": "string"},
+        "claude_severity": {"type": "string"},
+        "agreement_with_gpt4o": {"type": "string"},
+        "recommended_routing": {"type": "string"}
+      }
+    },
+    "routed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When case was added to queue"
+    }
+  }
+}

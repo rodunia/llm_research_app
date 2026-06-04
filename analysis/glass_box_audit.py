@@ -58,6 +58,18 @@ openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 EXTRACTION_MODEL = "gpt-4o"  # Upgraded from gpt-4o-mini for better extraction accuracy
 EXTRACTION_TEMPERATURE = 0
 
+# Claude Configuration (optional explainer layer)
+try:
+    from anthropic import Anthropic
+    claude_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+    CLAUDE_AVAILABLE = True
+except ImportError:
+    CLAUDE_AVAILABLE = False
+    logger.warning("Claude not available (install anthropic)")
+
+CLAUDE_MODEL = "claude-sonnet-4-20250514"
+CLAUDE_TEMPERATURE = 0
+
 # NLI Configuration
 NLI_MODEL_NAME = "cross-encoder/nli-roberta-base"  # DeBERTa-v3-large tested but rejected (10x worse FP rate)
 VIOLATION_THRESHOLD = 0.90  # Contradiction score threshold
@@ -578,6 +590,124 @@ class NLIJudge:
         }
 
 
+# ==================== CLAUDE EXPLAINER (OPTIONAL) ====================
+
+def explain_violations_with_claude(
+    violations: List[Dict],
+    product_name: str,
+    material_type: str,
+    material_content: str
+) -> List[Dict]:
+    """
+    Add human-readable explanations to violations using Claude.
+    IMPORTANT: This does NOT filter violations - it only adds explanations.
+    All violations from RoBERTa are kept, Claude just explains why they matter.
+
+    Args:
+        violations: List of violations from NLI judge
+        product_name: Product name
+        material_type: Type of material
+        material_content: Original marketing material text
+
+    Returns:
+        List of violations with added 'claude_explanation' and 'severity_assessment' fields
+    """
+    if not CLAUDE_AVAILABLE:
+        logger.warning("Claude not available, skipping explanations")
+        return violations
+
+    if not violations:
+        return violations
+
+    # Build prompt
+    violations_text = "\n\n".join([
+        f"VIOLATION {i+1}:\n"
+        f"  Claim: {v['claim']}\n"
+        f"  Violated rule: {v['violated_rule']}\n"
+        f"  NLI confidence: {v['contradiction_score']:.3f}"
+        for i, v in enumerate(violations)
+    ])
+
+    prompt = f"""You are a compliance expert providing human-readable explanations for detected violations.
+
+**Product**: {product_name}
+**Material type**: {material_type}
+
+**Marketing material excerpt**:
+{material_content[:1000]}... [truncated]
+
+**Detected violations** (from NLI model):
+{violations_text}
+
+For EACH violation above, provide:
+1. **explanation**: Clear explanation of why this is a compliance issue (2-3 sentences)
+2. **severity**: Risk level ("LOW", "MEDIUM", "HIGH", "CRITICAL")
+3. **recommended_action**: What should be done ("REMOVE", "REVISE", "ADD_DISCLAIMER", "REVIEW")
+
+IMPORTANT:
+- You are NOT filtering violations - all violations remain in the output
+- Your job is to EXPLAIN why each violation matters for human reviewers
+- Focus on regulatory risk, consumer harm, and legal exposure
+- Be concise and actionable
+
+Output as JSON array with one object per violation:
+[
+  {{
+    "violation_number": 1,
+    "explanation": "...",
+    "severity": "HIGH",
+    "recommended_action": "REMOVE"
+  }},
+  ...
+]
+"""
+
+    try:
+        response = claude_client.messages.create(
+            model=CLAUDE_MODEL,
+            temperature=CLAUDE_TEMPERATURE,
+            max_tokens=4000,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        # Extract JSON from response
+        response_text = response.content[0].text
+
+        # Try to parse JSON (might be wrapped in markdown)
+        if "```json" in response_text:
+            json_start = response_text.find("```json") + 7
+            json_end = response_text.find("```", json_start)
+            response_text = response_text[json_start:json_end]
+        elif "```" in response_text:
+            json_start = response_text.find("```") + 3
+            json_end = response_text.find("```", json_start)
+            response_text = response_text[json_start:json_end]
+
+        explanations = json.loads(response_text.strip())
+
+        # Merge explanations back into violations
+        enhanced_violations = []
+        for i, violation in enumerate(violations):
+            enhanced = violation.copy()
+            if i < len(explanations):
+                enhanced['claude_explanation'] = explanations[i].get('explanation', '')
+                enhanced['severity_assessment'] = explanations[i].get('severity', 'MEDIUM')
+                enhanced['recommended_action'] = explanations[i].get('recommended_action', 'REVIEW')
+            else:
+                enhanced['claude_explanation'] = 'No explanation provided'
+                enhanced['severity_assessment'] = 'MEDIUM'
+                enhanced['recommended_action'] = 'REVIEW'
+            enhanced_violations.append(enhanced)
+
+        logger.debug(f"Added Claude explanations for {len(enhanced_violations)} violations")
+        return enhanced_violations
+
+    except Exception as e:
+        logger.error(f"Claude explanation failed: {e}")
+        # Return original violations unchanged
+        return violations
+
+
 # ==================== UTILITIES ====================
 
 def load_material(run_id: str, output_path: str = None) -> str:
@@ -968,6 +1098,16 @@ def audit_single_run(run_id: str, run_metadata: Dict, judge: NLIJudge) -> Dict:
                     'contradiction_score': verification['contradiction_score']
                 })
 
+        # STEP 3 (OPTIONAL): Add Claude explanations to violations
+        # This does NOT filter violations - it only adds human-readable context
+        if violations and run_metadata.get('use_claude_explainer', False):
+            violations = explain_violations_with_claude(
+                violations,
+                product_name,
+                run_metadata['material_type'],
+                material_content
+            )
+
         # Determine status
         status = 'FAIL' if violations else 'PASS'
 
@@ -1026,7 +1166,10 @@ def save_audit_results(audit_results: List[Dict], output_path: Path):
                 'Status': result['status'],
                 'Violated_Rule': '',
                 'Extracted_Claim': '',
-                'Confidence_Score': ''
+                'Confidence_Score': '',
+                'Claude_Explanation': '',
+                'Severity': '',
+                'Recommended_Action': ''
             }
             row.update(base_metadata)
             rows.append(row)
@@ -1038,7 +1181,10 @@ def save_audit_results(audit_results: List[Dict], output_path: Path):
                     'Status': 'FAIL',
                     'Violated_Rule': violation['violated_rule'],
                     'Extracted_Claim': violation['claim'],
-                    'Confidence_Score': f"{violation['contradiction_score']:.4f}"
+                    'Confidence_Score': f"{violation['contradiction_score']:.4f}",
+                    'Claude_Explanation': violation.get('claude_explanation', ''),
+                    'Severity': violation.get('severity_assessment', ''),
+                    'Recommended_Action': violation.get('recommended_action', '')
                 }
                 row.update(base_metadata)
                 rows.append(row)
@@ -1086,13 +1232,14 @@ def print_summary(audit_results: List[Dict]):
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Glass Box Audit Pipeline (GPT-4o-mini + NLI)')
+    parser = argparse.ArgumentParser(description='Glass Box Audit Pipeline (GPT-4o + NLI + Claude)')
     parser.add_argument('--limit', type=int, help='Limit number of runs to audit')
     parser.add_argument('--skip', type=int, default=0, help='Skip first N runs')
     parser.add_argument('--run-id', type=str, help='Audit specific run_id only')
     parser.add_argument('--resume', action='store_true', help='Resume from checkpoint (skip completed runs)')
     parser.add_argument('--clean', action='store_true', help='Clear checkpoint and start fresh')
-    parser.add_argument('--use-semantic-filter', action='store_true', help='Enable semantic pre-filtering (80% FP reduction)')
+    parser.add_argument('--use-semantic-filter', action='store_true', help='Enable semantic pre-filtering (74% FP reduction)')
+    parser.add_argument('--use-claude-explainer', action='store_true', help='Add Claude explanations to violations (does NOT filter)')
     args = parser.parse_args()
 
     # Clear checkpoint if requested
@@ -1147,6 +1294,8 @@ def main():
     with tqdm(total=len(runs), desc="Auditing runs", unit="run") as pbar:
         for i, run_metadata in enumerate(runs, 1):
             run_id = run_metadata['run_id']
+            # Add Claude explainer flag to metadata
+            run_metadata['use_claude_explainer'] = args.use_claude_explainer
             result = audit_single_run(run_id, run_metadata, judge)
             audit_results.append(result)
 

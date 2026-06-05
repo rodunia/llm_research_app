@@ -16,7 +16,6 @@ import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
-import pandas as pd
 import torch
 import yaml
 from dotenv import load_dotenv
@@ -986,16 +985,20 @@ def classify_claim_category(claim: str) -> str:
     return 'general'  # Fallback for uncategorized claims
 
 
-def get_completed_runs() -> pd.DataFrame:
+def get_completed_runs() -> List[Dict]:
     """Load completed runs from experiments.csv."""
     if not EXPERIMENTS_CSV.exists():
         raise FileNotFoundError(f"Experiments CSV not found: {EXPERIMENTS_CSV}")
 
-    df = pd.read_csv(EXPERIMENTS_CSV)
+    completed_runs = []
+    with open(EXPERIMENTS_CSV, 'r', encoding='utf-8') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            # Filter: completed runs, no trap products
+            if row['status'] == 'completed' and row['trap_flag'].lower() in ('false', '0', ''):
+                completed_runs.append(row)
 
-    # Filter: completed runs, no trap products
-    mask = (df['status'] == 'completed') & (df['trap_flag'] == False)
-    return df[mask]
+    return completed_runs
 
 
 # ==================== MAIN AUDIT PIPELINE ====================
@@ -1189,8 +1192,13 @@ def save_audit_results(audit_results: List[Dict], output_path: Path):
                 row.update(base_metadata)
                 rows.append(row)
 
-    df = pd.DataFrame(rows)
-    df.to_csv(output_path, index=False)
+    # Write CSV
+    if rows:
+        with open(output_path, 'w', newline='', encoding='utf-8') as f:
+            fieldnames = list(rows[0].keys())
+            writer = csv.DictWriter(f, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(rows)
     logger.info(f"Saved audit results to {output_path}")
 
 
@@ -1259,23 +1267,21 @@ def main():
     if args.run_id:
         logger.info(f"Auditing single run: {args.run_id}")
         # Load metadata from experiments.csv
-        df = pd.read_csv(EXPERIMENTS_CSV)
-        run_row = df[df['run_id'] == args.run_id]
-        if run_row.empty:
+        with open(EXPERIMENTS_CSV, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            runs = [row for row in reader if row['run_id'] == args.run_id]
+        if not runs:
             logger.error(f"Run ID not found: {args.run_id}")
             return
-        runs = run_row.to_dict('records')
     else:
         logger.info("Loading completed runs from experiments.csv...")
-        runs_df = get_completed_runs()
+        runs = get_completed_runs()
 
         # Resume from checkpoint if requested
         if args.resume:
             completed_run_ids = load_completed_run_ids()
-            runs_df = runs_df[~runs_df['run_id'].isin(completed_run_ids)]
-            logger.info(f"Resuming: {len(runs_df)} runs remaining")
-
-        runs = runs_df.to_dict('records')
+            runs = [r for r in runs if r['run_id'] not in completed_run_ids]
+            logger.info(f"Resuming: {len(runs)} runs remaining")
 
         # Apply skip and limit
         if args.skip:

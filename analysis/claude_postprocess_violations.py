@@ -271,10 +271,10 @@ def load_violations_from_csv(csv_path: Path) -> Dict[str, List[Dict]]:
                 'claim': row['Extracted_Claim'],
                 'violated_rule': row['Violated_Rule'],
                 'confidence': float(row['Confidence_Score']),
-                'product_id': row.get('Product_ID', 'unknown'),
-                'material_type': row.get('Material_Type', 'unknown'),
-                'engine': row.get('Engine', 'unknown'),
-                'temperature': row.get('Temperature', 'unknown')
+                'product_id': row.get('product_id', 'unknown'),
+                'material_type': row.get('material_type', 'unknown'),
+                'engine': row.get('engine', 'unknown'),
+                'temperature': row.get('temperature', 'unknown')
             })
 
     return dict(violations_by_material)

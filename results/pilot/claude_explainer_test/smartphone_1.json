@@ -1,0 +1,156 @@
+{
+  "run_id": "smartphone_1",
+  "filename": "smartphone_1.txt",
+  "product_id": "smartphone_mid",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "Nova X5 features a Tensor G4 chipset",
+    "Nova X5 has a Neural Processing Unit",
+    "Nova X5 has a 6.5 inch Actua OLED display",
+    "Nova X5 display has a 120 Hz refresh rate",
+    "Nova X5 has a camera system with a 50 MP main camera",
+    "Nova X5 offers storage options of 128 GB, 256 GB, or 512 GB",
+    "Nova X5 offers RAM configurations of 8 GB or 12 GB",
+    "Nova X5 supports 5G Sub-6 GHz",
+    "Nova X5 supports Wi-Fi 6/6E",
+    "Nova X5 includes enhanced hardware-backed security via the Titan M2 chip",
+    "Nova X5 provides a multi-layer security architecture from chip to OS",
+    "Nova X5 offers regular security patches with a documented public schedule",
+    "Nova X5 features advanced computational photography powered by the Tensor G4 NPU",
+    "Nova X5 offers real-time AI tools such as live translation and smart image processing",
+    "Nova X5 integrates hybrid on-device and cloud-based AI for select tasks",
+    "Nova X5 has a battery capacity ranging from 4700\u20135000 mAh depending on the region",
+    "Nova X5 supports 30\u201345W USB-C fast charging",
+    "Nova X5 does not support expandable storage via microSD",
+    "Nova X5 offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1",
+    "Nova X5 delivers a clean, bloatware-free Android experience",
+    "Nova X5 provides guaranteed OS and security updates for seven years",
+    "Nova X5 is designed for consistent long-term software performance",
+    "Nova X5 provides a reliable patch cadence",
+    "Nova X5 provides a pure Android experience"
+  ],
+  "disclaimers": [
+    "Actual battery life and performance may vary over the 7-year support period",
+    "Not all new software features released during the 7 years will be supported by older hardware",
+    "Device utilizes a multi-layer security approach, but no system is impenetrable",
+    "Some advanced AI features may require a stable internet connection",
+    "Network availability (including 5G) depends on carrier and coverage",
+    "Speeds vary",
+    "Battery capacity will degrade over time with normal Li-ion aging",
+    "Performance may decline with app complexity and OS evolution over time"
+  ],
+  "violations": [
+    {
+      "claim": "Nova X5 features a Tensor G4 chipset",
+      "violated_rule": "Has Titan M2 security coprocessor",
+      "contradiction_score": 0.9681913256645203,
+      "claude_explanation": "The marketing claims the Nova X5 has a Tensor G4 chipset, but compliance rules indicate it should have a Titan M2 security coprocessor. This creates confusion about the actual security hardware and may mislead consumers about the device's security capabilities.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Nova X5 has a 6.5 inch Actua OLED display",
+      "violated_rule": "Display is NOT 6.5 inches",
+      "contradiction_score": 0.9972028732299805,
+      "claude_explanation": "The material states the Nova X5 has a 6.5 inch display, but compliance rules specify the display is NOT 6.5 inches. This is a direct factual misrepresentation of a key product specification that could mislead consumers making purchasing decisions.",
+      "severity_assessment": "CRITICAL",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Nova X5 has a camera system with a 50 MP main camera",
+      "violated_rule": "Ultra-wide camera is 12 MP",
+      "contradiction_score": 1.0,
+      "claude_explanation": "The claim about a 50 MP main camera conflicts with the rule about a 12 MP ultra-wide camera, suggesting inconsistent or incorrect camera specifications. Accurate camera specifications are crucial for consumer decision-making and regulatory compliance.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Nova X5 offers storage options of 128 GB, 256 GB, or 512 GB",
+      "violated_rule": "Does NOT support expandable storage",
+      "contradiction_score": 0.9950657486915588,
+      "claude_explanation": "Marketing mentions storage options without clarifying that expandable storage is not supported, which could mislead consumers who expect to add additional storage. This omission could result in consumer dissatisfaction and potential false advertising claims.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Nova X5 offers RAM configurations of 8 GB or 12 GB",
+      "violated_rule": "RAM is NOT 16 GB",
+      "contradiction_score": 1.0,
+      "claude_explanation": "The material lists RAM configurations of 8GB or 12GB while the rule indicates RAM is NOT 16GB, creating potential confusion about available memory options. Incorrect RAM specifications could mislead consumers about device performance capabilities.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Nova X5 supports 5G Sub-6 GHz",
+      "violated_rule": "Display is Actua OLED",
+      "contradiction_score": 0.9061239361763,
+      "claude_explanation": "There appears to be a logical inconsistency between the 5G connectivity claim and display technology rule. This suggests potential confusion in product specifications that could mislead consumers about device capabilities.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVIEW"
+    },
+    {
+      "claim": "Nova X5 supports Wi-Fi 6/6E",
+      "violated_rule": "Supports Bluetooth 5.x",
+      "contradiction_score": 0.9617867469787598,
+      "claude_explanation": "The Wi-Fi 6/6E claim conflicts with Bluetooth 5.x support requirements, indicating potential inconsistencies in wireless connectivity specifications. Accurate connectivity information is essential for consumer compatibility expectations.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVIEW"
+    },
+    {
+      "claim": "Nova X5 has a battery capacity ranging from 4700\u20135000 mAh depending on the region",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9561914205551147,
+      "claude_explanation": "Battery capacity information is provided while the device lacks wireless charging capability, which may create consumer expectations about charging features that don't exist. This could lead to consumer disappointment and potential misrepresentation claims.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Nova X5 supports 30\u201345W USB-C fast charging",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9987034797668457,
+      "claude_explanation": "Fast charging specifications are mentioned without clarifying the absence of wireless charging, potentially misleading consumers about available charging methods. Complete charging capability disclosure is necessary to prevent consumer confusion.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Nova X5 offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1",
+      "violated_rule": "Does NOT support expandable storage",
+      "contradiction_score": 0.987033486366272,
+      "claude_explanation": "Internal storage specifications are provided without disclosing that expandable storage is not supported, which could mislead consumers about total available storage options. This omission could result in consumer dissatisfaction and regulatory issues.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Actual battery life and performance may vary over the 7-year support period",
+      "violated_rule": "Does NOT support wireless charging",
+      "contradiction_score": 0.9507750868797302,
+      "claude_explanation": "Battery life disclaimers are provided while wireless charging capability is absent, potentially creating incomplete information about power management features. Consumers may assume wireless charging is available based on battery-focused messaging.",
+      "severity_assessment": "LOW",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Not all new software features released during the 7 years will be supported by older hardware",
+      "violated_rule": "Secure boot and verified boot",
+      "contradiction_score": 0.9514042139053345,
+      "claude_explanation": "Software support limitations are mentioned without proper context about secure boot and verified boot features, potentially understating security capabilities. Complete security feature disclosure is important for informed consumer decisions.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVIEW"
+    },
+    {
+      "claim": "Battery capacity will degrade over time with normal Li-ion aging",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9430019855499268,
+      "claude_explanation": "Battery degradation information is provided without mentioning the lack of wireless charging, which could create incomplete understanding of long-term charging options. Consumers should be fully informed about all charging limitations.",
+      "severity_assessment": "LOW",
+      "recommended_action": "ADD_DISCLAIMER"
+    }
+  ],
+  "violation_count": 13,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 7054,
+  "extraction_prompt_tokens": 1442,
+  "extraction_completion_tokens": 528,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

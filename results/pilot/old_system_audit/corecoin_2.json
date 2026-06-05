@@ -1,0 +1,111 @@
+{
+  "run_id": "corecoin_2",
+  "filename": "corecoin_2.txt",
+  "product_id": "cryptocurrency_corecoin",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "CoreCoin is a decentralized Layer-1 digital asset",
+    "CoreCoin operates on a Proof-of-Stake (PoS) blockchain",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized applications",
+    "Average block time is ~5 seconds",
+    "Maximum supply is 2,000,000,000 CORE",
+    "Transactions are secured through cryptographic signatures",
+    "Network relies on distributed validator participation",
+    "Optional light-validator nodes do not stake",
+    "CoreCoin's market value is highly volatile",
+    "Price discovery occurs through decentralized market mechanisms",
+    "Trading is subject to 24/7 global activity",
+    "Trading is without circuit breakers",
+    "CoreCoin can be stored on hardware wallets",
+    "CoreCoin can be stored on mobile wallets",
+    "CoreCoin can be stored on desktop clients",
+    "Compatibility varies by software",
+    "Users must securely store their private keys",
+    "Private keys cannot be recovered if lost",
+    "Self-custody model places responsibility on the user",
+    "No third-party key recovery available",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized application integration",
+    "Compatible with PoS-compatible virtual machines",
+    "Enables development and execution of programmable smart contracts",
+    "CoreCoin employs a community-driven, on-chain governance model",
+    "Protocol updates require community or validator approval",
+    "Governance participation dependent on wallet integration",
+    "Governance participation dependent on token ownership",
+    "On-chain governance votes are publicly recorded",
+    "CoreCoin is not natively cross-chain compatible",
+    "Interoperability with other blockchains is not a built-in feature",
+    "Staking CoreCoin requires locking tokens for defined protocol periods",
+    "Minimum stake is a protocol-defined threshold",
+    "Lockup period is governance-defined",
+    "Rewards depend on network participation",
+    "Rewards depend on validator performance",
+    "Rewards are not guaranteed"
+  ],
+  "disclaimers": [
+    "Cryptocurrency investments involve risk and are highly volatile",
+    "Do not invest funds you cannot afford to lose",
+    "CoreCoin is not backed by the FDIC or any government entity",
+    "Past performance is not indicative of future results",
+    "Loss of private keys leads to permanent loss of funds",
+    "Digital assets may be vulnerable to hacking or protocol exploits",
+    "Market conditions can change rapidly and unpredictably",
+    "Regulatory changes may affect accessibility or legality"
+  ],
+  "violations": [
+    {
+      "claim": "Maximum supply is 2,000,000,000 CORE",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9163942337036133
+    },
+    {
+      "claim": "Network relies on distributed validator participation",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9705864787101746
+    },
+    {
+      "claim": "Optional light-validator nodes do not stake",
+      "violated_rule": "Light validators MUST stake (do NOT operate without staking)",
+      "contradiction_score": 0.9712273478507996
+    },
+    {
+      "claim": "Compatibility varies by software",
+      "violated_rule": "Transactions recorded on public, tamper-resistant ledger",
+      "contradiction_score": 0.9191204905509949
+    },
+    {
+      "claim": "Compatible with PoS-compatible virtual machines",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9443005323410034
+    },
+    {
+      "claim": "CoreCoin employs a community-driven, on-chain governance model",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9495282173156738
+    },
+    {
+      "claim": "Protocol updates require community or validator approval",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9301942586898804
+    },
+    {
+      "claim": "Governance participation dependent on token ownership",
+      "violated_rule": "NOT a physical coin",
+      "contradiction_score": 0.9257278442382812
+    },
+    {
+      "claim": "Rewards depend on validator performance",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9909390211105347
+    }
+  ],
+  "violation_count": 9,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 4952,
+  "extraction_prompt_tokens": 1422,
+  "extraction_completion_tokens": 520,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

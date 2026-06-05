@@ -1,0 +1,149 @@
+{
+  "run_id": "corecoin_1",
+  "filename": "corecoin_1.txt",
+  "product_id": "cryptocurrency_corecoin",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "CoreCoin is a decentralized Layer-1 digital asset",
+    "CoreCoin operates on a Proof-of-Stake (PoS) blockchain",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized applications",
+    "Average block time is ~4 seconds",
+    "Maximum supply is 2,000,000,000 CORE",
+    "Transactions are secured through cryptographic signatures",
+    "Network relies on distributed validator participation",
+    "CoreCoin's market value is highly volatile",
+    "CoreCoin's market value is influenced by liquidity",
+    "CoreCoin's market value is influenced by market sentiment",
+    "CoreCoin's market value is influenced by macroeconomic conditions",
+    "Price discovery occurs through decentralized market mechanisms",
+    "Trading is subject to 24/7 global activity",
+    "Trading is without circuit breakers",
+    "CoreCoin can be stored on hardware wallets",
+    "CoreCoin can be stored on mobile wallets",
+    "CoreCoin can be stored on desktop clients",
+    "Compatibility varies by software",
+    "Users must securely store their private keys",
+    "Private keys cannot be recovered if lost",
+    "Self-custody model places responsibility on the user",
+    "No third-party key recovery available",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized application integration",
+    "CoreCoin is compatible with PoS-compatible virtual machines",
+    "CoreCoin enables the development and execution of programmable smart contracts",
+    "CoreCoin employs a community-driven, on-chain governance model",
+    "Protocol updates require community or validator approval",
+    "Governance participation is dependent on wallet integration",
+    "Governance participation is dependent on token ownership",
+    "On-chain governance votes are publicly recorded",
+    "CoreCoin is not natively cross-chain compatible unless explicitly specified",
+    "Interoperability with other blockchains is not a built-in feature",
+    "Staking CoreCoin requires locking tokens for defined protocol periods",
+    "Staking periods are variable by governance",
+    "Minimum stake is a protocol-defined threshold",
+    "Lockup period is governance-defined",
+    "Rewards depend on network participation",
+    "Rewards depend on validator performance",
+    "Rewards are not guaranteed"
+  ],
+  "disclaimers": [
+    "Cryptocurrency investments involve risk and are highly volatile",
+    "Do not invest funds you cannot afford to lose",
+    "CoreCoin is not backed by the FDIC or any government entity",
+    "Past performance is not indicative of future results",
+    "Loss of private keys leads to permanent loss of funds",
+    "Digital assets may be vulnerable to hacking or protocol exploits",
+    "Market conditions can change rapidly and unpredictably",
+    "Regulatory changes may affect accessibility or legality"
+  ],
+  "violations": [
+    {
+      "claim": "Average block time is ~4 seconds",
+      "violated_rule": "Average block time is approximately 5 seconds",
+      "contradiction_score": 0.9653123617172241,
+      "claude_explanation": "Providing incorrect technical specifications (claiming 4-second block time vs. actual 5 seconds) constitutes material misrepresentation that could mislead investors making technical assessments. This creates liability for false advertising and undermines product credibility.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Maximum supply is 2,000,000,000 CORE",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9163942337036133,
+      "claude_explanation": "While stating the maximum supply appears factual, the NLI model flagged this against FDIC disclosure requirements, suggesting missing mandatory disclaimers about lack of government backing. Crypto products must clearly state they are not FDIC-insured to avoid consumer confusion about protections.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Network relies on distributed validator participation",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9705864787101746,
+      "claude_explanation": "Describing validator participation without clarifying that CoreCoin is not a traditional deposit product could mislead consumers into thinking it has bank-like protections. This violates requirements to distinguish crypto assets from regulated deposit products.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Compatibility varies by software",
+      "violated_rule": "Transactions recorded on public, tamper-resistant ledger",
+      "contradiction_score": 0.9191204905509949,
+      "claude_explanation": "Discussing software compatibility without mentioning the public ledger nature may inadequately inform users about privacy implications and permanent transaction records. Consumers need to understand the transparent, immutable nature of blockchain transactions.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "CoreCoin is compatible with PoS-compatible virtual machines",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9469039440155029,
+      "claude_explanation": "Technical compatibility information appears to lack required disclosure that CoreCoin is a digital-only asset requiring specific wallet software. This could mislead less technical users about accessibility and technical requirements for ownership.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "CoreCoin employs a community-driven, on-chain governance model",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9495282173156738,
+      "claude_explanation": "Governance model description without emphasizing the digital-only nature and wallet requirements could mislead users about the technical barriers to participation. Clear disclosure of digital asset requirements is mandatory for informed consent.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Protocol updates require community or validator approval",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9301942586898804,
+      "claude_explanation": "Describing protocol updates and community approval without clarifying this is not a deposit product could create false impressions about regulatory oversight and consumer protections. Clear distinction from traditional financial products is required.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Governance participation is dependent on token ownership",
+      "violated_rule": "NOT a physical coin",
+      "contradiction_score": 0.9617927074432373,
+      "claude_explanation": "Governance participation details without emphasizing CoreCoin is not a physical coin could mislead traditional investors unfamiliar with digital assets. Clear disclosure of the digital-only nature is essential to prevent consumer confusion.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Staking periods are variable by governance",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9863303899765015,
+      "claude_explanation": "Staking information without clarifying this is not a deposit product could mislead consumers into thinking staking has bank-like protections or guarantees. This creates significant liability for misrepresenting the nature of crypto staking vs. traditional deposits.",
+      "severity_assessment": "CRITICAL",
+      "recommended_action": "ADD_DISCLAIMER"
+    },
+    {
+      "claim": "Rewards depend on validator performance",
+      "violated_rule": "NOT a deposit",
+      "contradiction_score": 0.9909390211105347,
+      "claude_explanation": "Describing validator rewards without emphasizing this is not a deposit product with guaranteed returns could violate securities regulations and consumer protection laws. Staking rewards must be clearly distinguished from traditional deposit interest to avoid regulatory violations.",
+      "severity_assessment": "CRITICAL",
+      "recommended_action": "ADD_DISCLAIMER"
+    }
+  ],
+  "violation_count": 10,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 7139,
+  "extraction_prompt_tokens": 1412,
+  "extraction_completion_tokens": 569,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

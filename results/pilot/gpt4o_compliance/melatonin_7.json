@@ -1,0 +1,128 @@
+{
+  "material_id": "melatonin_7",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "regulatory_domain": "Classified as a dietary supplement under DSHEA. Not FDA-approved; regulated under 21 CFR Part 111. Claims must follow structure/function rules, not disease claims.",
+  "overall_status": "REVIEW_RECOMMENDED",
+  "compliant": true,
+  "finding_count": 1,
+  "overall_severity": "MEDIUM",
+  "requires_human_review": true,
+  "extracted_claims": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Each tablet contains 3 mg melatonin (immediate-release)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Each bottle contains 120 tablets.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "120 tablets per bottle"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "Yes, these tablets are suitable for vegans and vegetarians.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "claim_type": "regulatory",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Produced in a facility that follows current Good Manufacturing Practices (cGMP)"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "Third-party tested for identity, purity, and potency"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "Melatonin should be taken every 2 hours for best results.",
+      "claim_type": "safety",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "UNSUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "claim_id": "claim_6",
+      "claim_text": "Melatonin should be taken every 2 hours for best results.",
+      "finding_status": "REVIEW_RECOMMENDED",
+      "finding_type": "unsupported_overclaim",
+      "support_status": "UNSUPPORTED",
+      "severity": "MEDIUM",
+      "evidence_from_marketing_text": "Melatonin should be taken every 2 hours for best results.",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime"
+        }
+      ],
+      "specific_rule_or_boundary": "Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime",
+      "reasoning_short": "The recommended dosing frequency contradicts the provided product specifications, which suggest taking 1 tablet 30\u201360 minutes before bedtime.",
+      "recommended_fix": "Adjust the dosing recommendation to align with the specified use of 1 tablet 30\u201360 minutes before bedtime.",
+      "regulatory_citation": null,
+      "confidence": 0.8,
+      "false_positive_risk": "MEDIUM",
+      "human_review_reason": "The dosing recommendation is inconsistent with the provided specifications and may require clarification."
+    }
+  ],
+  "summary": "One claim regarding dosing frequency is unsupported and requires review. All other claims are supported by the provided context.",
+  "limitations": "Assessment limited to the provided regulatory and product context.",
+  "model": "gpt-4o",
+  "temperature": 0
+}

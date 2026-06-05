@@ -1,0 +1,24 @@
+{
+  "material_id": "melatonin_tablets_3mg",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "total_claims_reviewed": 1,
+  "review_timestamp": "2026-06-04T05:49:17.279912Z",
+  "claim_reviews": [
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "analysis": "This is a factual allergen disclosure statement about what the product does NOT contain. It makes no therapeutic claims and is standard labeling information for dietary supplements. There is no logical contradiction with the premise about melatonin content verification.",
+      "correct_model": "gpt4o",
+      "is_false_positive": true,
+      "overflagging_risk": "HIGH",
+      "requires_human_review": false,
+      "reasoning": "RoBERTa incorrectly identified a contradiction between allergen-free claims and melatonin content verification, which are completely unrelated factual statements about different aspects of the product."
+    }
+  ],
+  "summary": {
+    "false_positives": 1,
+    "true_violations": 0,
+    "requires_human_review": 0
+  },
+  "model": "claude-sonnet-4-20250514"
+}

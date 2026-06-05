@@ -1,0 +1,233 @@
+{
+  "material_id": "smartphone_4",
+  "product": "Nova X5 5G Smartphone",
+  "total_claims_validated": 5,
+  "verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 4
+  },
+  "claim_validations": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.3\" Actua OLED display with 120 Hz refresh rate, and a camera system with a 50 MP main camera.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "processor_ai: Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)",
+          "source_type": "spec",
+          "source_key": "specs.processor_ai[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.2851972579956055,
+          "scores": {
+            "contradiction": -0.8106421232223511,
+            "entailment": -2.6227664947509766,
+            "neutral": 4.2851972579956055
+          }
+        },
+        {
+          "premise_text": "camera_system main_camera: 12 MP ultra-wide camera",
+          "source_type": "spec",
+          "source_key": "specs.camera_system.main_camera[1]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.212790489196777,
+          "scores": {
+            "contradiction": 4.212790489196777,
+            "entailment": -3.262052536010742,
+            "neutral": -0.0829358696937561
+          }
+        },
+        {
+          "premise_text": "camera_system capabilities: Advanced computational photography for enhanced image quality",
+          "source_type": "spec",
+          "source_key": "specs.camera_system.capabilities[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.153897285461426,
+          "scores": {
+            "contradiction": -0.41985374689102173,
+            "entailment": -2.728423595428467,
+            "neutral": 4.153897285461426
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.29)"
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "Multi-layer security approach, but no system is impenetrable",
+          "source_type": "clarification",
+          "source_key": "clarifications.security_reality[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.283364772796631,
+          "scores": {
+            "contradiction": -0.9350643754005432,
+            "entailment": -2.485313892364502,
+            "neutral": 4.283364772796631
+          }
+        },
+        {
+          "premise_text": "processor_ai: Security: Titan M2 security coprocessor for hardware-level protection",
+          "source_type": "spec",
+          "source_key": "specs.processor_ai[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.221467018127441,
+          "scores": {
+            "contradiction": -1.4506444931030273,
+            "entailment": -1.9341588020324707,
+            "neutral": 4.221467018127441
+          }
+        },
+        {
+          "premise_text": "software_updates: Multi-layer hardware security verified by Titan M2",
+          "source_type": "spec",
+          "source_key": "specs.software_updates[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.2004523277282715,
+          "scores": {
+            "contradiction": -1.5653878450393677,
+            "entailment": -1.81563401222229,
+            "neutral": 4.2004523277282715
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.28)"
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "The Nova X5 features advanced computational photography powered by the Tensor G4 NPU and offers real-time AI tools such as live translation and smart image processing.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "camera_system main_camera: Multi-frame computational photography powered by Tensor G4 NPU",
+          "source_type": "spec",
+          "source_key": "specs.camera_system.main_camera[2]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.4117817878723145,
+          "scores": {
+            "contradiction": -1.6695802211761475,
+            "entailment": -2.0718820095062256,
+            "neutral": 4.4117817878723145
+          }
+        },
+        {
+          "premise_text": "processor_ai: Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)",
+          "source_type": "spec",
+          "source_key": "specs.processor_ai[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.387409210205078,
+          "scores": {
+            "contradiction": -1.3752340078353882,
+            "entailment": -2.2680466175079346,
+            "neutral": 4.387409210205078
+          }
+        },
+        {
+          "premise_text": "camera_system capabilities: Advanced computational photography for enhanced image quality",
+          "source_type": "spec",
+          "source_key": "specs.camera_system.capabilities[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.360625267028809,
+          "scores": {
+            "contradiction": -1.1288163661956787,
+            "entailment": -2.46596360206604,
+            "neutral": 4.360625267028809
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.41)"
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The Nova X5 has a battery capacity ranging from 4700\u20135000 mAh, depending on the region. It supports 30\u201345W USB-C fast charging, though charger availability may vary by region.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "battery_charging: 30\u201345W USB-C fast charging (charger availability varies by region)",
+          "source_type": "spec",
+          "source_key": "specs.battery_charging[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.293036460876465,
+          "scores": {
+            "contradiction": -1.120285153388977,
+            "entailment": -2.3390369415283203,
+            "neutral": 4.293036460876465
+          }
+        },
+        {
+          "premise_text": "battery_charging: Actual battery life varies by usage, settings, and network conditions",
+          "source_type": "spec",
+          "source_key": "specs.battery_charging[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.201834678649902,
+          "scores": {
+            "contradiction": -0.6942459940910339,
+            "entailment": -2.583303689956665,
+            "neutral": 4.201834678649902
+          }
+        },
+        {
+          "premise_text": "Actual battery life varies significantly by usage patterns",
+          "source_type": "clarification",
+          "source_key": "clarifications.battery_longevity[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.030104160308838,
+          "scores": {
+            "contradiction": -0.7828056216239929,
+            "entailment": -2.26116681098938,
+            "neutral": 4.030104160308838
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.29)"
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.",
+      "validation_verdict": "CONTRADICTED",
+      "top_matches": [
+        {
+          "premise_text": "Some AI processing requires cloud connectivity and varies by region",
+          "source_type": "clarification",
+          "source_key": "clarifications.ai_features[1]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.707448482513428,
+          "scores": {
+            "contradiction": 4.707448482513428,
+            "entailment": -3.6050398349761963,
+            "neutral": -0.10431476682424545
+          }
+        },
+        {
+          "premise_text": "Performance may decline over time with OS updates and app complexity",
+          "source_type": "clarification",
+          "source_key": "clarifications.performance_benchmarks[2]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.508397102355957,
+          "scores": {
+            "contradiction": 4.508397102355957,
+            "entailment": -3.641432523727417,
+            "neutral": 0.16082389652729034
+          }
+        },
+        {
+          "premise_text": "software_updates: Clean, bloatware-free Android experience",
+          "source_type": "spec",
+          "source_key": "specs.software_updates[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.441614151000977,
+          "scores": {
+            "contradiction": -1.7500863075256348,
+            "entailment": -2.145998477935791,
+            "neutral": 4.441614151000977
+          }
+        }
+      ],
+      "reasoning": "Strong contradiction with clarification"
+    }
+  ],
+  "nli_model": "cross-encoder/nli-roberta-base"
+}

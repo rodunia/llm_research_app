@@ -1,0 +1,128 @@
+{
+  "material_id": "melatonin_8",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "regulatory_domain": "Classified as a dietary supplement under DSHEA. Not FDA-approved; regulated under 21 CFR Part 111. Claims must follow structure/function rules, not disease claims.",
+  "overall_status": "REVIEW_RECOMMENDED",
+  "compliant": true,
+  "finding_count": 1,
+  "overall_severity": "MEDIUM",
+  "requires_human_review": true,
+  "extracted_claims": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Each tablet contains 3 mg melatonin (immediate-release)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Each bottle contains 120 tablets.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "120 tablets per bottle"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "Yes, these tablets are suitable for vegans and vegetarians.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "claim_type": "regulatory",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Produced in a facility that follows current Good Manufacturing Practices (cGMP)"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "Third-party tested for identity, purity, and potency"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "This product is approved by the FDA for sleep regulation.",
+      "claim_type": "regulatory",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "CONTRADICTED",
+      "evidence_from_context": [
+        {
+          "source_section": "clarifications",
+          "matched_text": "This product is NOT FDA-approved as a drug"
+        }
+      ]
+    }
+  ],
+  "findings": [
+    {
+      "claim_id": "claim_6",
+      "claim_text": "This product is approved by the FDA for sleep regulation.",
+      "finding_status": "REVIEW_RECOMMENDED",
+      "finding_type": "false_regulatory_approval",
+      "support_status": "CONTRADICTED",
+      "severity": "MEDIUM",
+      "evidence_from_marketing_text": "This product is approved by the FDA for sleep regulation.",
+      "evidence_from_context": [
+        {
+          "source_section": "clarifications",
+          "matched_text": "This product is NOT FDA-approved as a drug"
+        }
+      ],
+      "specific_rule_or_boundary": "This product is NOT FDA-approved as a drug",
+      "reasoning_short": "The claim of FDA approval for sleep regulation contradicts the provided context stating the product is not FDA-approved.",
+      "recommended_fix": "Remove the claim of FDA approval for sleep regulation.",
+      "regulatory_citation": null,
+      "confidence": 0.8,
+      "false_positive_risk": "MEDIUM",
+      "human_review_reason": "The claim contradicts the provided context and may mislead consumers about regulatory approval."
+    }
+  ],
+  "summary": "One claim regarding FDA approval is contradicted by the provided context and requires review.",
+  "limitations": "Assessment limited to the provided regulatory and product context.",
+  "model": "gpt-4o",
+  "temperature": 0
+}

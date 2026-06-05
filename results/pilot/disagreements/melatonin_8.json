@@ -1,0 +1,42 @@
+{
+  "material_id": "melatonin_8",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "total_claims": 6,
+  "total_findings": 1,
+  "total_disagreements": 1,
+  "disagreement_types": {
+    "gpt4o_underflags": 1
+  },
+  "claim_disagreements": [
+    {
+      "claim_id": "claim_6",
+      "claim_text": "This product is approved by the FDA for sleep regulation.",
+      "gpt4o_status": "REVIEW_RECOMMENDED",
+      "gpt4o_severity": "MEDIUM",
+      "roberta_verdict": "INSUFFICIENT_EVIDENCE",
+      "disagrees": false,
+      "disagreement_type": null
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "gpt4o_status": "NO_FINDING",
+      "gpt4o_severity": "NONE",
+      "roberta_verdict": "CONTRADICTED",
+      "disagrees": true,
+      "disagreement_type": "gpt4o_underflags"
+    }
+  ],
+  "routing": {
+    "priority_review": false,
+    "human_review": true,
+    "audit_sample": false
+  },
+  "gpt4o_overall_status": "REVIEW_RECOMMENDED",
+  "gpt4o_overall_severity": "MEDIUM",
+  "roberta_verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 5
+  }
+}

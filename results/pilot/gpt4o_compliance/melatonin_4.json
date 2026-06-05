@@ -1,0 +1,91 @@
+{
+  "material_id": "melatonin_4",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "regulatory_domain": "Classified as a dietary supplement under DSHEA. Not FDA-approved; regulated under 21 CFR Part 111. Claims must follow structure/function rules, not disease claims.",
+  "overall_status": "NO_FINDINGS",
+  "compliant": true,
+  "finding_count": 0,
+  "overall_severity": "NONE",
+  "requires_human_review": false,
+  "extracted_claims": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Each tablet contains 3 mg melatonin (immediate-release)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Each bottle contains 120 tablets.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "120 tablets per bottle"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "These tablets are suitable for vegans and vegetarians.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving, but may include trace amount of wheat.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED_WITH_QUALIFICATION",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Vegan, Non-GMO, and free from gluten, soy, and dairy"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "claim_type": "regulatory",
+      "is_verifiable": true,
+      "risk_domain": "supplement",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Produced in a facility that follows current Good Manufacturing Practices (cGMP)"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "Third-party tested for identity, purity, and potency"
+        }
+      ]
+    }
+  ],
+  "findings": [],
+  "summary": "No compliance-relevant findings detected. All claims are supported by the provided context.",
+  "limitations": "Assessment limited to the provided regulatory and product context.",
+  "model": "gpt-4o",
+  "temperature": 0
+}

@@ -145,10 +145,11 @@ ATOMIZER_SYSTEM_PROMPT = """You are a forensic claim extraction system for marke
 TASK: Extract EVERY verifiable fact, technical specification, operational policy, restriction, and safety warning from the marketing material. SEPARATE disclaimers from core claims.
 
 EXTRACTION RULES:
-1. Split compound sentences into atomic facts
-   - Example: "6.3 inch OLED display" → ["Screen is 6.3 inches", "Screen is OLED"]
+1. Split compound sentences into atomic facts WITH CONTEXT
+   - Example: "6.3 inch OLED display" → ["Display is 6.3 inches", "Display is OLED"]
    - Example: "Contains 3mg melatonin, non-habit-forming" → ["Contains 3mg melatonin", "Non-habit-forming"]
    - Example: "24/7 trading with regional pauses during maintenance" → ["Trading is 24/7", "Regional trading pauses during maintenance"]
+   - IMPORTANT: Preserve the subject/category in each atomic claim to maintain semantic context
 
 2. Maintain original terminology (do not over-paraphrase)
    - Keep exact numbers, units, brand names, technical terms
@@ -177,11 +178,21 @@ EXTRACTION RULES:
    - These MUST be extracted as core_claims if they are verifiable facts
    - Only extract as "disclaimers" if they are hedging language like "may vary", "not guaranteed", "results may differ"
 
-6. Ignore subjective marketing fluff:
+6. SPECIAL HANDLING for allergen/absence claims:
+   - Group related allergen-free statements together: "Product is gluten-free, soy-free, and dairy-free"
+   - Do NOT extract as separate numerical claims: "Contains 0 mg gluten", "Contains 0 mg soy", "Contains 0 mg dairy"
+   - This prevents false semantic overlap with active ingredient amounts
+
+7. SPECIAL HANDLING for quantity vs serving size:
+   - Keep package quantity separate from serving size
+   - Example: "120 tablets per bottle" (package) vs "1 tablet per serving" (serving) → Extract both with clear context
+   - Do NOT extract bare numbers without their referent
+
+8. Ignore subjective marketing fluff:
    - Do NOT extract: "stunning", "amazing", "revolutionary", "incredible"
    - Do NOT extract vague claims like: "enhances your experience", "transforms your life"
 
-7. If the material is entirely vague/subjective/fluff, return empty lists
+9. If the material is entirely vague/subjective/fluff, return empty lists
 
 OUTPUT FORMAT (strict JSON - FLAT STRING ARRAYS ONLY):
 {

@@ -1,0 +1,233 @@
+{
+  "material_id": "melatonin_1",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "total_claims_validated": 5,
+  "verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 4
+  },
+  "claim_validations": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The serving size is 1 tablet, which contains 5 mg of melatonin per serving.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "dosage: Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime",
+          "source_type": "spec",
+          "source_key": "specs.dosage[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.422760486602783,
+          "scores": {
+            "contradiction": -1.4833678007125854,
+            "entailment": -2.277087926864624,
+            "neutral": 4.422760486602783
+          }
+        },
+        {
+          "premise_text": "This product does NOT work for 100% of users",
+          "source_type": "clarification",
+          "source_key": "clarifications[6]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.286229610443115,
+          "scores": {
+            "contradiction": -0.7898077964782715,
+            "entailment": -2.6062567234039307,
+            "neutral": 4.286229610443115
+          }
+        },
+        {
+          "premise_text": "Suitable for healthy adults (do NOT avoid if you are an adult over 18)",
+          "source_type": "clarification",
+          "source_key": "clarifications[12]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.275027751922607,
+          "scores": {
+            "contradiction": -0.7577247619628906,
+            "entailment": -2.6612436771392822,
+            "neutral": 4.275027751922607
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.42)"
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Each bottle contains 120 tablets.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "quality: Tested for heavy metals (lead, arsenic, cadmium, mercury)",
+          "source_type": "spec",
+          "source_key": "specs.quality[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.290842056274414,
+          "scores": {
+            "contradiction": -0.8514465093612671,
+            "entailment": -2.605311155319214,
+            "neutral": 4.290842056274414
+          }
+        },
+        {
+          "premise_text": "Melatonin is not a sedative drug - it works with natural sleep rhythms",
+          "source_type": "clarification",
+          "source_key": "clarifications[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.285304069519043,
+          "scores": {
+            "contradiction": -0.8943166732788086,
+            "entailment": -2.627322196960449,
+            "neutral": 4.285304069519043
+          }
+        },
+        {
+          "premise_text": "quality: Meets USP specifications for purity, potency, and microbial limits",
+          "source_type": "spec",
+          "source_key": "specs.quality[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.2722673416137695,
+          "scores": {
+            "contradiction": -0.7668563723564148,
+            "entailment": -2.6599366664886475,
+            "neutral": 4.2722673416137695
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.29)"
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "These tablets are suitable for vegans and vegetarians.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "packaging: 120 tablets per bottle",
+          "source_type": "spec",
+          "source_key": "specs.packaging[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.448107719421387,
+          "scores": {
+            "contradiction": -1.8471907377243042,
+            "entailment": -2.0912699699401855,
+            "neutral": 4.448107719421387
+          }
+        },
+        {
+          "premise_text": "physical_characteristics: Small, round, uncoated white tablets (~6\u20138 mm diameter)",
+          "source_type": "spec",
+          "source_key": "specs.physical_characteristics[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.445300579071045,
+          "scores": {
+            "contradiction": -1.6383405923843384,
+            "entailment": -2.1957173347473145,
+            "neutral": 4.445300579071045
+          }
+        },
+        {
+          "premise_text": "dosage: Each tablet contains 3 mg melatonin (immediate-release)",
+          "source_type": "spec",
+          "source_key": "specs.dosage[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.441104888916016,
+          "scores": {
+            "contradiction": -1.6295032501220703,
+            "entailment": -2.2059414386749268,
+            "neutral": 4.441104888916016
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.45)"
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "validation_verdict": "CONTRADICTED",
+      "top_matches": [
+        {
+          "premise_text": "quality: Verified to contain 3 mg melatonin per serving",
+          "source_type": "spec",
+          "source_key": "specs.quality[2]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.873581886291504,
+          "scores": {
+            "contradiction": 4.873581886291504,
+            "entailment": -3.2977793216705322,
+            "neutral": -0.7090436220169067
+          }
+        },
+        {
+          "premise_text": "dosage: Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime",
+          "source_type": "spec",
+          "source_key": "specs.dosage[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.362117767333984,
+          "scores": {
+            "contradiction": -1.1366280317306519,
+            "entailment": -2.4790842533111572,
+            "neutral": 4.362117767333984
+          }
+        },
+        {
+          "premise_text": "packaging: 120 tablets per bottle",
+          "source_type": "spec",
+          "source_key": "specs.packaging[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.360288143157959,
+          "scores": {
+            "contradiction": -1.130214810371399,
+            "entailment": -2.4774410724639893,
+            "neutral": 4.360288143157959
+          }
+        }
+      ],
+      "reasoning": "Strong contradiction with spec"
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "quality: Manufactured in a cGMP-compliant facility (21 CFR Part 111)",
+          "source_type": "spec",
+          "source_key": "specs.quality[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.439416408538818,
+          "scores": {
+            "contradiction": -1.8656922578811646,
+            "entailment": -1.9585686922073364,
+            "neutral": 4.439416408538818
+          }
+        },
+        {
+          "premise_text": "quality: Third-party tested for identity, purity, and potency",
+          "source_type": "spec",
+          "source_key": "specs.quality[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.323211669921875,
+          "scores": {
+            "contradiction": -1.1146224737167358,
+            "entailment": -2.4113457202911377,
+            "neutral": 4.323211669921875
+          }
+        },
+        {
+          "premise_text": "quality: Tested for heavy metals (lead, arsenic, cadmium, mercury)",
+          "source_type": "spec",
+          "source_key": "specs.quality[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.1917524337768555,
+          "scores": {
+            "contradiction": -1.1122617721557617,
+            "entailment": -2.2082316875457764,
+            "neutral": 4.1917524337768555
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.44)"
+    }
+  ],
+  "nli_model": "cross-encoder/nli-roberta-base"
+}

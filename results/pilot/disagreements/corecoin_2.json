@@ -1,0 +1,33 @@
+{
+  "material_id": "corecoin_2",
+  "product": "CoreCoin (CORE)",
+  "total_claims": 8,
+  "total_findings": 0,
+  "total_disagreements": 1,
+  "disagreement_types": {
+    "gpt4o_underflags": 1
+  },
+  "claim_disagreements": [
+    {
+      "claim_id": "claim_6",
+      "claim_text": "CoreCoin employs a community-driven, on-chain governance model.",
+      "gpt4o_status": "NO_FINDING",
+      "gpt4o_severity": "NONE",
+      "roberta_verdict": "CONTRADICTED",
+      "disagrees": true,
+      "disagreement_type": "gpt4o_underflags"
+    }
+  ],
+  "routing": {
+    "priority_review": false,
+    "human_review": true,
+    "audit_sample": false
+  },
+  "gpt4o_overall_status": "NO_FINDINGS",
+  "gpt4o_overall_severity": "NONE",
+  "roberta_verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 7
+  }
+}

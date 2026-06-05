@@ -1,0 +1,109 @@
+{
+  "run_id": "corecoin_1",
+  "filename": "corecoin_1.txt",
+  "product_id": "cryptocurrency_corecoin",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "CoreCoin is a decentralized Layer-1 digital asset",
+    "CoreCoin operates on a Proof-of-Stake (PoS) blockchain",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized applications",
+    "CoreCoin has an average block time of ~4 seconds",
+    "CoreCoin has a maximum supply of 2,000,000,000 CORE",
+    "Transactions are secured through cryptographic signatures",
+    "CoreCoin network relies on distributed validator participation",
+    "CoreCoin's market value is highly volatile",
+    "CoreCoin's market value is influenced by liquidity",
+    "CoreCoin's market value is influenced by market sentiment",
+    "CoreCoin's market value is influenced by macroeconomic conditions",
+    "Price discovery occurs through decentralized market mechanisms",
+    "CoreCoin trading is subject to 24/7 global activity",
+    "CoreCoin trading does not have circuit breakers",
+    "CoreCoin can be stored on hardware wallets",
+    "CoreCoin can be stored on mobile wallets",
+    "CoreCoin can be stored on desktop clients",
+    "Compatibility varies by software for CoreCoin storage",
+    "Users must securely store their private keys for CoreCoin",
+    "Private keys for CoreCoin cannot be recovered if lost",
+    "CoreCoin uses a self-custody model",
+    "No third-party key recovery is available for CoreCoin",
+    "CoreCoin supports smart contracts",
+    "CoreCoin supports decentralized application integration",
+    "CoreCoin is compatible with PoS-compatible virtual machines",
+    "CoreCoin enables the development and execution of programmable smart contracts",
+    "CoreCoin employs a community-driven, on-chain governance model",
+    "Protocol updates for CoreCoin require community or validator approval",
+    "Governance participation for CoreCoin depends on wallet integration",
+    "Governance participation for CoreCoin depends on token ownership",
+    "On-chain governance votes for CoreCoin are publicly recorded",
+    "CoreCoin is not natively cross-chain compatible",
+    "Interoperability with other blockchains is not a built-in feature of CoreCoin's architecture",
+    "Staking CoreCoin requires locking tokens for defined protocol periods",
+    "Staking periods for CoreCoin are variable by governance",
+    "The minimum stake for CoreCoin is a protocol-defined threshold",
+    "The lockup period for CoreCoin is governance-defined",
+    "Rewards for staking CoreCoin depend on network participation",
+    "Rewards for staking CoreCoin depend on validator performance",
+    "Rewards for staking CoreCoin are not guaranteed"
+  ],
+  "disclaimers": [
+    "Cryptocurrency investments involve risk and are highly volatile",
+    "Do not invest funds you cannot afford to lose",
+    "CoreCoin is not backed by the FDIC or any government entity",
+    "Past performance is not indicative of future results",
+    "Loss of private keys leads to permanent loss of funds",
+    "Digital assets may be vulnerable to hacking or protocol exploits",
+    "Market conditions can change rapidly and unpredictably",
+    "Regulatory changes may affect accessibility or legality"
+  ],
+  "violations": [
+    {
+      "claim": "CoreCoin is compatible with PoS-compatible virtual machines",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9469039440155029
+    },
+    {
+      "claim": "CoreCoin employs a community-driven, on-chain governance model",
+      "violated_rule": "Digital-only asset requiring compatible wallet software",
+      "contradiction_score": 0.9495282173156738
+    },
+    {
+      "claim": "Governance participation for CoreCoin depends on wallet integration",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9296226501464844
+    },
+    {
+      "claim": "Governance participation for CoreCoin depends on token ownership",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9250693321228027
+    },
+    {
+      "claim": "On-chain governance votes for CoreCoin are publicly recorded",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.937562108039856
+    },
+    {
+      "claim": "Staking periods for CoreCoin are variable by governance",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9806920289993286
+    },
+    {
+      "claim": "The lockup period for CoreCoin is governance-defined",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9226657152175903
+    },
+    {
+      "claim": "Rewards for staking CoreCoin depend on validator performance",
+      "violated_rule": "CoreCoin is not backed by the FDIC or any government entity",
+      "contradiction_score": 0.9338934421539307
+    }
+  ],
+  "violation_count": 8,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 14323,
+  "extraction_prompt_tokens": 1574,
+  "extraction_completion_tokens": 632,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

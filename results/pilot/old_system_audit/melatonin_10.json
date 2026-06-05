@@ -1,0 +1,86 @@
+{
+  "run_id": "melatonin_10",
+  "filename": "melatonin_10.txt",
+  "product_id": "supplement_melatonin",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "The serving size is 1 tablet",
+    "Contains 3 mg of melatonin per serving",
+    "Each bottle contains 120 tablets",
+    "These tablets are suitable for vegans",
+    "These tablets are suitable for vegetarians",
+    "The tablets contain 0 mg gluten per serving",
+    "The tablets contain 0 mg soy per serving",
+    "The tablets contain 0 mg dairy per serving",
+    "Manufactured in a facility that follows current Good Manufacturing Practices (cGMP)",
+    "Third-party tested for identity",
+    "Third-party tested for heavy metals",
+    "Lead content is less than 0.5 ppm",
+    "Keep out of reach of children",
+    "Consult a healthcare professional if pregnant",
+    "Consult a healthcare professional if nursing",
+    "Consult a healthcare professional if taking medications",
+    "Consult a healthcare professional if have a medical condition",
+    "Do not exceed the recommended serving",
+    "Tablets may cause permanent drowsiness"
+  ],
+  "disclaimers": [
+    "These statements have not been evaluated by the Food and Drug Administration",
+    "This product is not intended to diagnose, treat, cure, or prevent any disease"
+  ],
+  "violations": [
+    {
+      "claim": "The serving size is 1 tablet",
+      "violated_rule": "Each bottle contains 120 tablets",
+      "contradiction_score": 0.990613579750061
+    },
+    {
+      "claim": "Contains 3 mg of melatonin per serving",
+      "violated_rule": "Each bottle contains 120 tablets",
+      "contradiction_score": 0.9722479581832886
+    },
+    {
+      "claim": "Each bottle contains 120 tablets",
+      "violated_rule": "The product is a solid oral tablet",
+      "contradiction_score": 0.9405890703201294
+    },
+    {
+      "claim": "The tablets contain 0 mg gluten per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.997848629951477
+    },
+    {
+      "claim": "The tablets contain 0 mg soy per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.9976997971534729
+    },
+    {
+      "claim": "The tablets contain 0 mg dairy per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.9969398975372314
+    },
+    {
+      "claim": "Third-party tested for identity",
+      "violated_rule": "The product is tested for heavy metals",
+      "contradiction_score": 0.9825016856193542
+    },
+    {
+      "claim": "Keep out of reach of children",
+      "violated_rule": "The product is for adults 18 years and older",
+      "contradiction_score": 0.9750280380249023
+    },
+    {
+      "claim": "Do not exceed the recommended serving",
+      "violated_rule": "Adults take 1 tablet before bedtime",
+      "contradiction_score": 0.9931138157844543
+    }
+  ],
+  "violation_count": 9,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 2463,
+  "extraction_prompt_tokens": 1129,
+  "extraction_completion_tokens": 258,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

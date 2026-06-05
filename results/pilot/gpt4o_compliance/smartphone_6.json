@@ -1,0 +1,143 @@
+{
+  "material_id": "smartphone_6",
+  "product": "Nova X5 5G Smartphone",
+  "regulatory_domain": "['Consumer electronics product; not medical, safety, or defense equipment', 'SAR compliance varies by region and regulatory requirements', 'Encryption features may be subject to export regulations in certain jurisdictions', 'Marketing claims must align with FTC/EU consumer electronics regulations']",
+  "overall_status": "NO_FINDINGS",
+  "compliant": true,
+  "finding_count": 0,
+  "overall_severity": "NONE",
+  "requires_human_review": false,
+  "extracted_claims": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The Nova X5 features a Tensor G4 chipset with a Neural Processing Unit, a 6.3\" Actua OLED display with 120 Hz refresh rate, and a camera system with a 50 MP main camera.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Processor: Tensor G4 chipset with dedicated Neural Processing Unit (NPU)"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "6.3\" Actua OLED display with 120 Hz refresh rate"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "50 MP main camera with Optical Image Stabilization (OIS)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Yes, it supports 10W Qi wireless charging.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "10W Qi wireless charging"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "The Nova X5 includes enhanced hardware-backed security via the Titan M2 chip, providing a multi-layer security architecture from chip to OS.",
+      "claim_type": "safety",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Enhanced hardware-backed security via the Titan M2 chip"
+        },
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "End-to-end security architecture from chip to OS"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The Nova X5 features advanced computational photography powered by the Tensor G4 NPU and offers real-time AI tools such as live translation and smart image processing.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Features advanced computational photography powered by the Tensor G4 NPU"
+        },
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Offers real-time AI tools such as live translation and smart image processing"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "The Nova X5 has a battery capacity ranging from 4700\u20135000 mAh, depending on the region. It supports 30\u201345W USB-C fast charging, though charger availability may vary by region.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "4700\u20135000 mAh Li-ion battery (regional variation)"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "30\u201345W USB-C fast charging (charger availability varies by region)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "The Nova X5 does not support expandable storage via microSD. It offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "No expandable storage via microSD"
+        },
+        {
+          "source_section": "specs",
+          "matched_text": "Storage options: 128 GB / 256 GB / 512 GB UFS 3.1"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_7",
+      "claim_text": "The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "electronics",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Delivers a clean, bloatware-free Android experience"
+        },
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Provides guaranteed OS and security updates for seven years"
+        }
+      ]
+    }
+  ],
+  "findings": [],
+  "summary": "No compliance-relevant findings detected. All claims are supported by the provided context.",
+  "limitations": "Assessment limited to the provided regulatory and product context.",
+  "model": "gpt-4o",
+  "temperature": 0
+}

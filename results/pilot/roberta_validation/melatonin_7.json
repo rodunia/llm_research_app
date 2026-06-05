@@ -1,0 +1,277 @@
+{
+  "material_id": "melatonin_7",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "total_claims_validated": 6,
+  "verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 5
+  },
+  "claim_validations": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "The serving size is 1 tablet, which contains 3 mg of melatonin per serving.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "dosage: Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime",
+          "source_type": "spec",
+          "source_key": "specs.dosage[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.4193525314331055,
+          "scores": {
+            "contradiction": -1.4570879936218262,
+            "entailment": -2.2992489337921143,
+            "neutral": 4.4193525314331055
+          }
+        },
+        {
+          "premise_text": "Suitable for healthy adults (do NOT avoid if you are an adult over 18)",
+          "source_type": "clarification",
+          "source_key": "clarifications[12]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.276823043823242,
+          "scores": {
+            "contradiction": -0.7661498785018921,
+            "entailment": -2.6595301628112793,
+            "neutral": 4.276823043823242
+          }
+        },
+        {
+          "premise_text": "Melatonin is not a sedative drug - it works with natural sleep rhythms",
+          "source_type": "clarification",
+          "source_key": "clarifications[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.274558067321777,
+          "scores": {
+            "contradiction": -0.8168784976005554,
+            "entailment": -2.5639188289642334,
+            "neutral": 4.274558067321777
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.42)"
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "Each bottle contains 120 tablets.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "quality: Tested for heavy metals (lead, arsenic, cadmium, mercury)",
+          "source_type": "spec",
+          "source_key": "specs.quality[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.290842056274414,
+          "scores": {
+            "contradiction": -0.8514465093612671,
+            "entailment": -2.605311155319214,
+            "neutral": 4.290842056274414
+          }
+        },
+        {
+          "premise_text": "Melatonin is not a sedative drug - it works with natural sleep rhythms",
+          "source_type": "clarification",
+          "source_key": "clarifications[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.285304069519043,
+          "scores": {
+            "contradiction": -0.8943166732788086,
+            "entailment": -2.627322196960449,
+            "neutral": 4.285304069519043
+          }
+        },
+        {
+          "premise_text": "quality: Meets USP specifications for purity, potency, and microbial limits",
+          "source_type": "spec",
+          "source_key": "specs.quality[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.2722673416137695,
+          "scores": {
+            "contradiction": -0.7668563723564148,
+            "entailment": -2.6599366664886475,
+            "neutral": 4.2722673416137695
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.29)"
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "Yes, these tablets are suitable for vegans and vegetarians.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "packaging: 120 tablets per bottle",
+          "source_type": "spec",
+          "source_key": "specs.packaging[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.432973861694336,
+          "scores": {
+            "contradiction": -1.652637004852295,
+            "entailment": -2.1583809852600098,
+            "neutral": 4.432973861694336
+          }
+        },
+        {
+          "premise_text": "efficacy",
+          "source_type": "authorized_claim",
+          "source_key": "authorized_claims[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.081240653991699,
+          "scores": {
+            "contradiction": -1.4684498310089111,
+            "entailment": -1.7587080001831055,
+            "neutral": 4.081240653991699
+          }
+        },
+        {
+          "premise_text": "formulation: Pure melatonin formulation with minimal inactive ingredients",
+          "source_type": "spec",
+          "source_key": "specs.formulation[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.975809097290039,
+          "scores": {
+            "contradiction": -0.5905782580375671,
+            "entailment": -2.3624634742736816,
+            "neutral": 3.975809097290039
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.43)"
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "The tablets contain 0 mg gluten, 0 mg soy, and 0 mg dairy per serving.",
+      "validation_verdict": "CONTRADICTED",
+      "top_matches": [
+        {
+          "premise_text": "quality: Verified to contain 3 mg melatonin per serving",
+          "source_type": "spec",
+          "source_key": "specs.quality[2]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.873581886291504,
+          "scores": {
+            "contradiction": 4.873581886291504,
+            "entailment": -3.2977793216705322,
+            "neutral": -0.7090436220169067
+          }
+        },
+        {
+          "premise_text": "dosage: Recommended use: adults take 1 tablet 30\u201360 minutes before bedtime",
+          "source_type": "spec",
+          "source_key": "specs.dosage[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.362117767333984,
+          "scores": {
+            "contradiction": -1.1366280317306519,
+            "entailment": -2.4790842533111572,
+            "neutral": 4.362117767333984
+          }
+        },
+        {
+          "premise_text": "packaging: 120 tablets per bottle",
+          "source_type": "spec",
+          "source_key": "specs.packaging[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.360288143157959,
+          "scores": {
+            "contradiction": -1.130214810371399,
+            "entailment": -2.4774410724639893,
+            "neutral": 4.360288143157959
+          }
+        }
+      ],
+      "reasoning": "Strong contradiction with spec"
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "They are manufactured in a facility that follows current Good Manufacturing Practices (cGMP) and are third-party tested for identity and heavy metals (lead < 0.5 ppm).",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "quality: Manufactured in a cGMP-compliant facility (21 CFR Part 111)",
+          "source_type": "spec",
+          "source_key": "specs.quality[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.439416408538818,
+          "scores": {
+            "contradiction": -1.8656922578811646,
+            "entailment": -1.9585686922073364,
+            "neutral": 4.439416408538818
+          }
+        },
+        {
+          "premise_text": "quality: Third-party tested for identity, purity, and potency",
+          "source_type": "spec",
+          "source_key": "specs.quality[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.323211669921875,
+          "scores": {
+            "contradiction": -1.1146224737167358,
+            "entailment": -2.4113457202911377,
+            "neutral": 4.323211669921875
+          }
+        },
+        {
+          "premise_text": "quality: Tested for heavy metals (lead, arsenic, cadmium, mercury)",
+          "source_type": "spec",
+          "source_key": "specs.quality[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.1917524337768555,
+          "scores": {
+            "contradiction": -1.1122617721557617,
+            "entailment": -2.2082316875457764,
+            "neutral": 4.1917524337768555
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.44)"
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "Melatonin should be taken every 2 hours for best results.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "Melatonin is not a sedative drug - it works with natural sleep rhythms",
+          "source_type": "clarification",
+          "source_key": "clarifications[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.324464797973633,
+          "scores": {
+            "contradiction": -0.9427456855773926,
+            "entailment": -2.544896125793457,
+            "neutral": 4.324464797973633
+          }
+        },
+        {
+          "premise_text": "formulation: Pure melatonin formulation with minimal inactive ingredients",
+          "source_type": "spec",
+          "source_key": "specs.formulation[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.278993606567383,
+          "scores": {
+            "contradiction": -0.7840874791145325,
+            "entailment": -2.6414153575897217,
+            "neutral": 4.278993606567383
+          }
+        },
+        {
+          "premise_text": "Melatonin does not guarantee immediate or universal sleep onset",
+          "source_type": "clarification",
+          "source_key": "clarifications[8]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.236981391906738,
+          "scores": {
+            "contradiction": -0.8953439593315125,
+            "entailment": -2.424550771713257,
+            "neutral": 4.236981391906738
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.32)"
+    }
+  ],
+  "nli_model": "cross-encoder/nli-roberta-base"
+}

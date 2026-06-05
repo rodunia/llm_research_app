@@ -1,0 +1,24 @@
+{
+  "material_id": "unknown",
+  "product": "CoreCoin",
+  "total_claims_reviewed": 1,
+  "review_timestamp": "2026-06-04T05:47:57.174222Z",
+  "claim_reviews": [
+    {
+      "claim_id": "claim_6",
+      "claim_text": "CoreCoin employs a community-driven, on-chain governance model.",
+      "analysis": "The claim describes a technical governance feature of CoreCoin. RoBERTa incorrectly matched this to an unrelated premise about gas fees, creating a false contradiction. The claim itself is not problematic as it simply describes a governance mechanism without making misleading promises.",
+      "correct_model": "gpt4o",
+      "is_false_positive": true,
+      "overflagging_risk": "HIGH",
+      "requires_human_review": false,
+      "reasoning": "RoBERTa's matching is clearly erroneous - governance models and gas fee structures are completely unrelated concepts, indicating a significant model error rather than a legitimate compliance concern."
+    }
+  ],
+  "summary": {
+    "false_positives": 1,
+    "true_violations": 0,
+    "requires_human_review": 0
+  },
+  "model": "claude-sonnet-4-20250514"
+}

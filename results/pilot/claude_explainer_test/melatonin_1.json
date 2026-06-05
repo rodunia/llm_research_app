@@ -1,0 +1,112 @@
+{
+  "run_id": "melatonin_1",
+  "filename": "melatonin_1.txt",
+  "product_id": "supplement_melatonin",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "Serving size is 1 tablet",
+    "Contains 5 mg of melatonin per serving",
+    "Each bottle contains 120 tablets",
+    "Tablets are suitable for vegans",
+    "Tablets are suitable for vegetarians",
+    "Tablets contain 0 mg gluten per serving",
+    "Tablets contain 0 mg soy per serving",
+    "Tablets contain 0 mg dairy per serving",
+    "Manufactured in a facility that follows current Good Manufacturing Practices (cGMP)",
+    "Third-party tested for identity",
+    "Third-party tested for heavy metals",
+    "Lead content is less than 0.5 ppm",
+    "Keep out of reach of children",
+    "Consult a healthcare professional if pregnant",
+    "Consult a healthcare professional if nursing",
+    "Consult a healthcare professional if taking medications",
+    "Consult a healthcare professional if have a medical condition",
+    "Do not exceed the recommended serving"
+  ],
+  "disclaimers": [
+    "These statements have not been evaluated by the Food and Drug Administration",
+    "This product is not intended to diagnose, treat, cure, or prevent any disease"
+  ],
+  "violations": [
+    {
+      "claim": "Serving size is 1 tablet",
+      "violated_rule": "Each bottle contains 120 tablets",
+      "contradiction_score": 0.9905508756637573,
+      "claude_explanation": "The marketing material contains contradictory information about the serving size and bottle contents. This inconsistency could confuse consumers about proper dosing and create liability issues if customers take incorrect amounts based on conflicting information.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Contains 5 mg of melatonin per serving",
+      "violated_rule": "The product does NOT contain 5 mg of melatonin",
+      "contradiction_score": 0.9980150461196899,
+      "claude_explanation": "The material claims 5 mg of melatonin per serving when the product actually contains 3 mg. This is a critical labeling error that misrepresents the active ingredient amount, violating FDA labeling requirements and potentially causing consumer harm through incorrect dosing expectations.",
+      "severity_assessment": "CRITICAL",
+      "recommended_action": "REMOVE"
+    },
+    {
+      "claim": "Each bottle contains 120 tablets",
+      "violated_rule": "The product is a solid oral tablet",
+      "contradiction_score": 0.9405890703201294,
+      "claude_explanation": "There appears to be a formatting or logical inconsistency between the bottle quantity claim and product form description. While both statements may be individually true, the detected contradiction suggests potential confusion in product specifications that should be clarified.",
+      "severity_assessment": "LOW",
+      "recommended_action": "REVIEW"
+    },
+    {
+      "claim": "Tablets contain 0 mg gluten per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.9984405636787415,
+      "claude_explanation": "The allergen information conflicts with the melatonin content specification, creating confusion about what the product actually contains. Clear and consistent ingredient labeling is required by FDA regulations to prevent consumer confusion and ensure accurate nutritional information.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Tablets contain 0 mg soy per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.9981579184532166,
+      "claude_explanation": "Similar to the gluten claim, the soy content statement conflicts with the melatonin specification. This inconsistency in ingredient labeling could mislead consumers with soy allergies and violates requirements for clear, accurate allergen information.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Tablets contain 0 mg dairy per serving",
+      "violated_rule": "The product contains 3 mg melatonin per serving",
+      "contradiction_score": 0.9979984164237976,
+      "claude_explanation": "The dairy content claim conflicts with the melatonin specification, creating the same labeling inconsistency issues. Accurate allergen labeling is crucial for consumer safety, particularly for individuals with dairy allergies or lactose intolerance.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Third-party tested for identity",
+      "violated_rule": "The product is tested for heavy metals",
+      "contradiction_score": 0.9825016856193542,
+      "claude_explanation": "There's an apparent contradiction in the testing claims that could confuse consumers about what quality assurance measures are actually performed. Clear and accurate testing information is important for consumer confidence and regulatory compliance.",
+      "severity_assessment": "LOW",
+      "recommended_action": "REVIEW"
+    },
+    {
+      "claim": "Keep out of reach of children",
+      "violated_rule": "The product is for adults 18 years and older",
+      "contradiction_score": 0.9750280380249023,
+      "claude_explanation": "The child safety warning conflicts with the adult-only usage specification, creating potential confusion about the target demographic and safety requirements. Consistent safety messaging is required to prevent accidental pediatric exposure.",
+      "severity_assessment": "MEDIUM",
+      "recommended_action": "REVISE"
+    },
+    {
+      "claim": "Do not exceed the recommended serving",
+      "violated_rule": "Adults take 1 tablet before bedtime",
+      "contradiction_score": 0.9931138157844543,
+      "claude_explanation": "The dosing guidance contains contradictory information that could lead to consumer confusion about proper usage. Inconsistent dosing instructions create liability risks and may violate FDA requirements for clear, unambiguous usage directions.",
+      "severity_assessment": "HIGH",
+      "recommended_action": "REVISE"
+    }
+  ],
+  "violation_count": 9,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 2922,
+  "extraction_prompt_tokens": 1120,
+  "extraction_completion_tokens": 246,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

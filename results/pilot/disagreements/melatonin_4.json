@@ -1,0 +1,21 @@
+{
+  "material_id": "melatonin_4",
+  "product": "Melatonin Tablets 3 mg (Immediate-Release)",
+  "total_claims": 5,
+  "total_findings": 0,
+  "total_disagreements": 0,
+  "disagreement_types": {},
+  "claim_disagreements": [],
+  "routing": {
+    "priority_review": false,
+    "human_review": false,
+    "audit_sample": true
+  },
+  "gpt4o_overall_status": "NO_FINDINGS",
+  "gpt4o_overall_severity": "NONE",
+  "roberta_verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 0,
+    "INSUFFICIENT_EVIDENCE": 5
+  }
+}

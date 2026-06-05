@@ -1,0 +1,24 @@
+{
+  "material_id": "nova_x5_marketing_review",
+  "product": "Nova X5 5G Smartphone",
+  "total_claims_reviewed": 1,
+  "review_timestamp": "2026-06-04T05:49:56.787094Z",
+  "claim_reviews": [
+    {
+      "claim_id": "claim_5",
+      "claim_text": "The Nova X5 delivers a clean, bloatware-free Android experience with guaranteed OS and security updates for seven years.",
+      "analysis": "The claim about bloatware-free Android experience and 7-year update guarantee is unrelated to the matched premise about AI processing requiring cloud connectivity. RoBERTa incorrectly identified a contradiction between unrelated statements.",
+      "correct_model": "gpt4o",
+      "is_false_positive": true,
+      "overflagging_risk": "HIGH",
+      "requires_human_review": false,
+      "reasoning": "RoBERTa matched completely unrelated concepts (Android updates vs AI cloud processing), creating a clear false positive with no logical connection between the claim and premise."
+    }
+  ],
+  "summary": {
+    "false_positives": 1,
+    "true_violations": 0,
+    "requires_human_review": 0
+  },
+  "model": "claude-sonnet-4-20250514"
+}

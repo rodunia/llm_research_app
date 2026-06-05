@@ -1,0 +1,117 @@
+{
+  "run_id": "smartphone_2",
+  "filename": "smartphone_2.txt",
+  "product_id": "smartphone_mid",
+  "material_type": "pilot_material",
+  "status": "FAIL",
+  "core_claims": [
+    "Nova X5 features a Tensor G4 chipset",
+    "Nova X5 has a Neural Processing Unit",
+    "Nova X5 has a 6.3 inch Actua OLED display",
+    "Nova X5 display has a 120 Hz refresh rate",
+    "Nova X5 has a camera system with a 48 MP main camera",
+    "Nova X5 offers storage options of 128 GB, 256 GB, or 512 GB",
+    "Nova X5 offers RAM configurations of 8 GB or 12 GB",
+    "Nova X5 supports 5G Sub-6 GHz",
+    "Nova X5 supports Wi-Fi 6/6E",
+    "Nova X5 includes enhanced hardware-backed security via the Titan M2 chip",
+    "Nova X5 provides a multi-layer security architecture from chip to OS",
+    "Nova X5 offers regular security patches with a documented public schedule",
+    "Nova X5 features advanced computational photography powered by the Tensor G4 NPU",
+    "Nova X5 offers real-time AI tools such as live translation and smart image processing",
+    "Nova X5 integrates hybrid on-device and cloud-based AI for select tasks",
+    "Nova X5 has a battery capacity ranging from 4700\u20135000 mAh depending on the region",
+    "Nova X5 supports 30\u201345W USB-C fast charging",
+    "Nova X5 does not support expandable storage via microSD",
+    "Nova X5 offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1",
+    "Nova X5 delivers a clean, bloatware-free Android experience",
+    "Nova X5 guarantees OS and security updates for seven years",
+    "Nova X5 is designed for consistent long-term software performance",
+    "Nova X5 provides a reliable patch cadence",
+    "Nova X5 provides a pure Android experience"
+  ],
+  "disclaimers": [
+    "Actual battery life and performance may vary over the 7-year support period",
+    "Not all new software features released during the 7 years will be supported by older hardware",
+    "Device utilizes a multi-layer security approach, but no system is impenetrable",
+    "Some advanced AI features may require a stable internet connection",
+    "Network availability (including 5G) depends on carrier and coverage",
+    "Speeds vary",
+    "Battery capacity will degrade over time with normal Li-ion aging",
+    "Performance may decline with app complexity and OS evolution over time"
+  ],
+  "violations": [
+    {
+      "claim": "Nova X5 features a Tensor G4 chipset",
+      "violated_rule": "Has Titan M2 security coprocessor",
+      "contradiction_score": 0.9681913256645203
+    },
+    {
+      "claim": "Nova X5 has a 6.3 inch Actua OLED display",
+      "violated_rule": "Display is NOT 6.5 inches",
+      "contradiction_score": 0.9872065782546997
+    },
+    {
+      "claim": "Nova X5 has a camera system with a 48 MP main camera",
+      "violated_rule": "Main camera is 50 MP",
+      "contradiction_score": 1.0
+    },
+    {
+      "claim": "Nova X5 offers storage options of 128 GB, 256 GB, or 512 GB",
+      "violated_rule": "Does NOT support expandable storage",
+      "contradiction_score": 0.9950657486915588
+    },
+    {
+      "claim": "Nova X5 offers RAM configurations of 8 GB or 12 GB",
+      "violated_rule": "RAM is NOT 16 GB",
+      "contradiction_score": 1.0
+    },
+    {
+      "claim": "Nova X5 supports 5G Sub-6 GHz",
+      "violated_rule": "Display is Actua OLED",
+      "contradiction_score": 0.9061239361763
+    },
+    {
+      "claim": "Nova X5 supports Wi-Fi 6/6E",
+      "violated_rule": "Supports Bluetooth 5.x",
+      "contradiction_score": 0.9617867469787598
+    },
+    {
+      "claim": "Nova X5 has a battery capacity ranging from 4700\u20135000 mAh depending on the region",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9561914205551147
+    },
+    {
+      "claim": "Nova X5 supports 30\u201345W USB-C fast charging",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9987034797668457
+    },
+    {
+      "claim": "Nova X5 offers internal storage options of 128 GB, 256 GB, or 512 GB UFS 3.1",
+      "violated_rule": "Does NOT support expandable storage",
+      "contradiction_score": 0.987033486366272
+    },
+    {
+      "claim": "Actual battery life and performance may vary over the 7-year support period",
+      "violated_rule": "Does NOT support wireless charging",
+      "contradiction_score": 0.9507750868797302
+    },
+    {
+      "claim": "Not all new software features released during the 7 years will be supported by older hardware",
+      "violated_rule": "Secure boot and verified boot",
+      "contradiction_score": 0.9514042139053345
+    },
+    {
+      "claim": "Battery capacity will degrade over time with normal Li-ion aging",
+      "violated_rule": "No wireless charging capability",
+      "contradiction_score": 0.9430019855499268
+    }
+  ],
+  "violation_count": 13,
+  "extraction_retry_count": 0,
+  "extraction_error_type": "none",
+  "extraction_api_latency_ms": 4411,
+  "extraction_prompt_tokens": 1442,
+  "extraction_completion_tokens": 527,
+  "extraction_model_version": "gpt-4o-2024-08-06"
+}

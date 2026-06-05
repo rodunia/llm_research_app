@@ -1,0 +1,365 @@
+{
+  "material_id": "corecoin_10",
+  "product": "CoreCoin (CORE)",
+  "total_claims_validated": 8,
+  "verdict_counts": {
+    "SUPPORTED": 0,
+    "CONTRADICTED": 1,
+    "INSUFFICIENT_EVIDENCE": 7
+  },
+  "claim_validations": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "CoreCoin is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "fundamentals: CoreCoin is a decentralized Layer-1 digital asset",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.4070587158203125,
+          "scores": {
+            "contradiction": -1.7797743082046509,
+            "entailment": -1.9765040874481201,
+            "neutral": 4.4070587158203125
+          }
+        },
+        {
+          "premise_text": "fundamentals: Decentralized digital asset (operates independently of government/bank control)",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.9661765098571777,
+          "scores": {
+            "contradiction": -0.5725950598716736,
+            "entailment": -2.3484976291656494,
+            "neutral": 3.9661765098571777
+          }
+        },
+        {
+          "premise_text": "fundamentals: Operates on a Proof-of-Stake (PoS) blockchain",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.672931432723999,
+          "scores": {
+            "contradiction": -0.20742656290531158,
+            "entailment": -2.349250555038452,
+            "neutral": 3.672931432723999
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.41)"
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "CoreCoin supports smart contracts and decentralized applications.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "fundamentals: CoreCoin is a decentralized Layer-1 digital asset",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.18283748626709,
+          "scores": {
+            "contradiction": -2.3474321365356445,
+            "entailment": -1.2651574611663818,
+            "neutral": 4.18283748626709
+          }
+        },
+        {
+          "premise_text": "market_characteristics: Price discovery occurs through decentralized market mechanisms",
+          "source_type": "spec",
+          "source_key": "specs.market_characteristics[2]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.067108154296875,
+          "scores": {
+            "contradiction": -0.9115433096885681,
+            "entailment": -2.2067441940307617,
+            "neutral": 4.067108154296875
+          }
+        },
+        {
+          "premise_text": "Decentralization does not imply regulatory immunity",
+          "source_type": "clarification",
+          "source_key": "clarifications[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.019695281982422,
+          "scores": {
+            "contradiction": -0.9306215643882751,
+            "entailment": -2.130859851837158,
+            "neutral": 4.019695281982422
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.18)"
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "CoreCoin's market value is highly volatile and influenced by liquidity, market sentiment, and macroeconomic conditions.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "market_characteristics: Market value is highly volatile and influenced by liquidity, market sentiment, and macroeconomic conditions",
+          "source_type": "spec",
+          "source_key": "specs.market_characteristics[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.398919582366943,
+          "scores": {
+            "contradiction": -1.3073434829711914,
+            "entailment": -2.3868021965026855,
+            "neutral": 4.398919582366943
+          }
+        },
+        {
+          "premise_text": "market_characteristics: Liquidity varies by exchange and market conditions",
+          "source_type": "spec",
+          "source_key": "specs.market_characteristics[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.9941318035125732,
+          "scores": {
+            "contradiction": -1.2743332386016846,
+            "entailment": -1.8148765563964844,
+            "neutral": 3.9941318035125732
+          }
+        },
+        {
+          "premise_text": "custody_requirements: Private keys cannot be recovered if lost; custody responsibility lies with the user",
+          "source_type": "spec",
+          "source_key": "specs.custody_requirements[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.82694935798645,
+          "scores": {
+            "contradiction": -0.06882788240909576,
+            "entailment": -2.6868457794189453,
+            "neutral": 3.82694935798645
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.40)"
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "CoreCoin can be stored on hardware wallets, mobile wallets, or desktop clients.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "fee_structure: Fee model: Base fee + variable priority fee (market-driven)",
+          "source_type": "spec",
+          "source_key": "specs.fee_structure[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.7894480228424072,
+          "scores": {
+            "contradiction": -0.11416488140821457,
+            "entailment": -2.5797784328460693,
+            "neutral": 3.7894480228424072
+          }
+        },
+        {
+          "premise_text": "fundamentals: Decentralized digital asset (operates independently of government/bank control)",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[4]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.7234745025634766,
+          "scores": {
+            "contradiction": -0.38907647132873535,
+            "entailment": -2.249574899673462,
+            "neutral": 3.7234745025634766
+          }
+        },
+        {
+          "premise_text": "functionality",
+          "source_type": "authorized_claim",
+          "source_key": "authorized_claims[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.7027690410614014,
+          "scores": {
+            "contradiction": -1.2366852760314941,
+            "entailment": -1.5079407691955566,
+            "neutral": 3.7027690410614014
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=3.79)"
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "CoreCoin supports smart contracts and decentralized application integration.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "fundamentals: CoreCoin is a decentralized Layer-1 digital asset",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.246086120605469,
+          "scores": {
+            "contradiction": -2.3349573612213135,
+            "entailment": -1.353745698928833,
+            "neutral": 4.246086120605469
+          }
+        },
+        {
+          "premise_text": "Decentralization does not imply regulatory immunity",
+          "source_type": "clarification",
+          "source_key": "clarifications[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.027283668518066,
+          "scores": {
+            "contradiction": -0.8357886672019958,
+            "entailment": -2.222769021987915,
+            "neutral": 4.027283668518066
+          }
+        },
+        {
+          "premise_text": "fundamentals: Supports smart contracts and decentralized application integration",
+          "source_type": "spec",
+          "source_key": "specs.fundamentals[3]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.026767730712891,
+          "scores": {
+            "contradiction": -0.740475594997406,
+            "entailment": -2.2819201946258545,
+            "neutral": 4.026767730712891
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.25)"
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "CoreCoin employs a community-driven, on-chain governance model.",
+      "validation_verdict": "CONTRADICTED",
+      "top_matches": [
+        {
+          "premise_text": "Gas fees are variable and market-driven",
+          "source_type": "clarification",
+          "source_key": "clarifications[9]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.971789836883545,
+          "scores": {
+            "contradiction": 4.971789836883545,
+            "entailment": -3.236147403717041,
+            "neutral": -0.9282604455947876
+          }
+        },
+        {
+          "premise_text": "fee_structure: Fee model: Base fee + variable priority fee (market-driven)",
+          "source_type": "spec",
+          "source_key": "specs.fee_structure[0]",
+          "nli_label": "CONTRADICTION",
+          "confidence": 4.757488250732422,
+          "scores": {
+            "contradiction": 4.757488250732422,
+            "entailment": -3.307762384414673,
+            "neutral": -0.6327493786811829
+          }
+        },
+        {
+          "premise_text": "technical_architecture chain_governance: Community-driven on-chain governance",
+          "source_type": "spec",
+          "source_key": "specs.technical_architecture.chain_governance",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.1917595863342285,
+          "scores": {
+            "contradiction": -1.076764702796936,
+            "entailment": -2.220730781555176,
+            "neutral": 4.1917595863342285
+          }
+        }
+      ],
+      "reasoning": "Strong contradiction with clarification"
+    },
+    {
+      "claim_id": "claim_7",
+      "claim_text": "CoreCoin is not natively cross-chain compatible unless explicitly specified.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "technical_architecture interoperability: Not natively cross-chain compatible unless explicitly specified",
+          "source_type": "spec",
+          "source_key": "specs.technical_architecture.interoperability",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.380383491516113,
+          "scores": {
+            "contradiction": -1.416218638420105,
+            "entailment": -2.2432641983032227,
+            "neutral": 4.380383491516113
+          }
+        },
+        {
+          "premise_text": "NOT natively cross-chain compatible (RPC does NOT simulate cross-chain calls)",
+          "source_type": "clarification",
+          "source_key": "clarifications[18]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.3184494972229,
+          "scores": {
+            "contradiction": -1.090104103088379,
+            "entailment": -2.4111783504486084,
+            "neutral": 4.3184494972229
+          }
+        },
+        {
+          "premise_text": "No customer support for lost keys or failed transactions",
+          "source_type": "clarification",
+          "source_key": "clarifications[13]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.7312684059143066,
+          "scores": {
+            "contradiction": -1.3808757066726685,
+            "entailment": -1.429836630821228,
+            "neutral": 3.7312684059143066
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.38)"
+    },
+    {
+      "claim_id": "claim_8",
+      "claim_text": "Staking CoreCoin requires locking tokens for defined protocol periods, which are variable by governance.",
+      "validation_verdict": "INSUFFICIENT_EVIDENCE",
+      "top_matches": [
+        {
+          "premise_text": "staking_details: Staking requires locking tokens for defined protocol periods (variable by governance)",
+          "source_type": "spec",
+          "source_key": "specs.staking_details[0]",
+          "nli_label": "NEUTRAL",
+          "confidence": 4.416659355163574,
+          "scores": {
+            "contradiction": -1.4595717191696167,
+            "entailment": -2.2931528091430664,
+            "neutral": 4.416659355163574
+          }
+        },
+        {
+          "premise_text": "NOT natively cross-chain compatible (RPC does NOT simulate cross-chain calls)",
+          "source_type": "clarification",
+          "source_key": "clarifications[18]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.9430665969848633,
+          "scores": {
+            "contradiction": -0.5293012261390686,
+            "entailment": -2.3779118061065674,
+            "neutral": 3.9430665969848633
+          }
+        },
+        {
+          "premise_text": "staking_details: Minimum stake: Protocol-defined threshold",
+          "source_type": "spec",
+          "source_key": "specs.staking_details[1]",
+          "nli_label": "NEUTRAL",
+          "confidence": 3.8733253479003906,
+          "scores": {
+            "contradiction": -0.5012250542640686,
+            "entailment": -2.3426320552825928,
+            "neutral": 3.8733253479003906
+          }
+        }
+      ],
+      "reasoning": "Ambiguous match (label=NEUTRAL, confidence=4.42)"
+    }
+  ],
+  "nli_model": "cross-encoder/nli-roberta-base"
+}

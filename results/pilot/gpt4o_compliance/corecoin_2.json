@@ -1,0 +1,129 @@
+{
+  "material_id": "corecoin_2",
+  "product": "CoreCoin (CORE)",
+  "regulatory_domain": "{'status': ['Classification varies by jurisdiction (commodity/digital asset/virtual asset)', 'Not legal tender', 'Not FDIC-insured', 'Not a bank account, deposit, or insured investment account', 'Not SIPC-insured', 'May be subject to securities/commodities regulations depending on location'], 'compliance': ['Users are responsible for compliance with local laws and regulations', 'Availability may vary by jurisdiction', 'Not universally approved by regulatory authorities']}",
+  "overall_status": "NO_FINDINGS",
+  "compliant": true,
+  "finding_count": 0,
+  "overall_severity": "NONE",
+  "requires_human_review": false,
+  "extracted_claims": [
+    {
+      "claim_id": "claim_1",
+      "claim_text": "CoreCoin is a decentralized Layer-1 digital asset operating on a Proof-of-Stake (PoS) blockchain.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "CoreCoin is a decentralized Layer-1 digital asset"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_2",
+      "claim_text": "CoreCoin supports smart contracts and decentralized applications.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Supports smart contracts and decentralized application integration"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_3",
+      "claim_text": "CoreCoin's market value is highly volatile and influenced by liquidity, market sentiment, and macroeconomic conditions.",
+      "claim_type": "financial",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Market value is highly volatile and influenced by liquidity, market sentiment, and macroeconomic conditions"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_4",
+      "claim_text": "CoreCoin can be stored on hardware wallets, mobile wallets, or desktop clients.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Can be stored on hardware wallets, mobile wallets, or desktop clients (compatibility varies)"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_5",
+      "claim_text": "CoreCoin supports smart contracts and decentralized application integration.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "authorized_claims",
+          "matched_text": "Supports decentralized applications and programmable smart contracts"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_6",
+      "claim_text": "CoreCoin employs a community-driven, on-chain governance model.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Community-driven on-chain governance"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_7",
+      "claim_text": "CoreCoin is not natively cross-chain compatible unless explicitly specified.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Not natively cross-chain compatible unless explicitly specified"
+        }
+      ]
+    },
+    {
+      "claim_id": "claim_8",
+      "claim_text": "Staking CoreCoin requires locking tokens for defined protocol periods, which are variable by governance.",
+      "claim_type": "feature",
+      "is_verifiable": true,
+      "risk_domain": "crypto",
+      "support_status": "SUPPORTED",
+      "evidence_from_context": [
+        {
+          "source_section": "specs",
+          "matched_text": "Staking requires locking tokens for defined protocol periods (variable by governance)"
+        }
+      ]
+    }
+  ],
+  "findings": [],
+  "summary": "No compliance-relevant findings detected. All claims are supported by the provided context.",
+  "limitations": "Assessment limited to the provided regulatory and product context.",
+  "model": "gpt-4o",
+  "temperature": 0
+}

@@ -297,6 +297,11 @@ def main():
         type=int,
         help='Limit number of materials to process (for testing)'
     )
+    parser.add_argument(
+        '--resume',
+        action='store_true',
+        help='Resume from existing output, skip already-processed violations'
+    )
     args = parser.parse_args()
 
     input_path = Path(args.input)
@@ -321,6 +326,18 @@ def main():
 
     print(f"Found {total_violations} violations across {total_materials} materials")
 
+    # Load already-processed violations if resuming
+    processed_violations = set()
+    if args.resume and output_path.exists():
+        print(f"Loading existing results from {output_path}...")
+        with open(output_path, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                # Create unique key: run_id + claim
+                key = (row['Run_ID'], row['Claim'])
+                processed_violations.add(key)
+        print(f"Found {len(processed_violations)} already-processed violations, will skip them")
+
     # Apply limit if specified
     if args.limit:
         materials_to_process = dict(list(violations_by_material.items())[:args.limit])
@@ -344,6 +361,10 @@ def main():
 
             # Review each violation with GPT-4o
             for v in violations:
+                # Skip if already processed (when resuming)
+                if args.resume and (run_id, v['claim']) in processed_violations:
+                    continue
+
                 review = review_violation(
                     claim=v['claim'],
                     violated_rule=v['violated_rule'],
@@ -391,12 +412,21 @@ def main():
 
     # Save results
     print(f"\nSaving results to {output_path}...")
-    with open(output_path, 'w', newline='', encoding='utf-8') as f:
-        if results:
-            fieldnames = list(results[0].keys())
-            writer = csv.DictWriter(f, fieldnames=fieldnames)
-            writer.writeheader()
-            writer.writerows(results)
+    if args.resume and output_path.exists():
+        # Append to existing file
+        with open(output_path, 'a', newline='', encoding='utf-8') as f:
+            if results:
+                fieldnames = list(results[0].keys())
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writerows(results)  # No header when appending
+    else:
+        # Write new file
+        with open(output_path, 'w', newline='', encoding='utf-8') as f:
+            if results:
+                fieldnames = list(results[0].keys())
+                writer = csv.DictWriter(f, fieldnames=fieldnames)
+                writer.writeheader()
+                writer.writerows(results)
 
     # Summary
     print("\n" + "="*70)

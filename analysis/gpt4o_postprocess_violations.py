@@ -326,17 +326,20 @@ def main():
 
     print(f"Found {total_violations} violations across {total_materials} materials")
 
-    # Load already-processed violations if resuming
+    # Load already-processed violations if resuming (skip only successful ones, retry ERRORs)
     processed_violations = set()
     if args.resume and output_path.exists():
         print(f"Loading existing results from {output_path}...")
         with open(output_path, 'r', encoding='utf-8') as f:
             reader = csv.DictReader(f)
             for row in reader:
-                # Create unique key: run_id + claim
-                key = (row['Run_ID'], row['Claim'])
-                processed_violations.add(key)
-        print(f"Found {len(processed_violations)} already-processed violations, will skip them")
+                # Only skip if verdict is NOT ERROR (retry failed ones)
+                if row.get('GPT4o_Verdict', 'ERROR') != 'ERROR':
+                    # Create unique key: run_id + claim
+                    key = (row['Run_ID'], row['Claim'])
+                    processed_violations.add(key)
+        print(f"Found {len(processed_violations)} successfully-processed violations, will skip them")
+        print(f"Will retry ERROR cases")
 
     # Apply limit if specified
     if args.limit:
